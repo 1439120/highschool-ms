@@ -1,0 +1,126 @@
+# .NET / C# / Visual Studio / Rider ===========================================
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.csproj.user
+*.sln.docstates
+*.cache
+*.vs/
+.vscode/
+.idea/
+ReSharperHost.local/
+[Tt]est[Rr]esult*/
+*.TestResult.xml
+*.DotSettings.user
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]uild/
+bld/
+[Bb]in/
+[Oo]bj/
+log/
+logs/
+*.log
+*.tmp
+*.cache
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+*.pyc
+[Ss]tyle[Cc]op.*
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Entity Framework / Migrations
+**/Migrations/*.Designer.cs
+**/Migrations/*.ModelSnapshot.cs   # ← usually we commit these, remove if you prefer
+
+# NuGet Packages
+**/packages/
+**/pkg/
+*.nupkg
+*.snk
+
+# .NET Core / .NET 5+
+**/Properties/launchSettings.json   # ← very common to ignore locally
+**/appsettings.*.json               # ← keep only appsettings.json in git
+**/secrets.json
+**/usersecrets.json
+
+# Angular / Node / Frontend ===================================================
+node_modules/
+dist/
+coverage/
+.tmp/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Angular build artifacts
+/.angular/cache
+/.sass-cache/
+.angular/
+
+# IDE / editor files
+.vscode/
+.idea/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+
+# Linux
+*~
+
+# Testing / coverage
+coverage/
+*.lcov
+*.coverage
+*.coveragexml
+
+# Docker / container stuff
+.dockerignore
+**/.docker/
+**/docker-compose.override.yml
+
+# Environment / local config files
+.env
+.env.*
+!.env.example
+
+# Usually ignored local files
+local.settings.json
+*.local.json
+
+# Optional - if you want to keep migrations but ignore local dev databases
+*.mdf
+*.ldf
+*.sqlite
+*.sqlite3
+*.db
+
+# Keep this at the end
+# =========================
+**/.DS_Store
+**/Thumbs.db

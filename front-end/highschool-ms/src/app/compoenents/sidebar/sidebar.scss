@@ -1,0 +1,89 @@
+.sidebar {
+    width: 240px;
+    min-height: 100vh;
+    background: #0f172a;           /* slate-900 dark bg */
+    color: #e2e8f0;                /* slate-200 text */
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #1e293b; /* subtle divider */
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+  
+  .sidebar-header {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid #1e293b;
+  }
+  
+  .app-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-family: cursive;
+    letter-spacing: -0.5px;
+    color: #60a5fa;               /* blue-400 accent */
+    background: linear-gradient(90deg, #60a5fa, #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* Menu */
+  .sidebar-menu {
+    flex: 1;
+    padding: 12px 8px;
+  }
+  
+  .sidebar-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar-menu li {
+    padding: 14px 20px;
+    margin: 4px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 1.02rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #cbd5e1;               /* slate-300 */
+  }
+
+  .sidebar-menu a{
+    color: #cbd5e1;               /* slate-300 */
+    text-decoration: none;
+  }
+  
+  .sidebar-menu li:hover {
+    background: #1e293b;          /* slate-800 */
+    color: #f1f5f9;               /* slate-100 */
+    transform: translateX(4px);
+  }
+  
+  .sidebar-menu li.active {
+    background: #334155;          /* slate-700 */
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+  
+  /* Icons (emoji version - or use heroicons / lucide / fontawesome) */
+  .icon {
+    font-size: 1.3rem;
+    width: 24px;
+    text-align: center;
+    opacity: 0.9;
+  }
+  
+  /* Optional: bottom section (logout/settings) */
+  .sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid #1e293b;
+    margin-top: auto;
+  }

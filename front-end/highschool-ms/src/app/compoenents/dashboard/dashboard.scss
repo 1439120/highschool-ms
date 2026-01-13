@@ -1,0 +1,137 @@
+
+  /* Main Content */
+  .main-content {
+    width: 100%;
+    padding: 20px;
+  }
+
+  /* Dashboard Header */
+  .dashboard-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 32px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 60px;
+  }
+
+  .school-name {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #1e40af; /* blue-800 */
+    letter-spacing: -0.5px;
+  }
+
+  .school-info {
+    display: flex;
+    gap: 24px;
+    font-size: 1.1rem;
+    color: #475569; /* slate-600 */
+  }
+
+  .school-info span {
+    font-weight: 600;
+  }
+
+  /* Metrics Grid */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    max-width: 1400px;
+  }
+
+  .metric-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .metric-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .metric-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #64748b; /* slate-500 */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .metric-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1e293b; /* slate-900 */
+  }
+
+  .metric-icon {
+    font-size: 1.5rem;
+    color: #60a5fa; /* blue-400 accent */
+  }
+
+  /* Dark Mode Alternative (if you want to toggle) */
+//   @media (prefers-color-scheme: dark) {
+//     body {
+//       background: #0f172a;
+//       color: #e2e8f0;
+//     }
+
+//     .main-content {
+//       background: #0f172a;
+//     }
+
+//     .school-name {
+//       color: #93c5fd; /* blue-300 */
+//     }
+
+//     .school-info {
+//       color: #94a3b8; /* slate-400 */
+//     }
+
+//     .metric-card {
+//       background: #1e293b; /* slate-800 */
+//       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+//     }
+
+//     .metric-title {
+//       color: #cbd5e1; /* slate-300 */
+//     }
+
+//     .metric-value {
+//       color: #f1f5f9; /* slate-100 */
+//     }
+
+//     .metric-icon {
+//       color: #60a5fa;
+//     }
+//   }
+
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+  
+  .chart-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  }
+  
+  .chart-card h3 {
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #333;
+  }
+  

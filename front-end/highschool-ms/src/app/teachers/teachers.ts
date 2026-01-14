@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+// import { IonicModule } from '@ionic/angular';
+import { IonTitle } from '@ionic/angular/standalone';
+
 
 @Component({
   selector: 'app-teachers',
-  imports: [],
+  imports: [ IonTitle ],
   templateUrl: './teachers.html',
   styleUrl: './teachers.scss',
 })

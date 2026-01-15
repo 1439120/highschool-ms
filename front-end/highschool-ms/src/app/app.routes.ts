@@ -12,4 +12,12 @@ export const routes: Routes = [{
     loadComponent: ()=>{
         return import('./teachers/teachers').then((m) => m.Teachers)
     }
+
+},
+ {
+    path: 'students',
+    loadComponent: ()=>{
+        return import('./students/students').then((m) => m.Students)
+    }
+
 }];

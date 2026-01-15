@@ -20,4 +20,10 @@ export const routes: Routes = [{
         return import('./students/students').then((m) => m.Students)
     }
 
+},
+ {
+    path: 'classes',
+    loadComponent: ()=>{
+        return import('./classrooms/classrooms').then((m) => m.Classrooms)
+    }
 }];

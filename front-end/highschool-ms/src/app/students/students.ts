@@ -14,12 +14,12 @@ export class Students extends Datamodel {
     super();
     this.title_.set("Students")
     let students: User[] = [
-      { name: 'Alice', surname: 'Mbatha', phone:'012 111 2233', email: 'alice@mail.com', role: 'Admin', address:'123 Avenue' },
-        { name: 'Bob', surname: 'Mkhonto', phone:'012 111 2233', email: 'bob@mail.com', role: 'User', address:'450 Value' },
-        { name: 'Charlie', surname: 'Nkhosi', phone:'012 111 2233', email: 'charlie@mail.com', role: 'Editor', address:'011 Vilikazi' },
-        { name: 'David', surname: 'Smith', phone:'012 222 3344', email: 'david@mail.com', role: 'User', address:'789 Street' },
-        { name: 'Eve', surname: 'Johnson', phone:'012 333 4455', email: 'eve@mail.com', role: 'Admin', address:'456 Road' },
-        { name: 'Frank', surname: 'Williams', phone:'012 444 5566', email: 'frank@mail.com', role: 'Editor', address:'321 Boulevard' }
+      { id:2239, name: 'Bheki', surname: 'Cele', phone:'072 171 2233', email: 'bhekic@mail.com', role: 'Student', address:'123 Avenue' },
+        { id:8376, name: 'Musa', surname: 'Maziya', phone:'082 119 2234', email: 'musam@mail.com', role: 'Representative', address:'450 Value' },
+        { id:1730, name: 'Freddie', surname: 'Khumalo', phone:'072 118 1231', email: 'freddiek@mail.com', role: 'Student', address:'011 Vilikazi' },
+        { id:7839, name: 'Thembi', surname: 'Ntimba', phone:'076 222 3344', email: 'thembin@mail.com', role: 'Representative', address:'789 Street' },
+        { id: 1348, name: 'Silva', surname: 'Mlambo', phone:'079 333 4455', email: 'silvam@mail.com', role: 'Student', address:'456 Road' },
+        { id:3283, name: 'Gray', surname: 'Jordan', phone:'081 444 5566', email: 'grayj@mail.com', role: 'Student', address:'321 Boulevard' }
     ]
     this.records_.set(students);
   }

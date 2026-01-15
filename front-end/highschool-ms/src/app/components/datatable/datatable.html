@@ -1,0 +1,210 @@
+<div class="datatable-container">
+  <!-- Header with title and actions -->
+  <div class="table-header">
+    <h2 class="table-title">{{title()}}</h2>
+    <div class="table-actions">
+      <button class="btn btn-secondary" (click)="refreshData()">
+        <span class="btn-icon">↻</span>
+        Refresh
+      </button>
+      <button class="btn btn-primary" (click)="addNew()">
+        <span class="btn-icon">+</span>
+        Add New
+      </button>
+    </div>
+  </div>
+
+  <!-- Search and Filter Controls -->
+  <div class="table-controls">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Search users by name, email, or role..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()"
+        #searchInput
+      >
+      <button class="clear-search" *ngIf="searchQuery" (click)="clearSearch()">
+        ×
+      </button>
+    </div>
+
+    <div class="filter-controls">
+      <div class="filter-group">
+        <label class="filter-label">Filter by Role:</label>
+        <select class="filter-select" [(ngModel)]="selectedRole" (change)="onFilterChange()">
+          <option value="">All Roles</option>
+          <option value="Admin">Admin</option>
+          <option value="User">User</option>
+          <option value="Editor">Editor</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Sort by:</label>
+        <select class="filter-select" [(ngModel)]="sortBy" (change)="onSortChange()">
+          <option value="name">Name (A-Z)</option>
+          <option value="name_desc">Name (Z-A)</option>
+          <option value="role">Role</option>
+          <option value="date">Recently Added</option>
+        </select>
+      </div>
+
+      <div class="stats">
+        <span class="stat-item">
+          <span class="stat-label">Showing:</span>
+          <span class="stat-value">{{filteredUsers().length}}</span>
+        </span>
+        <span class="stat-item">
+          <span class="stat-label">Total:</span>
+          <span class="stat-value">{{totalUsers()}}</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Wrapper -->
+  <div class="table-wrapper">
+    <table class="datatable">
+      <thead>
+        <tr>
+          <th class="name-col">
+            <div class="th-content" (click)="sortByColumn('name')">
+              Name
+              <span class="sort-indicator" [class.active]="currentSort() === 'name'">▼</span>
+            </div>
+          </th>
+          <th class="phone-col">Phone</th>
+          <th class="email-col">
+            <div class="th-content" (click)="sortByColumn('email')">
+              Email
+              <span class="sort-indicator" [class.active]="currentSort() === 'email'">▼</span>
+            </div>
+          </th>
+          <th class="role-col">
+            <div class="th-content" (click)="sortByColumn('role')">
+              Role
+              <span class="sort-indicator" [class.active]="currentSort() === 'role'">▼</span>
+            </div>
+          </th>
+          <th class="address-col">Address</th>
+          <th class="actions-col">Actions</th>
+        </tr>
+      </thead>
+      
+      <!-- Loading State -->
+      @if(isLoading()){
+        <tbody>
+          <tr class="loading-row">
+            <td colspan="6">
+              <div class="loading-spinner"></div>
+              <div class="loading-text">Loading users...</div>
+            </td>
+          </tr>
+        </tbody>
+      }
+      @else{
+        <tbody>
+          @for(user of filteredUsers(); track $index){
+            <tr>
+              <td class="name-col">
+              <div class="user-info">
+                <div class="avatar" [style.background]="getAvatarColor(user.name)">
+                  {{user.name.charAt(0)}}{{user.surname.charAt(0)}}
+                </div>
+                <div class="user-details">
+                  <span class="user-name">{{user.name}} {{user.surname}}</span>
+                  <span class="user-id">ID: {{1000 + $index}}</span>
+                </div>
+              </div>
+            </td>
+            <td class="phone-col">
+              <a [href]="'tel:' + user.phone" class="phone-link">
+                <span class="icon">📞</span>
+                {{user.phone}}
+              </a>
+            </td>
+            <td class="email-col">
+              <a [href]="'mailto:' + user.email" class="email-link">
+                <span class="icon">✉️</span>
+                {{user.email}}
+              </a>
+            </td>
+            <td class="role-col">
+              <span class="role-badge" [class]="getRoleClass(user.role)">
+                {{user.role}}
+              </span>
+            </td>
+            <td class="address-col">
+              <span class="address">
+                <span class="icon">📍</span>
+                {{user.address}}
+              </span>
+            </td>
+            <td class="actions-col">
+              <div class="action-buttons">
+                <button class="action-btn edit-btn" (click)="editUser(user)" title="Edit">
+                  <span class="btn-icon">✏️</span>
+                </button>
+                <button class="action-btn delete-btn" (click)="deleteUser(user)" title="Delete">
+                  <span class="btn-icon">🗑️</span>
+                </button>
+                <button class="action-btn view-btn" (click)="viewUser(user)" title="View Details">
+                  <span class="btn-icon">👁️</span>
+                </button>
+              </div>
+            </td>
+            </tr>
+          }
+          <!-- No Results State -->
+          @if(!filteredUsers().length){
+            <tr>
+            <td colspan="6" class="no-results">
+              <div class="no-results-content">
+                <span class="no-results-icon">😕</span>
+                <h3>No users found</h3>
+                <p *ngIf="searchQuery || selectedRole">
+                  No results match your search criteria. Try adjusting your filters.
+                </p>
+                <p *ngIf="!searchQuery && !selectedRole">
+                  No users available. Click "Add New" to create one.
+                </p>
+                <button class="btn btn-secondary" *ngIf="searchQuery || selectedRole" (click)="clearFilters()">
+                  Clear Filters
+                </button>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      }
+
+      <!-- Data Rows -->
+      
+    </table>
+  </div>
+
+  <!-- Table Footer -->
+  <div class="table-footer">
+    <div class="footer-info">
+      Showing {{filteredUsers().length}} of {{totalUsers()}} entries
+      
+      @if(searchQuery()){
+        <span class="search-info">
+        • Searching for "{{searchQuery()}}"
+      </span>
+      }
+    </div>
+    <div class="pagination">
+      <!-- <button class="pagination-btn" [disabled]="currentPage === 1" (click)="previousPage()">
+        <span class="btn-icon">◀</span> Previous
+      </button> -->
+      <span class="page-info">Page {{currentPage()}} of {{totalPages()}}</span>
+      <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="nextPage()">
+        Next <span class="btn-icon">▶</span>
+      </button>
+    </div>
+  </div>
+</div>

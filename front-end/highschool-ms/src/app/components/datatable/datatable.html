@@ -16,23 +16,12 @@
 
   <!-- Search and Filter Controls -->
   <div class="table-controls">
-    <div class="search-box">
-      <span class="search-icon">🔍</span>
-      <input 
-        type="text" 
-        class="search-input" 
-        placeholder="Search users by name, email, or role..."
-        [(ngModel)]="searchQuery"
-        (input)="onSearch()"
-        #searchInput
-      >
-      <button class="clear-search" *ngIf="searchQuery" (click)="clearSearch()">
-        ×
-      </button>
-    </div>
+    <!-- search component -->
+    <app-searchbar [searchQuery]="searchQuery()" (onSearch)="getSearchQuery($event)"
+    />
 
-  <!-- Filter Bar -->
-  <app-filterbar [selectedRole]="selectedRole()" (filterChange)="onFilterChange($event)"
+    <!-- Filter Bar -->
+    <app-filterbar [selectedRole]="selectedRole()" (filterChange)="onFilterChange($event)"
       [sortBy]="sortBy()" (orderByChange)="getSortByFromChild($event)" 
       [filteredUsers]="filteredUsers().length" [totalUsers]="originalUsers().length"
       />

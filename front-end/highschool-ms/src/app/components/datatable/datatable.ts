@@ -3,11 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/User';
 import { Filterbar } from '../filterbar/filterbar';
+import { Searchbar } from '../searchbar/searchbar';
 
 @Component({
   selector: 'app-datatable',
   standalone: true,
-  imports: [CommonModule, FormsModule, Filterbar], // Add FormsModule for ngModel
+  imports: [CommonModule, FormsModule, Filterbar, Searchbar], // Add FormsModule for ngModel
   templateUrl: './datatable.html',
   styleUrl: './datatable.scss',
 })
@@ -83,6 +84,10 @@ export class Datatable implements OnInit {
   // Search and filter methods
   onSearch() {
     this.currentPage.set(1);
+  }
+
+  getSearchQuery(value: string){
+    this.searchQuery.set(value);
   }
   
   onFilterChange(newRole: string) {

@@ -1,0 +1,18 @@
+<!-- <p>searchbar works!</p> -->
+<div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Search users by name, email, or role..."
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onChangeSearch()"
+        #searchInput
+      >
+      @if(searchQuery){
+        <button class="clear-search" (click)="clearSearch()">
+        ×
+      </button>
+      }
+      
+    </div>

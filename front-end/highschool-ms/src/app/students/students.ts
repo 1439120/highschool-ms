@@ -29,6 +29,12 @@ export class Students extends Datamodel<User> {
       {'col':'Email', 'groupBy': true},
       {'col':'Role', 'groupBy': true},
       {'col':'Address', 'groupBy': true}])
+      this.searchByItems_.set(['name','surname','email','role','phone'])
+      this.filterBy_.set('Role')
+      const uniqueRoles: string[] = [
+        ...new Set(students.map(c => c.role))
+      ];
+      this.filterByItems_.set(uniqueRoles);
   }
 
 }

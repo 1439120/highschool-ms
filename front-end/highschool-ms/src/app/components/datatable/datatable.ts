@@ -17,6 +17,9 @@ export class Datatable<T> implements OnInit {
   title = input<string>('Default');
   originalUsers = input<T[]>([])
   columns = input<Tableheader[]>([])
+  searchByItems = input<string[]>([])
+  filterBy = input<string>('');
+  filterByItems = input<string[]>([])
 
   getFieldValue(item: T, key: string): any {
     return (item as any)[key];
@@ -38,18 +41,20 @@ export class Datatable<T> implements OnInit {
     // Apply search filter
     if (this.searchQuery()) {
       const query = this.searchQuery().toLowerCase();
-      users = users.filter(user => 
-        this.getFieldValue(user,'name').toLowerCase().includes(query) ||
-        this.getFieldValue(user,'surname').toLowerCase().includes(query) ||
-        this.getFieldValue(user,'email').toLowerCase().includes(query) ||
-        this.getFieldValue(user,'role').toLowerCase().includes(query) ||
-        this.getFieldValue(user,'phone').includes(query)
+    users = users.filter(user => {
+      return this.searchByItems().some((field) => {
+        const value = this.getFieldValue(user, field);
+        
+        // Ensure the value exists and convert to string before checking
+        return value?.toString().toLowerCase().includes(query);
+      });
+    }
+      
       );
     }
-    
     // Apply role filter
     if (this.selectedRole()) {
-      users = users.filter(user => this.getFieldValue(user,'role') === this.selectedRole());
+      users = users.filter(user => this.getFieldValue(user,this.filterBy().toLocaleLowerCase()).toString() === this.selectedRole());
     }
     
     // Apply sorting

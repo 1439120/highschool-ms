@@ -1,11 +1,14 @@
 <div class="filter-controls">
     <div class="filter-group">
-    <label class="filter-label">Filter by Role:</label>
+    <label class="filter-label">Filter by {{filterBy()}}:</label>
     <select class="filter-select" [(ngModel)]="selectedRole" (ngModelChange)="onFilterChange()">
-        <option value="">All Roles</option>
-        <option value="Admin">Admin</option>
+        <option value="">All {{filterBy()}}s</option>
+        <!-- <option value="Admin">Admin</option>
         <option value="User">User</option>
-        <option value="Editor">Editor</option>
+        <option value="Editor">Editor</option> -->
+        @for(item of filterByItems(); track $index){
+            <option value="{{item}}">{{item}}</option>
+        }
     </select>
     </div>
 

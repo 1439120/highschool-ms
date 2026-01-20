@@ -17,12 +17,15 @@ export class Filterbar {
   @Input() sortBy: string = '';
   @Output() orderByChange = new EventEmitter<string>();
 
+  filterBy = input('');
+  filterByItems = input<string[]>([])
+
   // stats inputs
   filteredUsers = input(0);
   totalUsers = input(0);
 
   onFilterChange(){
-    console.log(`his is emitted ${this.selectedRole}`)
+    console.log(`This is emitted ${this.selectedRole}`)
     this.filterChange.emit(this.selectedRole);         // For your custom event
   }
 

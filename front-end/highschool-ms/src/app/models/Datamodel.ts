@@ -6,4 +6,7 @@ export class Datamodel<T> {
     title_ = signal('')
     records_ = signal<T[]>([])
     headers_ = signal<Tableheader[]>([])
+    searchByItems_ = signal<string[]>([])
+    filterBy_ = signal<string>('')
+    filterByItems_ = signal<string[]>([])
 }

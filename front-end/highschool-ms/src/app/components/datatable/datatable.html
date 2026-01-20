@@ -18,6 +18,7 @@
   <div class="table-controls">
     <!-- search component -->
     <app-searchbar [searchQuery]="searchQuery()" (onSearch)="getSearchQuery($event)"
+    [searchItems]="searchByItems()"
     />
 
     <!-- Filter Bar -->
@@ -35,7 +36,7 @@
           @let temp = column.col.toLowerCase();
           <th class="{{temp}}-col">
             <div class="th-content" (click)="sortByColumn(temp)">
-              {{column.col}}
+              {{column.col.replaceAll('_',' ')}}
               @if(column.groupBy){
                 <span class="sort-indicator" [class.active]="currentSort() === temp">▼</span>
               }

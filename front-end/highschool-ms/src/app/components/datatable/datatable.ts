@@ -16,6 +16,12 @@ export class Datatable implements OnInit {
   // inputs
   title = input<string>('Default');
   originalUsers = input<User[]>([])
+  columns = [
+    {'col':'Name', 'groupBy': true},
+    {'col':'Phone', 'groupBy': false},
+    {'col':'Email', 'groupBy': true},
+    {'col':'Role', 'groupBy': true},
+    {'col':'Address', 'groupBy': true}]
 
   // Filter and search properties
   searchQuery = signal('');
@@ -191,5 +197,18 @@ export class Datatable implements OnInit {
     ];
     const index = name.charCodeAt(0) % colors.length;
     return colors[index];
+  }
+
+  getIcon(val: string){
+    switch(val){
+      case 'phone':
+        return '📞'
+      case 'email':
+        return '✉️'
+      case 'address':
+        return '📍'
+      default:
+        return false;
+    }
   }
 }

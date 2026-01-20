@@ -30,7 +30,7 @@
   <div class="table-wrapper">
     <table class="datatable">
       <thead>
-        @for(column of columns; track $index){
+        @for(column of columns(); track $index){
           @let temp = column.col.toLowerCase();
           <th class="{{temp}}-col">
             <div class="th-content" (click)="sortByColumn(temp)">
@@ -57,48 +57,50 @@
       }
       @else{
         <tbody>
-          @for(user of filteredUsers(); track $index){
+          @for(user of paginatedUsers(); track $index){
             <tr>
               <!-- if name and surname available on this class -->
-               @if('name' in user && 'surname' in user){
+               @if(getFieldValue(user,'name') && getFieldValue(user,'surname')){
                 <td class="name-col">
                   <div class="user-info">
-                    <div class="avatar" [style.background]="getAvatarColor(user.name)">
-                      {{user.name.charAt(0)}}{{user.surname.charAt(0)}}
+                    <div class="avatar" [style.background]="getAvatarColor(getFieldValue(user,'name'))">
+                      {{getFieldValue(user,'name').charAt(0)}}{{getFieldValue(user,'surname').charAt(0)}}
                     </div>
                     <div class="user-details">
-                      <span class="user-name">{{user.name}} {{user.surname}}</span>
+                      <span class="user-name">{{getFieldValue(user,'name')}} {{getFieldValue(user,'surname')}}</span>
                       <span class="user-id">ID: {{1000 + $index}}</span>
                     </div>
                   </div>
                 </td>
                }
               
-               @for(col of columns; track $index){
+               @for(col of columns(); track $index){
                 @let temp = col.col.toLocaleLowerCase();
-                @if(!(temp == 'name' && 'name' in user && 'surname' in user)){
+                @if(!(temp == 'name' && getFieldValue(user,'name') && getFieldValue(user,'surname'))){
                   <td class="{{temp}}-col">
                     @if(['phone','email'].includes(temp)){
                       @let sendTo = temp == 'phone' ? 'tel:': 'mailto:';
-                      <a [href]="sendTo + user[temp]" class="{{temp}}-link">
+                      <a [href]="sendTo + getFieldValue(user,temp)" class="{{temp}}-link">
                       @if(getIcon(temp)){
                         <span class="icon">{{getIcon(temp)}}</span>
                       }
-                      {{user[temp]}}
+                      {{getFieldValue(user,temp)}}
                     </a>
                     }
                     @else if(temp == 'role'){
-                      <span class="role-badge" [class]="getRoleClass(user.role)">
-                        {{user.role}}
+                      <span class="role-badge" [class]="getRoleClass(getFieldValue(user,temp))">
+                        {{getFieldValue(user,temp)}}
                       </span>
                     }
-                    @else {
-                      <td class="{{temp}}-col">
+                    @else if(getIcon(temp)) {
                         <span class="{{temp}}">
-                          <span class="icon">{{getIcon(temp)}}</span>
-                          {{user[temp]}}
+                            <span class="icon">{{getIcon(temp)}}</span>
+                          {{getFieldValue(user,temp)}}
                         </span>
-                      </td>
+                    }@else {
+                        <span class="address">
+                          {{getFieldValue(user,temp)}}
+                        </span>
                     }
                   </td>
                 }

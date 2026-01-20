@@ -1,9 +1,9 @@
 import { Component, input, signal, computed, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { User } from '../../models/User';
 import { Filterbar } from '../filterbar/filterbar';
 import { Searchbar } from '../searchbar/searchbar';
+import Tableheader from '../../models/Tableheader';
 
 @Component({
   selector: 'app-datatable',
@@ -12,23 +12,22 @@ import { Searchbar } from '../searchbar/searchbar';
   templateUrl: './datatable.html',
   styleUrl: './datatable.scss',
 })
-export class Datatable implements OnInit {
+export class Datatable<T> implements OnInit {
   // inputs
   title = input<string>('Default');
-  originalUsers = input<User[]>([])
-  columns = [
-    {'col':'Name', 'groupBy': true},
-    {'col':'Phone', 'groupBy': false},
-    {'col':'Email', 'groupBy': true},
-    {'col':'Role', 'groupBy': true},
-    {'col':'Address', 'groupBy': true}]
+  originalUsers = input<T[]>([])
+  columns = input<Tableheader[]>([])
+
+  getFieldValue(item: T, key: string): any {
+    return (item as any)[key];
+  }
 
   // Filter and search properties
   searchQuery = signal('');
   selectedRole = signal('');
   sortBy = signal('name');
   currentPage = signal(1);
-  itemsPerPage = 5;
+  itemsPerPage = 6;
   isLoading = signal(false);
   currentSort = signal('');
   
@@ -40,30 +39,30 @@ export class Datatable implements OnInit {
     if (this.searchQuery()) {
       const query = this.searchQuery().toLowerCase();
       users = users.filter(user => 
-        user.name.toLowerCase().includes(query) ||
-        user.surname.toLowerCase().includes(query) ||
-        user.email.toLowerCase().includes(query) ||
-        user.role.toLowerCase().includes(query) ||
-        user.phone.includes(query)
+        this.getFieldValue(user,'name').toLowerCase().includes(query) ||
+        this.getFieldValue(user,'surname').toLowerCase().includes(query) ||
+        this.getFieldValue(user,'email').toLowerCase().includes(query) ||
+        this.getFieldValue(user,'role').toLowerCase().includes(query) ||
+        this.getFieldValue(user,'phone').includes(query)
       );
     }
     
     // Apply role filter
     if (this.selectedRole()) {
-      users = users.filter(user => user.role === this.selectedRole());
+      users = users.filter(user => this.getFieldValue(user,'role') === this.selectedRole());
     }
     
     // Apply sorting
     users.sort((a, b) => {
       switch (this.sortBy()) {
         case 'name_desc':
-          return b.name.localeCompare(a.name);
+          return this.getFieldValue(b,'name').localeCompare(this.getFieldValue(a,'name'));
         case 'role':
-          return a.role.localeCompare(b.role);
+          return this.getFieldValue(a,'role').localeCompare(this.getFieldValue(b,'role'));
         case 'date':
           return 0; // Add date field for proper sorting
         default: // 'name'
-          return a.name.localeCompare(b.name);
+          return this.getFieldValue(a,'name').localeCompare(this.getFieldValue(b,'name'));
       }
     });
     

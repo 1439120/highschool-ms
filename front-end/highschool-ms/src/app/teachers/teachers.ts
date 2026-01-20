@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { Datatable } from '../components/datatable/datatable';
 import { User } from '../models/User';
 import { Datamodel } from '../models/Datamodel';
+import Tableheader from '../models/Tableheader';
 
 @Component({
   selector: 'app-teachers',
@@ -10,7 +11,7 @@ import { Datamodel } from '../models/Datamodel';
   styleUrl: './teachers.scss',
 })
 
-export class Teachers extends Datamodel {
+export class Teachers extends Datamodel<User> {
 
   constructor(){
     super();
@@ -24,7 +25,12 @@ export class Teachers extends Datamodel {
         { id:5893, name: 'Frank', surname: 'Williams', phone:'012 444 5566', email: 'frank@mail.com', role: 'Editor', address:'321 Boulevard' }
     ]
     this.records_.set(teachers);
+    this.headers_.set( [
+      {'col':'Name', 'groupBy': true},
+      {'col':'Phone', 'groupBy': false},
+      {'col':'Email', 'groupBy': true},
+      {'col':'Role', 'groupBy': true},
+      {'col':'Address', 'groupBy': true}])
   }
-
 
 }

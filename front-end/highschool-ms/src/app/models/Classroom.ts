@@ -1,9 +1,10 @@
 export default interface Classroom{
     id: number,
     name: string,
-    grade: string,
-    class_teacher: number,
+    grade: number,
+    class_teacher: string,
     maximum_occupants: number,
     regsitered_students: number,
-    number_of_subjecteds: number
+    number_of_subjecteds: number,
+    [key: string]: any
 }

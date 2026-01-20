@@ -1,0 +1,32 @@
+<div class="filter-controls">
+    <div class="filter-group">
+    <label class="filter-label">Filter by Role:</label>
+    <select class="filter-select" [(ngModel)]="selectedRole" (ngModelChange)="onFilterChange()">
+        <option value="">All Roles</option>
+        <option value="Admin">Admin</option>
+        <option value="User">User</option>
+        <option value="Editor">Editor</option>
+    </select>
+    </div>
+
+    <div class="filter-group">
+    <label class="filter-label">Sort by:</label>
+    <select class="filter-select" [(ngModel)]="sortBy" (change)="onSortChange()">
+        <option value="name">Name (A-Z)</option>
+        <option value="name_desc">Name (Z-A)</option>
+        <option value="role">Role</option>
+        <option value="date">Recently Added</option>
+    </select>
+    </div>
+
+    <div class="stats">
+    <span class="stat-item">
+        <span class="stat-label">Showing:</span>
+        <span class="stat-value">{{filteredUsers()}}</span>
+    </span>
+    <span class="stat-item">
+        <span class="stat-label">Total:</span>
+        <span class="stat-value">{{totalUsers()}}</span>
+    </span>
+    </div>
+</div>

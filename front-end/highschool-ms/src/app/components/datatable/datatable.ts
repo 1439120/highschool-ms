@@ -2,11 +2,12 @@ import { Component, input, signal, computed, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/User';
+import { Filterbar } from '../filterbar/filterbar';
 
 @Component({
   selector: 'app-datatable',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Add FormsModule for ngModel
+  imports: [CommonModule, FormsModule, Filterbar], // Add FormsModule for ngModel
   templateUrl: './datatable.html',
   styleUrl: './datatable.scss',
 })
@@ -84,8 +85,14 @@ export class Datatable implements OnInit {
     this.currentPage.set(1);
   }
   
-  onFilterChange() {
+  onFilterChange(newRole: string) {
+    console.log("New role changed in parent:", newRole);
+    this.selectedRole.set(newRole);
     this.currentPage.set(1);
+  }
+
+  getSortByFromChild(newOrderBy: string){
+    this.sortBy.set(newOrderBy);
   }
   
   onSortChange() {

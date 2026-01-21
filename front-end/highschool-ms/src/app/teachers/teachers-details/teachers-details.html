@@ -1,1 +1,180 @@
 <app-breadcrumb [titleBreadcrumbs]="breadCrumb"/>
+
+<div class="teacher-details-container">
+    
+  <!-- Fixed Header -->
+  <!-- <div class="details-header">
+    <button class="back-btn" routerLink="/teachers">
+      <span class="btn-icon">←</span> Back to Teachers
+    </button>
+    <div class="header-actions">
+      <button class="btn btn-secondary">
+        <span class="btn-icon">📋</span> Print
+      </button>
+      <button class="btn btn-primary">
+        <span class="btn-icon">✏️</span> Edit Teacher
+      </button>
+    </div>
+  </div> -->
+
+  <!-- Scrollable Content Area -->
+  <div class="scrollable-content">
+    <div class="details-content-wrapper">
+      <!-- Teacher Profile Card -->
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="avatar-large">
+            {{teacher?.name?.charAt(0)}}{{teacher?.surname?.charAt(0)}}
+          </div>
+          <div class="profile-info">
+            <h1 class="teacher-name">{{teacher?.name}} {{teacher?.surname}}</h1>
+            <div class="teacher-meta">
+              <span class="teacher-id">ID: {{teacher?.id}}</span>
+              <span class="role-badge" [class]="getRoleClass(teacher?.role)">
+                {{teacher?.role}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Details Sections -->
+        <div class="details-sections">
+          <!-- Personal Information -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">👤</span>
+              Personal Information
+            </h2>
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">Full Name</span>
+                <span class="info-value">{{teacher?.name}} {{teacher?.surname}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Date of Birth</span>
+                <span class="info-value">{{formatDate(teacher?.date_of_birth)}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Age</span>
+                <span class="info-value">{{calculateAge(teacher?.date_of_birth)}} years</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Contact Information -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">📱</span>
+              Contact Information
+            </h2>
+            <div class="contact-cards">
+              <a [href]="'mailto:' + teacher?.email" class="contact-card email">
+                <span class="contact-icon">✉️</span>
+                <div class="contact-content">
+                  <span class="contact-label">Email Address</span>
+                  <span class="contact-value">{{teacher?.email}}</span>
+                </div>
+              </a>
+              <a [href]="'tel:' + teacher?.phone" class="contact-card phone">
+                <span class="contact-icon">📞</span>
+                <div class="contact-content">
+                  <span class="contact-label">Phone Number</span>
+                  <span class="contact-value">{{teacher?.phone}}</span>
+                </div>
+              </a>
+              <div class="contact-card address">
+                <span class="contact-icon">📍</span>
+                <div class="contact-content">
+                  <span class="contact-label">Physical Address</span>
+                  <span class="contact-value">{{teacher?.address}}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Subjects & Expertise -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">📚</span>
+              Subjects & Expertise
+            </h2>
+            <div class="expertise-section">
+              <div class="subjects-list">
+                <h3 class="subsection-title">Expected Subjects</h3>
+                <div class="chips-container">
+                  @for(subject of teacher?.expect_subjects; track $index){
+                    <span class="subject-chip">
+                        {{subject}}
+                    </span>
+                  }
+                </div>
+              </div>
+              <!-- <div class="subjects-list">
+                <h3 class="subsection-title">Assigned Subjects</h3>
+                <div class="chips-container">
+                  <span class="subject-chip assigned" *ngFor="let subject of teacher?.assigned_subjects">
+                    {{subject}}
+                  </span>
+                </div>
+              </div> -->
+
+            </div>
+          </section>
+
+          <!-- Assigned Classes -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">🏫</span>
+              Assigned Classes
+            </h2>
+            <div class="classes-grid">
+              <!-- <div class="class-card" *ngFor="let classItem of teacher?.assigned_classes">
+                <span class="class-icon">👩‍🏫</span>
+                <span class="class-name">{{classItem}}</span>
+                <span class="class-stats">24 Students</span>
+              </div> -->
+              @for(classItem of teacher?.assigned_classes; track $index){
+                <div class="class-card">
+                    <span class="class-icon">👩‍🏫</span>
+                    <span class="class-name">{{classItem}}</span>
+                    <span class="class-stats">24 Students</span>
+                </div>
+              }
+            </div>
+          </section>
+
+          <!-- Additional Information -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">📊</span>
+              Additional Information
+            </h2>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <span class="stat-icon">📅</span>
+                <div class="stat-content">
+                  <span class="stat-value">3 Years</span>
+                  <span class="stat-label">Years of Service</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <span class="stat-icon">🎯</span>
+                <div class="stat-content">
+                  <span class="stat-value">94%</span>
+                  <span class="stat-label">Student Satisfaction</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <span class="stat-icon">📈</span>
+                <div class="stat-content">
+                  <span class="stat-value">A+</span>
+                  <span class="stat-label">Performance Rating</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

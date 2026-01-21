@@ -6,5 +6,6 @@ export interface User{
     email: string,
     role: string,
     address: string,
+    date_of_birth: Date;
     [key: string]: any;
 }

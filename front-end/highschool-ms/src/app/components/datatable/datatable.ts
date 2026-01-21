@@ -5,11 +5,13 @@ import { Filterbar } from '../filterbar/filterbar';
 import { Searchbar } from '../searchbar/searchbar';
 import Tableheader from '../../models/Tableheader';
 import { Breadcrumb } from '../breadcrumb/breadcrumb';
+import { RouterLink } from '@angular/router';
+import BreadcrumbModel from '../../models/BreadcrumbModel';
 
 @Component({
   selector: 'app-datatable',
   standalone: true,
-  imports: [CommonModule, FormsModule, Filterbar, Searchbar, Breadcrumb], // Add FormsModule for ngModel
+  imports: [CommonModule, FormsModule, Filterbar, Searchbar, Breadcrumb, RouterLink], // Add FormsModule for ngModel
   templateUrl: './datatable.html',
   styleUrl: './datatable.scss',
 })
@@ -36,7 +38,12 @@ export class Datatable<T> implements OnInit {
     return (item as any)[key];
   }
 
-  breadcrumbTitle = computed(() => [this.title()])
+  breadcrumbTitle = computed(() => {
+    return [
+      {name: this.title(), url: ''}
+    ]
+  }
+)
   
   // Computed filtered users
   filteredUsers = computed(() => {

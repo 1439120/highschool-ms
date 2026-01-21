@@ -1,13 +1,21 @@
 import { Component, input, signal } from '@angular/core';
+import BreadcrumbModel from '../../models/BreadcrumbModel';
+import { RouterLink } from '@angular/router';
+
 
 @Component({
   selector: 'app-breadcrumb',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './breadcrumb.html',
   styleUrl: './breadcrumb.scss',
 })
 export class Breadcrumb {
-  titleBreadcrumbs = input<string[]>(['Teachers','Nomsa Mthembu'])
+  titleBreadcrumbs = input<BreadcrumbModel[]>(
+    [
+      {name: 'Teachers', url:'teachers'},
+      {name: 'Nomsa Mthembu', url: ''}
+    ]
+  )
   refreshData(){
 
   }

@@ -2,15 +2,12 @@
 <!-- Header with title and actions -->
   <div class="table-header">
     <div class="table-title">
-        <!-- <a href="/teachers">Teachers</a>
-        <a style="color: #343a40;"> / Nomsa Mthembu</a> -->
         @for(heading of titleBreadcrumbs(); track $index;  let first = $first;  let last = $last){
             @if (!first) { <div> / </div> }
-            @let headerClass = !last ? 'header-title' : '';
-            <div class="{{headerClass}}">
-                {{ heading }}
+            <div [class.header-title]="!last" 
+                    [routerLink]="heading.url || null">
+                {{ heading.name }}
             </div>
-
         }
     </div>
 

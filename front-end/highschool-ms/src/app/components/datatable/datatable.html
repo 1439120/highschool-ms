@@ -98,7 +98,7 @@
 
             <td class="actions-col">
               <div class="action-buttons">
-                <button class="action-btn edit-btn" (click)="editUser(user)" title="Edit">
+                <button class="action-btn edit-btn" [routerLink]="[`/${title().toLocaleLowerCase()}/${getFieldValue(user,'id')}`]" title="Edit">
                   <span class="btn-icon">✏️</span>
                 </button>
                 <button class="action-btn delete-btn" (click)="deleteUser(user)" title="Delete">

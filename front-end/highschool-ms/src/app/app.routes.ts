@@ -19,7 +19,7 @@ export const routes: Routes = [
     },
     {
         path: 'classes',
-        loadComponent: ()=>{
-            return import('./classrooms/classrooms').then((m) => m.Classrooms)
+        loadChildren: ()=>{
+            return import('./classrooms/classrooms.routes').then((m) => m.CLASSROOMS_ROUTES)
         }
     }];

@@ -1,0 +1,419 @@
+<div class="class-details-container">
+  <!-- Fixed Header -->
+  <div class="details-header">
+    <button class="back-btn" routerLink="/classes">
+      <span class="btn-icon">←</span> Back to Classes
+    </button>
+    <div class="header-actions">
+      <div class="class-stats">
+        <div class="stat-badge occupancy">
+          <span class="stat-icon">👥</span>
+          <span class="stat-text">{{classData?.regsitered_students?.length || 0}}/{{classData?.maximum_occupants}}</span>
+        </div>
+        <div class="stat-badge subjects">
+          <span class="stat-icon">📚</span>
+          <span class="stat-text">{{classData?.subjects_offered?.length || 0}} Subjects</span>
+        </div>
+      </div>
+      <button class="btn btn-secondary">
+        <span class="btn-icon">📊</span> Class Report
+      </button>
+      <button class="btn btn-primary">
+        <span class="btn-icon">➕</span> Add Student
+      </button>
+    </div>
+  </div>
+
+  <!-- Scrollable Content Area -->
+  <div class="scrollable-content">
+    <div class="details-content-wrapper">
+      <!-- Class Profile Card -->
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="class-avatar">
+            <div class="class-icon">🏫</div>
+            <div class="class-grade">{{classData?.grade}}</div>
+          </div>
+          <div class="profile-info">
+            <h1 class="class-name">{{classData?.name}}</h1>
+            <div class="class-meta">
+              <div class="teacher-info">
+                <span class="meta-icon">👨‍🏫</span>
+                <span class="meta-label">Class Teacher:</span>
+                <span class="meta-value">{{classData?.class_teacher}}</span>
+              </div>
+              <div class="capacity-info">
+                <div class="capacity-bar">
+                  <div class="capacity-fill" [style.width]="getOccupancyPercentage() + '%'"></div>
+                </div>
+                <span class="capacity-text">{{getOccupancyPercentage()}}% Full</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Details Sections -->
+        <div class="details-sections">
+          <!-- Class Overview -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">📋</span>
+              Class Overview
+            </h2>
+            <div class="overview-grid">
+              <div class="overview-card">
+                <div class="overview-icon">🎓</div>
+                <div class="overview-content">
+                  <span class="overview-label">Grade Level</span>
+                  <span class="overview-value">Grade {{classData?.grade}}</span>
+                </div>
+              </div>
+              <div class="overview-card">
+                <div class="overview-icon">📅</div>
+                <div class="overview-content">
+                  <span class="overview-label">Academic Year</span>
+                  <span class="overview-value">{{getAcademicYear()}}</span>
+                </div>
+              </div>
+              <div class="overview-card">
+                <div class="overview-icon">⏰</div>
+                <div class="overview-content">
+                  <span class="overview-label">Class Schedule</span>
+                  <span class="overview-value">Mon-Fri, 7:30 AM - 2:30 PM</span>
+                </div>
+              </div>
+              <div class="overview-card">
+                <div class="overview-icon">📍</div>
+                <div class="overview-content">
+                  <span class="overview-label">Room Number</span>
+                  <span class="overview-value">Room {{classData?.grade}}A-{{classData?.id}}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Students Roster -->
+          <section class="details-section">
+            <!-- <div class="section-header">
+              <h2 class="section-title">
+                <span class="section-icon">👥</span>
+                Students Roster
+                <span class="student-count">({{classData?.regsitered_students?.length || 0}} students)</span>
+              </h2>
+              <div class="section-actions">
+                <div class="search-box">
+                  <span class="search-icon">🔍</span>
+                  <input 
+                    type="text" 
+                    class="search-input" 
+                    placeholder="Search students..."
+                    [(ngModel)]="studentSearchQuery"
+                    (input)="filterStudents()"
+                  >
+                </div>
+              </div>
+            </div> -->
+            
+            <!-- Students Table -->
+            <!-- <div class="students-table-container">
+              <table class="students-table">
+                <thead>
+                  <tr>
+                    <th class="name-col">
+                      <div class="th-content">
+                        Student Name
+                        <span class="sort-indicator" (click)="sortStudents('name')">▼</span>
+                      </div>
+                    </th>
+                    <th class="id-col">Student ID</th>
+                    <th class="performance-col">Average Score</th>
+                    <th class="attendance-col">Attendance</th>
+                    <th class="actions-col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    @for(student of filteredStudents; track $index){
+                        <tr>
+                            <td class="name-col">
+                            <div class="student-info">
+                                <div class="student-avatar">
+                                {{getStudentInitials(student)}}
+                                </div>
+                                <div class="student-details">
+                                <span class="student-name">{{student}}</span>
+                                <span class="student-email">{{generateStudentEmail(student)}}</span>
+                                </div>
+                            </div>
+                            </td>
+                            <td class="id-col">
+                            <span class="student-id">{{generateStudentId(student)}}</span>
+                            </td>
+                            <td class="performance-col">
+                            <div class="performance-indicator">
+                                <div class="score-bar" [style.width]="getRandomScore() + '%'">
+                                <span class="score-value">{{getRandomScore()}}%</span>
+                                </div>
+                            </div>
+                            </td>
+                            <td class="attendance-col">
+                            <div class="attendance-badge" [class]="getAttendanceClass()">
+                                {{getRandomAttendance()}}%
+                            </div>
+                            </td>
+                            <td class="actions-col">
+                            <div class="action-buttons">
+                                <button class="action-btn view-btn" title="View Profile">
+                                <span class="btn-icon">👁️</span>
+                                </button>
+                                <button class="action-btn edit-btn" title="Edit">
+                                <span class="btn-icon">✏️</span>
+                                </button>
+                            </div>
+                            </td>
+                        </tr>
+                    }
+                  
+                </tbody>
+              </table>
+              
+              @if(!filteredStudents.length){
+                <div class="no-students">
+                    <div class="no-students-content">
+                    <span class="no-students-icon">😕</span>
+                    <h3>No students found</h3>
+                    
+                    @if(studentSearchQuery){
+                        <p>
+                            No students match your search "{{studentSearchQuery}}"
+                        </p>
+                    }
+                    @if(!studentSearchQuery &&  (!classData?.regsitered_students || classData.regsitered_students.length === 0)){
+                        <p>
+                            This class has no students yet. Click "Add Student" to enroll students.
+                        </p>
+                    }
+                    </div>
+                </div>
+              }
+
+            </div> -->
+          </section>
+
+          <!-- Subjects Offered -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">📚</span>
+              Subjects Offered
+              <span class="section-subtitle">{{classData?.subjects_offered?.length || 0}} subjects</span>
+            </h2>
+            
+            <div class="subjects-grid">
+              @for(subject of classData?.subjects_offered; track $index){
+                <div class="subject-card">
+                    <div class="subject-header">
+                    <div class="subject-icon">{{getSubjectIcon(subject)}}</div>
+                    <div class="subject-details">
+                        <h3 class="subject-name">{{formatSubjectName(subject)}}</h3>
+                        <div class="subject-meta">
+                        <span class="meta-item">
+                            <span class="meta-icon">👨‍🏫</span>
+                            {{getTeacherForSubject(subject)}}
+                        </span>
+                        <span class="meta-item">
+                            <span class="meta-icon">⏰</span>
+                            5 periods/week
+                        </span>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="subject-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Class Average</span>
+                        <span class="stat-value">{{getRandomScore(70, 90)}}%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Top Student</span>
+                        <span class="stat-value">{{getRandomStudent()}}</span>
+                    </div>
+                    </div>
+                    <div class="subject-actions">
+                    <button class="btn btn-outline">
+                        <span class="btn-icon">📊</span>
+                        View Results
+                    </button>
+                    <button class="btn btn-outline">
+                        <span class="btn-icon">📝</span>
+                        Assignments
+                    </button>
+                    </div>
+                </div>
+              }
+            </div>
+          </section>
+
+          <!-- Class Schedule -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">📅</span>
+              Weekly Schedule
+            </h2>
+            
+            <div class="schedule-container">
+              <div class="schedule-header">
+                @for(day of getDays(); track $index){
+                    <div class="day-header">{{day}}</div>
+                }
+              </div>
+              <div class="schedule-grid">
+                @for(time of getTimeSlots(); track $index){
+                    <div class="time-slot">
+                        <div class="time-label">{{time}}</div>
+                        <div class="day-slots">
+                            @for(day of  getDays(); track $index){
+                                <div class="day-slot" [class]="getScheduleClass(day, time)">                                    <span class="subject-name">{{getScheduledSubject(day, time)}}</span>
+                                    <span class="teacher-name">{{getScheduledTeacher(day, time)}}</span>
+                                </div>
+                            }
+                            
+                        </div>
+                    </div>
+                }
+              </div>
+            </div>
+          </section>
+
+          <!-- Class Performance -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">📈</span>
+              Class Performance
+            </h2>
+            
+            <div class="performance-stats">
+              <div class="performance-card">
+                <div class="performance-header">
+                  <span class="performance-title">Overall Class Average</span>
+                  <span class="performance-trend positive">↑ 5% from last term</span>
+                </div>
+                <div class="performance-content">
+                  <div class="average-display">
+                    <span class="average-value">{{getClassAverage()}}%</span>
+                    <span class="average-label">Grade {{getGradeLetter(getClassAverage())}}</span>
+                  </div>
+                  <div class="subject-breakdown">
+                    <h4 class="breakdown-title">Subject Averages</h4>
+                    <div class="breakdown-grid">
+                      
+
+                      @for(subject of getTopSubjects(3); track $index){
+                        <div class="breakdown-item">
+                            <span class="subject-name">{{subject.name}}</span>
+                            <div class="progress-container">
+                            <div class="progress-bar" [style.width]="subject.score + '%'"></div>
+                            </div>
+                            <span class="subject-score">{{subject.score}}%</span>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="performance-sidebar">
+                <div class="sidebar-card">
+                  <h4 class="sidebar-title">📊 Quick Stats</h4>
+                  <div class="sidebar-stats">
+                    <div class="stat-row">
+                      <span class="stat-label">Pass Rate</span>
+                      <span class="stat-value success">94%</span>
+                    </div>
+                    <div class="stat-row">
+                      <span class="stat-label">Top 10%</span>
+                      <span class="stat-value">{{getTopStudentsCount()}} students</span>
+                    </div>
+                    <div class="stat-row">
+                      <span class="stat-label">Need Support</span>
+                      <span class="stat-value warning">{{getSupportNeededCount()}} students</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="sidebar-card">
+                  <h4 class="sidebar-title">🎯 Upcoming Events</h4>
+                  <div class="events-list">
+                    <div class="event-item">
+                      <span class="event-date">Tomorrow</span>
+                      <span class="event-title">Math Test</span>
+                    </div>
+                    <div class="event-item">
+                      <span class="event-date">Friday</span>
+                      <span class="event-title">Science Project Due</span>
+                    </div>
+                    <div class="event-item">
+                      <span class="event-date">Next Week</span>
+                      <span class="event-title">Parent-Teacher Meetings</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Resources & Materials -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">📁</span>
+              Class Resources
+            </h2>
+            
+            <div class="resources-grid">
+              <div class="resource-card">
+                <div class="resource-icon">📖</div>
+                <div class="resource-content">
+                  <h4 class="resource-title">Textbooks</h4>
+                  <span class="resource-count">12 books</span>
+                </div>
+                <button class="resource-action">
+                  <span class="btn-icon">📥</span>
+                </button>
+              </div>
+              
+              <div class="resource-card">
+                <div class="resource-icon">📝</div>
+                <div class="resource-content">
+                  <h4 class="resource-title">Assignments</h4>
+                  <span class="resource-count">8 pending</span>
+                </div>
+                <button class="resource-action">
+                  <span class="btn-icon">📥</span>
+                </button>
+              </div>
+              
+              <div class="resource-card">
+                <div class="resource-icon">🎬</div>
+                <div class="resource-content">
+                  <h4 class="resource-title">Videos</h4>
+                  <span class="resource-count">15 videos</span>
+                </div>
+                <button class="resource-action">
+                  <span class="btn-icon">📥</span>
+                </button>
+              </div>
+              
+              <div class="resource-card">
+                <div class="resource-icon">📋</div>
+                <div class="resource-content">
+                  <h4 class="resource-title">Lesson Plans</h4>
+                  <span class="resource-count">20 plans</span>
+                </div>
+                <button class="resource-action">
+                  <span class="btn-icon">📥</span>
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,18 +1,6 @@
 <div class="datatable-container">
   <!-- Header with title and actions -->
-  <div class="table-header">
-    <h2 class="table-title">{{title()}}</h2>
-    <div class="table-actions">
-      <button class="btn btn-secondary" (click)="refreshData()">
-        <span class="btn-icon">↻</span>
-        Refresh
-      </button>
-      <button class="btn btn-primary" (click)="addNew()">
-        <span class="btn-icon">+</span>
-        Add New
-      </button>
-    </div>
-  </div>
+  <app-breadcrumb [titleBreadcrumbs]="breadcrumbTitle()"/>
 
   <!-- Search and Filter Controls -->
   <div class="table-controls">

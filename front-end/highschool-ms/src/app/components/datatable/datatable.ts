@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { Filterbar } from '../filterbar/filterbar';
 import { Searchbar } from '../searchbar/searchbar';
 import Tableheader from '../../models/Tableheader';
+import { Breadcrumb } from '../breadcrumb/breadcrumb';
 
 @Component({
   selector: 'app-datatable',
   standalone: true,
-  imports: [CommonModule, FormsModule, Filterbar, Searchbar], // Add FormsModule for ngModel
+  imports: [CommonModule, FormsModule, Filterbar, Searchbar, Breadcrumb], // Add FormsModule for ngModel
   templateUrl: './datatable.html',
   styleUrl: './datatable.scss',
 })
@@ -21,9 +22,6 @@ export class Datatable<T> implements OnInit {
   filterBy = input<string>('');
   filterByItems = input<string[]>([])
 
-  getFieldValue(item: T, key: string): any {
-    return (item as any)[key];
-  }
 
   // Filter and search properties
   searchQuery = signal('');
@@ -33,6 +31,12 @@ export class Datatable<T> implements OnInit {
   itemsPerPage = 6;
   isLoading = signal(false);
   currentSort = signal('');
+
+  getFieldValue(item: T, key: string): any {
+    return (item as any)[key];
+  }
+
+  breadcrumbTitle = computed(() => [this.title()])
   
   // Computed filtered users
   filteredUsers = computed(() => {

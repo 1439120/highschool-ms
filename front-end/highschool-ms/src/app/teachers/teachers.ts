@@ -1,8 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { Datatable } from '../components/datatable/datatable';
 import { User } from '../models/User';
 import { Datamodel } from '../models/Datamodel';
-import Tableheader from '../models/Tableheader';
 
 @Component({
   selector: 'app-teachers',

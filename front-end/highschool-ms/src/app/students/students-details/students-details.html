@@ -1,0 +1,289 @@
+<div class="student-details-container">
+  <!-- Fixed Header -->
+  <div class="details-header">
+    <button class="back-btn" routerLink="/students">
+      <span class="btn-icon">←</span> Back to Students
+    </button>
+    <div class="header-actions">
+      <div class="term-selector">
+        <span class="term-label">Viewing:</span>
+        <select class="term-select" [(ngModel)]="selectedTerm" (ngModelChange)="onTermChange()">
+          <option value="term_one">Term 1</option>
+          <option value="term_two" selected>Term 2</option>
+          <option value="term_three">Term 3</option>
+          <option value="term_four">Term 4</option>
+        </select>
+      </div>
+      <button class="btn btn-secondary">
+        <span class="btn-icon">📊</span> Report Card
+      </button>
+      <button class="btn btn-primary">
+        <span class="btn-icon">✏️</span> Edit Student
+      </button>
+    </div>
+  </div>
+
+  <!-- Scrollable Content Area -->
+  <div class="scrollable-content">
+    <div class="details-content-wrapper">
+      <!-- Student Profile Card -->
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="avatar-large student">
+            {{student?.name?.charAt(0)}}{{student?.surname?.charAt(0)}}
+          </div>
+          <div class="profile-info">
+            <h1 class="student-name">{{student?.name}} {{student?.surname}}</h1>
+            <div class="student-meta">
+              <span class="student-id">ID: {{student?.id}}</span>
+              <span class="grade-badge">
+                <span class="badge-icon">🎓</span>
+                Grade {{student?.grade}} - {{student?.class}}
+              </span>
+              <span class="average-score">
+                <span class="score-icon">⭐</span>
+                Average: {{student?.average}}%
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Details Sections -->
+        <div class="details-sections">
+          <!-- Personal Information -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">👤</span>
+              Personal Information
+            </h2>
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">Full Name</span>
+                <span class="info-value">{{student?.name}} {{student?.surname}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Date of Birth</span>
+                <span class="info-value">{{formatDate(student?.date_of_birth)}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Age</span>
+                <span class="info-value">{{calculateAge(student?.date_of_birth)}} years</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Current Grade</span>
+                <span class="info-value">Grade {{student?.grade}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Class</span>
+                <span class="info-value">{{student?.class}}</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Academic Year</span>
+                <span class="info-value">{{getAcademicYear()}}</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Contact Information -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">📱</span>
+              Contact Information
+            </h2>
+            <div class="contact-cards">
+              <a [href]="'mailto:' + student?.email" class="contact-card email">
+                <span class="contact-icon">✉️</span>
+                <div class="contact-content">
+                  <span class="contact-label">Email Address</span>
+                  <span class="contact-value">{{student?.email}}</span>
+                </div>
+              </a>
+              <a [href]="'tel:' + student?.phone" class="contact-card phone">
+                <span class="contact-icon">📞</span>
+                <div class="contact-content">
+                  <span class="contact-label">Phone Number</span>
+                  <span class="contact-value">{{student?.phone}}</span>
+                </div>
+              </a>
+              <div class="contact-card address">
+                <span class="contact-icon">📍</span>
+                <div class="contact-content">
+                  <span class="contact-label">Physical Address</span>
+                  <span class="contact-value">{{student?.address}}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Academic Performance -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">📊</span>
+              Academic Performance
+              <span class="section-subtitle">{{getTermDisplayName(selectedTerm)}}</span>
+            </h2>
+            
+            <!-- Overall Performance Card -->
+            <div class="performance-overview">
+              <div class="overview-card">
+                <div class="overview-header">
+                  <span class="overview-title">Overall Average</span>
+                  <span class="overview-term">{{getTermDisplayName(selectedTerm)}}</span>
+                </div>
+                <div class="overview-content">
+                  <div class="average-circle" [style.--percentage]="getTermAverage() + '%'">
+                    <span class="average-value">{{getTermAverage()}}%</span>
+                  </div>
+                  <div class="overview-stats">
+                    <div class="stat-item">
+                      <span class="stat-label">Position in Class</span>
+                      <span class="stat-value">5th</span>
+                    </div>
+                    <div class="stat-item">
+                      <span class="stat-label">Total Subjects</span>
+                      <span class="stat-value">{{student?.subjects?.length || 0}}</span>
+                    </div>
+                    <div class="stat-item">
+                      <span class="stat-label">Performance</span>
+                      <span class="stat-value performance-excellent">Excellent</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subjects Performance Grid -->
+            <div class="subjects-performance">
+              <h3 class="subsection-title">Subject Performance</h3>
+              <div class="subjects-grid">
+                <div class="subject-card" *ngFor="let subject of getSubjectsArray()">
+                  <div class="subject-header">
+                    <span class="subject-icon">📘</span>
+                    <h4 class="subject-name">{{subject.name}}</h4>
+                    <span class="subject-score" [class]="getScoreClass(subject.score)">
+                      {{subject.score}}%
+                    </span>
+                  </div>
+                  
+                  <!-- Progress Bar -->
+                  <div class="progress-container">
+                    <div class="progress-bar" [style.width]="subject.score + '%'"></div>
+                    <div class="progress-labels">
+                      <span>0</span>
+                      <span>50</span>
+                      <span>100</span>
+                    </div>
+                  </div>
+                  
+                  <!-- Term Comparison -->
+                  <div class="term-comparison">
+                    <div class="term-item" *ngFor="let term of getTerms()">
+                      <span class="term-label">{{term | titlecase}}</span>
+                      <span class="term-value">{{getSubjectTermScore(subject.name, term) || 0}}%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Term Progress -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">📈</span>
+              Term Progress
+            </h2>
+            <div class="term-progress">
+              <div class="progress-timeline">
+                <div class="timeline-item" *ngFor="let term of getTerms(); let i = index" 
+                     [class.active]="term === selectedTerm"
+                     [class.completed]="isTermCompleted(term)">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <span class="timeline-term">{{term | titlecase}}</span>
+                    <span class="timeline-average">{{getTermAverageByTerm(term)}}%</span>
+                    <span class="timeline-status" [class]="getTermStatus(term)">
+                      {{getTermStatus(term) | titlecase}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Attendance & Behavior -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">📅</span>
+              Attendance & Behavior
+            </h2>
+            <div class="stats-grid">
+              <div class="stat-card attendance">
+                <span class="stat-icon">✅</span>
+                <div class="stat-content">
+                  <span class="stat-value">96%</span>
+                  <span class="stat-label">Attendance Rate</span>
+                  <span class="stat-subtext">45/47 days present</span>
+                </div>
+              </div>
+              <div class="stat-card behavior">
+                <span class="stat-icon">😊</span>
+                <div class="stat-content">
+                  <span class="stat-value">Excellent</span>
+                  <span class="stat-label">Behavior</span>
+                  <span class="stat-subtext">No disciplinary issues</span>
+                </div>
+              </div>
+              <div class="stat-card participation">
+                <span class="stat-icon">💬</span>
+                <div class="stat-content">
+                  <span class="stat-value">High</span>
+                  <span class="stat-label">Class Participation</span>
+                  <span class="stat-subtext">Active in discussions</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Additional Information -->
+          <section class="details-section">
+            <h2 class="section-title">
+              <span class="section-icon">ℹ️</span>
+              Additional Information
+            </h2>
+            <div class="info-cards">
+              <div class="info-card">
+                <span class="info-icon">👨‍👩‍👧</span>
+                <div class="info-content">
+                  <span class="info-title">Guardian Contact</span>
+                  <span class="info-text">Mrs. Cele: 072 123 4567</span>
+                </div>
+              </div>
+              <div class="info-card">
+                <span class="info-icon">🏥</span>
+                <div class="info-content">
+                  <span class="info-title">Medical Information</span>
+                  <span class="info-text">No known allergies</span>
+                </div>
+              </div>
+              <div class="info-card">
+                <span class="info-icon">🚌</span>
+                <div class="info-content">
+                  <span class="info-title">Transport</span>
+                  <span class="info-text">School bus route B</span>
+                </div>
+              </div>
+              <div class="info-card">
+                <span class="info-icon">🍎</span>
+                <div class="info-content">
+                  <span class="info-title">Dietary Requirements</span>
+                  <span class="info-text">None specified</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

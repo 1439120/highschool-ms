@@ -13,8 +13,8 @@ export const routes: Routes = [
     },
     {
         path: 'students',
-        loadComponent: ()=>{
-            return import('./students/students').then((m) => m.Students)
+        loadChildren: ()=>{
+            return import('./students/students.routes').then((m) => m.STUDENTS_ROUTES)
         }
     },
     {

@@ -59,18 +59,19 @@ export class Datatable<T> implements OnInit {
     
     // Apply sorting
     users.sort((a, b) => {
-      switch (this.sortBy()) {
-        case 'name_desc':
-          return this.getFieldValue(b,'name').localeCompare(this.getFieldValue(a,'name'));
-        case 'role':
-          return this.getFieldValue(a,'role').localeCompare(this.getFieldValue(b,'role'));
-        case 'date':
-          return 0; // Add date field for proper sorting
-        default: // 'name'
-          return this.getFieldValue(a,'name').localeCompare(this.getFieldValue(b,'name'));
-      }
-    });
-    
+      const sortValue = this.sortBy();
+      const isDescending = sortValue.includes('_desc');
+      
+      const field = isDescending ? sortValue.replace('_desc', '') : sortValue;
+
+      const valA = this.getFieldValue(a, field).toString();
+      const valB = this.getFieldValue(b, field).toString();
+
+      return isDescending 
+        ? valB.localeCompare(valA) 
+        : valA.localeCompare(valB);
+        });
+        
     return users;
   });
   

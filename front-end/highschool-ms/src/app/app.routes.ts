@@ -28,5 +28,11 @@ export const routes: Routes = [
         loadComponent: ()=>{
             return import('./configurations/configurations').then((m) => m.Configurations)
         }
+    },
+    {
+        path: 'subjects',
+        loadComponent: ()=>{
+            return import('./subjects/subjects').then((m) => m.Subjects)
+        }
     }
 ];

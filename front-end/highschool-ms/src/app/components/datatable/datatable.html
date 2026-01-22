@@ -31,7 +31,9 @@
             </div>
           </th>
         }
-        <th class="actions-col">Actions</th>
+        @if(showActions()){
+          <th class="actions-col">Actions</th>
+        }
       </thead>
       
       <!-- Loading State -->
@@ -95,20 +97,21 @@
                   </td>
                 }
                }
-
-            <td class="actions-col">
-              <div class="action-buttons">
-                <button class="action-btn edit-btn" [routerLink]="[`/${title().toLocaleLowerCase()}/${getFieldValue(user,'id')}`]" title="Edit">
-                  <span class="btn-icon">✏️</span>
-                </button>
-                <button class="action-btn delete-btn" (click)="deleteUser(user)" title="Delete">
-                  <span class="btn-icon">🗑️</span>
-                </button>
-                <button class="action-btn view-btn" (click)="viewUser(user)" title="View Details">
-                  <span class="btn-icon">👁️</span>
-                </button>
-              </div>
-            </td>
+            @if(showActions()){
+              <td class="actions-col">
+                <div class="action-buttons">
+                  <button class="action-btn edit-btn" [routerLink]="[`/${title().toLocaleLowerCase()}/${getFieldValue(user,'id')}`]" title="Edit">
+                    <span class="btn-icon">✏️</span>
+                  </button>
+                  <button class="action-btn delete-btn" (click)="deleteUser(user)" title="Delete">
+                    <span class="btn-icon">🗑️</span>
+                  </button>
+                  <button class="action-btn view-btn" (click)="viewUser(user)" title="View Details">
+                    <span class="btn-icon">👁️</span>
+                  </button>
+                </div>
+              </td>
+            }
             </tr>
           }
           <!-- No Results State -->

@@ -6,7 +6,6 @@ import { Searchbar } from '../searchbar/searchbar';
 import Tableheader from '../../models/Tableheader';
 import { Breadcrumb } from '../breadcrumb/breadcrumb';
 import { RouterLink } from '@angular/router';
-import BreadcrumbModel from '../../models/BreadcrumbModel';
 
 @Component({
   selector: 'app-datatable',
@@ -23,6 +22,7 @@ export class Datatable<T> implements OnInit {
   searchByItems = input<string[]>([])
   filterBy = input<string>('');
   filterByItems = input<string[]>([])
+  showActions = input(true)
 
 
   // Filter and search properties

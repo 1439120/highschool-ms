@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
@@ -8,5 +8,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './sidebar.scss',
 })
 export class Sidebar {
-
+  menuOptions = signal([
+    {title: 'Dashboard', link:'/', icon:'🏠'},
+    {title: 'Subjects', link:'/subjects', icon:'📖'},
+    {title: 'Classes', link:'/classes', icon:'📚'},
+    {title: 'Students', link:'/students', icon:'🎒'},
+    {title: 'Teachers', link:'/teachers', icon:'👨‍🏫'},
+    {title: 'Configuration', link:'/settings', icon:'⚙️'},
+  ])
 }

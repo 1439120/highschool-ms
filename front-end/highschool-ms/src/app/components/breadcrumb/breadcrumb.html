@@ -16,9 +16,11 @@
         <span class="btn-icon">↻</span>
         Refresh
       </button>
-      <button class="btn btn-primary" (click)="addNew()">
-        <span class="btn-icon">+</span>
-        Add New
-      </button>
+      @if(addButton()){
+        <button class="btn btn-primary" (click)="addNew()">
+            <span class="btn-icon">+</span>
+            Add New
+        </button>
+      }
     </div>
   </div>

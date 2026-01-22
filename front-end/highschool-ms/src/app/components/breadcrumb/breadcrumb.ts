@@ -10,6 +10,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './breadcrumb.scss',
 })
 export class Breadcrumb {
+  addButton = input(false);
   titleBreadcrumbs = input<BreadcrumbModel[]>(
     [
       {name: 'Teachers', url:'teachers'},
@@ -22,4 +23,5 @@ export class Breadcrumb {
   addNew(){
     
   }
+
 }

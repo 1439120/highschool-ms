@@ -2,10 +2,12 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
+import BreadcrumbModel from '../../models/BreadcrumbModel';
 
 @Component({
   selector: 'app-students-details',
-  imports: [ FormsModule, CommonModule],
+  imports: [ FormsModule, CommonModule, Breadcrumb],
   templateUrl: './students-details.html',
   styleUrl: './students-details.scss',
   providers: [DatePipe]
@@ -14,6 +16,7 @@ export class StudentsDetails {
   selectedTerm: string = 'term_two';
   studentId: string = '';
   student: any = null;
+  breadCrumb!: BreadcrumbModel[];
 
   constructor(
     private route: ActivatedRoute,
@@ -25,6 +28,7 @@ export class StudentsDetails {
       this.studentId = params['id'];
       this.loadStudentData();
     });
+    this.breadCrumb  = [{name: 'Students', url:'/students'},{name: `Student ${this.studentId}`, url:''}]
   }
 
   loadStudentData() {

@@ -13,7 +13,7 @@ $shadow-color: rgba(0, 0, 0, 0.08);
 // Main Container
 .student-details-container {
   position: fixed;
-  top: 0;
+  top: 80px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -30,7 +30,7 @@ $shadow-color: rgba(0, 0, 0, 0.08);
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px;
-  background: white;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   border-bottom: 1px solid $border-color;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   z-index: 100;
@@ -129,10 +129,10 @@ $shadow-color: rgba(0, 0, 0, 0.08);
 
 // Content Wrapper
 .details-content-wrapper {
-  max-width: 1700px;
+//   max-width: 1700px;
   margin: 0 auto;
   margin-left: 250px;
-  width: 100%;
+  width: 85%;
 }
 
 // Profile Card

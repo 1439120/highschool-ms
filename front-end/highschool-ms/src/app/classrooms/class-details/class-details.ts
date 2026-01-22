@@ -2,6 +2,8 @@ import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
+import BreadcrumbModel from '../../models/BreadcrumbModel';
 
 /**
  * ** Over the ovierview boards
@@ -14,7 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-class-details',
-  imports: [FormsModule],
+  imports: [FormsModule, Breadcrumb],
   templateUrl: './class-details.html',
   styleUrl: './class-details.scss',
   providers: [DatePipe]
@@ -22,8 +24,8 @@ import { ActivatedRoute } from '@angular/router';
 export class ClassDetails {
  studentSearchQuery: string = '';
   filteredStudents: string[] = [];
-  
   classData: any = null;
+  breadCrumb!: BreadcrumbModel[];
   
   constructor(private route: ActivatedRoute) {}
 
@@ -32,6 +34,7 @@ export class ClassDetails {
       const classId = params['id'];
       this.loadClassData(classId);
     });
+    this.breadCrumb  = [{name: 'Classes', url:'/classes'},{name: `${this.classData?.name}`, url:''}]
   }
 
   loadClassData(classId: string) {

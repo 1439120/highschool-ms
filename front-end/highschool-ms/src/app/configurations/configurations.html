@@ -1,0 +1,647 @@
+<div class="configuration-container">
+  <!-- Fixed Header -->
+  <div class="config-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <span class="page-icon">⚙️</span>
+        School Configuration
+      </h1>
+      <p class="page-subtitle">Manage your school settings and preferences</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-secondary" (click)="resetToDefaults()">
+        <span class="btn-icon">↻</span>
+        Reset to Defaults
+      </button>
+      <button class="btn btn-primary" (click)="saveConfiguration()" [disabled]="!hasUnsavedChanges">
+        <span class="btn-icon">💾</span>
+        Save Changes
+        @if(hasUnsavedChanges){
+            <span class="unsaved-badge">*</span>
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Scrollable Content Area -->
+  <div class="scrollable-content">
+    <div class="config-content-wrapper">
+      <!-- Configuration Sections -->
+      <div class="config-sections">
+        <!-- School Information -->
+        <section class="config-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <span class="section-icon">🏫</span>
+              School Information
+            </h2>
+            <span class="section-status" [class]="getSectionStatus('schoolInfo')">
+              {{getSectionStatus('schoolInfo')}}
+            </span>
+          </div>
+          
+          <div class="section-content">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label required">
+                  School Name
+                  <span class="hint">This appears throughout the system</span>
+                </label>
+                <input 
+                  type="text" 
+                  class="form-control"
+                  [(ngModel)]="config.school.name"
+                  (ngModelChange)="markAsChanged()"
+                  placeholder="Enter school name"
+                >
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label required">
+                  Email Address
+                  <span class="hint">Primary contact email</span>
+                </label>
+                <input 
+                  type="email" 
+                  class="form-control" 
+                  [(ngModel)]="config.school.email"
+                  (ngModelChange)="markAsChanged()"
+                  placeholder="school@domain.com"
+                >
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label required">
+                  Phone Number
+                  <span class="hint">Main school phone line</span>
+                </label>
+                <input 
+                  type="tel" 
+                  class="form-control" 
+                  [(ngModel)]="config.school.phone"
+                  (ngModelChange)="markAsChanged()"
+                  placeholder="(123) 456-7890"
+                >
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">
+                  Website
+                  <span class="hint">School website URL</span>
+                </label>
+                <input 
+                  type="url" 
+                  class="form-control" 
+                  [(ngModel)]="config.school.website"
+                  (ngModelChange)="markAsChanged()"
+                  placeholder="https://www.school.edu"
+                >
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label required">
+                  Physical Address
+                  <span class="hint">Street address of the school</span>
+                </label>
+                <textarea 
+                  class="form-control" 
+                  rows="3"
+                  [(ngModel)]="config.school.address"
+                  (ngModelChange)="markAsChanged()"
+                  placeholder="123 School Street, City, State, ZIP Code"
+                ></textarea>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">
+                  School Motto
+                  <span class="hint">Short inspirational phrase</span>
+                </label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  [(ngModel)]="config.school.motto"
+                  (ngModelChange)="markAsChanged()"
+                  placeholder="e.g., Excellence in Education"
+                >
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">
+                  Established Year
+                  <span class="hint">Year the school was founded</span>
+                </label>
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  [(ngModel)]="config.school.establishedYear"
+                  (ngModelChange)="markAsChanged()"
+                  min="1900"
+                  max="2099"
+                  placeholder="1995"
+                >
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">
+                  School Logo
+                  <span class="hint">URL to school logo image</span>
+                </label>
+                <div class="file-upload-group">
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    [(ngModel)]="config.school.logoUrl"
+                    (ngModelChange)="markAsChanged()"
+                    placeholder="https://example.com/logo.png"
+                  >
+                  <button class="btn btn-outline" (click)="openFilePicker()">
+                    <span class="btn-icon">📁</span>
+                    Browse
+                  </button>
+                </div>
+                @if(config.school.logoUrl){
+                    <div class="logo-preview">
+                        <img [src]="config.school.logoUrl" alt="School Logo" class="preview-image">
+                        <button class="remove-btn" (click)="config.school.logoUrl = ''; markAsChanged()">×</button>
+                    </div>
+                }
+
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Academic Configuration -->
+        <section class="config-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <span class="section-icon">🎓</span>
+              Academic Configuration
+            </h2>
+            <span class="section-status" [class]="getSectionStatus('academic')">
+              {{getSectionStatus('academic')}}
+            </span>
+          </div>
+          
+          <div class="section-content">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label required">
+                  Grades Offered
+                  <span class="hint">Range of grades at the school</span>
+                </label>
+                <div class="range-selector">
+                  <select class="form-control" [(ngModel)]="config.academic.minGrade" (ngModelChange)="markAsChanged()">
+                    <option value="" disabled>Select minimum grade</option>
+                     @for(grade of gradeOptions; track $index){
+                        <option [value]="grade">{{grade}}</option>
+                     }
+                  </select>
+                  <span class="range-separator">to</span>
+                  <select class="form-control" [(ngModel)]="config.academic.maxGrade" (ngModelChange)="markAsChanged()">
+                    <option value="" disabled>Select maximum grade</option>
+                    @for(grade of gradeOptions; track $index){
+                        <option [value]="grade">{{grade}}</option>
+                    }
+                  </select>
+                </div>
+                <div class="range-display">
+                  Currently: {{config.academic.minGrade || '?'}} - {{config.academic.maxGrade || '?'}}
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label required">
+                  Academic Year
+                  <span class="hint">Current academic year</span>
+                </label>
+                <div class="year-selector">
+                  <select class="form-control" [(ngModel)]="config.academic.currentYear" (ngModelChange)="markAsChanged()">
+                    @for(year of academicYearOptions; track $index){
+                        <option [value]="year">{{year}}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">
+                  Terms per Year
+                  <span class="hint">Number of terms in an academic year</span>
+                </label>
+                <div class="terms-selector">
+                  <div class="term-options">
+                    @for(term of termOptions; track $index){
+                        <label class="term-option">
+                        <input 
+                            type="radio" 
+                            name="terms" 
+                            [value]="term.value"
+                            [(ngModel)]="config.academic.termsPerYear"
+                            (ngModelChange)="markAsChanged()"
+                        >
+                        <span class="term-label">{{term.label}}</span>
+                        </label>
+                    }
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">
+                  Maximum Class Size
+                  <span class="hint">Maximum students per class</span>
+                </label>
+                <div class="slider-container">
+                  <input 
+                    type="range" 
+                    class="form-slider" 
+                    min="20" 
+                    max="60" 
+                    step="5"
+                    [(ngModel)]="config.academic.maxClassSize"
+                    (ngModelChange)="markAsChanged()"
+                  >
+                  <div class="slider-value">{{config.academic.maxClassSize}} students</div>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">
+                  School Hours
+                  <span class="hint">Daily schedule</span>
+                </label>
+                <div class="time-range">
+                  <input 
+                    type="time" 
+                    class="form-control time-input"
+                    [(ngModel)]="config.academic.startTime"
+                    (ngModelChange)="markAsChanged()"
+                  >
+                  <span class="time-separator">to</span>
+                  <input 
+                    type="time" 
+                    class="form-control time-input"
+                    [(ngModel)]="config.academic.endTime"
+                    (ngModelChange)="markAsChanged()"
+                  >
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">
+                  Default Subjects
+                  <span class="hint">Subjects offered across all grades</span>
+                </label>
+                <div class="chips-input">
+                  <div class="chips-container">
+                    <!--  -->
+                    @for(subject of config.academic.defaultSubjects; track $index; let i = $index){
+                        <span class="chip">
+                        {{subject}}
+                        <button class="chip-remove" (click)="removeSubject(i)">×</button>
+                        </span>
+                    }
+                  </div>
+                  <div class="chip-add">
+                    <input 
+                      type="text" 
+                      class="chip-input" 
+                      [(ngModel)]="newSubject"
+                      (keyup.enter)="addSubject()"
+                      placeholder="Add subject and press Enter"
+                    >
+                    <button class="btn btn-outline" (click)="addSubject()">
+                      <span class="btn-icon">+</span>
+                      Add
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- System Settings -->
+        <section class="config-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <span class="section-icon">💻</span>
+              System Settings
+            </h2>
+            <span class="section-status" [class]="getSectionStatus('system')">
+              {{getSectionStatus('system')}}
+            </span>
+          </div>
+          
+          <div class="section-content">
+            <div class="settings-grid">
+              <div class="setting-group">
+                <h3 class="setting-title">Date & Time</h3>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <label class="setting-label">Date Format</label>
+                    <span class="setting-description">How dates are displayed</span>
+                  </div>
+                  <select class="setting-control" [(ngModel)]="config.system.dateFormat" (ngModelChange)="markAsChanged()">
+                    <option value="DD/MM/YYYY">DD/MM/YYYY (e.g., 25/12/2023)</option>
+                    <option value="MM/DD/YYYY">MM/DD/YYYY (e.g., 12/25/2023)</option>
+                    <option value="YYYY-MM-DD">YYYY-MM-DD (e.g., 2023-12-25)</option>
+                    <option value="DD MMM YYYY">DD MMM YYYY (e.g., 25 Dec 2023)</option>
+                  </select>
+                </div>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <label class="setting-label">Time Zone</label>
+                    <span class="setting-description">School's time zone</span>
+                  </div>
+                  <select class="setting-control" [(ngModel)]="config.system.timeZone" (ngModelChange)="markAsChanged()">
+                    <option value="Africa/Johannesburg">South Africa Standard Time (SAST)</option>
+                    <option value="UTC">Coordinated Universal Time (UTC)</option>
+                    <option value="America/New_York">Eastern Time (ET)</option>
+                    <option value="Europe/London">London Time (GMT)</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="setting-group">
+                <h3 class="setting-title">Notifications</h3>
+                
+                <div class="setting-item toggle">
+                  <div class="setting-info">
+                    <label class="setting-label">Email Notifications</label>
+                    <span class="setting-description">Send email alerts to staff</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input 
+                      type="checkbox" 
+                      [(ngModel)]="config.system.emailNotifications"
+                      (ngModelChange)="markAsChanged()"
+                    >
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                
+                <div class="setting-item toggle">
+                  <div class="setting-info">
+                    <label class="setting-label">SMS Notifications</label>
+                    <span class="setting-description">Send SMS alerts to parents</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input 
+                      type="checkbox" 
+                      [(ngModel)]="config.system.smsNotifications"
+                      (ngModelChange)="markAsChanged()"
+                    >
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                
+                <div class="setting-item toggle">
+                  <div class="setting-info">
+                    <label class="setting-label">Push Notifications</label>
+                    <span class="setting-description">Send app notifications</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input 
+                      type="checkbox" 
+                      [(ngModel)]="config.system.pushNotifications"
+                      (ngModelChange)="markAsChanged()"
+                    >
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+              
+              <div class="setting-group">
+                <h3 class="setting-title">Security</h3>
+                
+                <div class="setting-item">
+                  <div class="setting-info">
+                    <label class="setting-label">Session Timeout</label>
+                    <span class="setting-description">Auto-logout after inactivity</span>
+                  </div>
+                  <select class="setting-control" [(ngModel)]="config.system.sessionTimeout" (ngModelChange)="markAsChanged()">
+                    <option value="15">15 minutes</option>
+                    <option value="30">30 minutes</option>
+                    <option value="60">1 hour</option>
+                    <option value="120">2 hours</option>
+                    <option value="0">Never (Not recommended)</option>
+                  </select>
+                </div>
+                
+                <div class="setting-item toggle">
+                  <div class="setting-info">
+                    <label class="setting-label">Two-Factor Authentication</label>
+                    <span class="setting-description">Require 2FA for admin accounts</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input 
+                      type="checkbox" 
+                      [(ngModel)]="config.system.twoFactorAuth"
+                      (ngModelChange)="markAsChanged()"
+                    >
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                
+                <div class="setting-item toggle">
+                  <div class="setting-info">
+                    <label class="setting-label">IP Restriction</label>
+                    <span class="setting-description">Restrict access to school network</span>
+                  </div>
+                  <label class="toggle-switch">
+                    <input 
+                      type="checkbox" 
+                      [(ngModel)]="config.system.ipRestriction"
+                      (ngModelChange)="markAsChanged()"
+                    >
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Additional Information -->
+        <section class="config-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <span class="section-icon">ℹ️</span>
+              Additional Information
+            </h2>
+            <span class="section-status" [class]="getSectionStatus('additional')">
+              {{getSectionStatus('additional')}}
+            </span>
+          </div>
+          
+          <div class="section-content">
+            <div class="info-grid">
+              <div class="info-group">
+                <h3 class="info-title">Contact Persons</h3>
+                <div class="contact-list">
+                  @for(contact of config.additional.contacts; track $index; let i = $index){
+                    <div class="contact-item">
+                        <div class="contact-header">
+                        <span class="contact-role">{{contact.role}}</span>
+                        <button class="btn btn-text" (click)="removeContact(i)">
+                            <span class="btn-icon">🗑️</span>
+                        </button>
+                        </div>
+                        <div class="contact-details">
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            [(ngModel)]="contact.name"
+                            (ngModelChange)="markAsChanged()"
+                            placeholder="Full Name"
+                        >
+                        <input 
+                            type="email" 
+                            class="form-control" 
+                            [(ngModel)]="contact.email"
+                            (ngModelChange)="markAsChanged()"
+                            placeholder="Email Address"
+                        >
+                        <input 
+                            type="tel" 
+                            class="form-control" 
+                            [(ngModel)]="contact.phone"
+                            (ngModelChange)="markAsChanged()"
+                            placeholder="Phone Number"
+                        >
+                        </div>
+                    </div>
+                  }
+                  <button class="btn btn-outline" (click)="addContact()">
+                    <span class="btn-icon">➕</span>
+                    Add Contact Person
+                  </button>
+                </div>
+              </div>
+              
+              <div class="info-group">
+                <h3 class="info-title">School Facilities</h3>
+                <div class="facilities-list">
+                  
+                  @for(facility of facilityOptions; track $index){
+                    <label class="facility-item">
+                        <input 
+                        type="checkbox" 
+                        [value]="facility.value"
+                        [(ngModel)]="config.additional.facilities[facility.value]"
+                        (ngModelChange)="markAsChanged()"
+                        >
+                        <span class="facility-label">
+                        <span class="facility-icon">{{facility.icon}}</span>
+                        {{facility.label}}
+                        </span>
+                    </label>
+                  }
+                </div>
+              </div>
+              
+              <div class="info-group">
+                <h3 class="info-title">School Description</h3>
+                <div class="description-editor">
+                  <textarea 
+                    class="form-control" 
+                    rows="6"
+                    [(ngModel)]="config.additional.description"
+                    (ngModelChange)="markAsChanged()"
+                    placeholder="Describe your school's mission, values, and unique features..."
+                  ></textarea>
+                  <div class="editor-hint">
+                    <span class="char-count">{{config.additional.description?.length || 0}}/1000 characters</span>
+                    This text appears on the school's public profile
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Danger Zone -->
+        <!-- <section class="config-section danger-zone">
+          <div class="section-header">
+            <h2 class="section-title">
+              <span class="section-icon">⚠️</span>
+              Danger Zone
+            </h2>
+          </div>
+          
+          <div class="section-content">
+            <div class="danger-actions">
+              <div class="danger-item">
+                <div class="danger-info">
+                  <h3 class="danger-title">Clear All Data</h3>
+                  <p class="danger-description">Permanently delete all school data including students, teachers, and records.</p>
+                </div>
+                <button class="btn btn-danger" (click)="confirmClearData()">
+                  <span class="btn-icon">🗑️</span>
+                  Clear All Data
+                </button>
+              </div>
+              
+              <div class="danger-item">
+                <div class="danger-info">
+                  <h3 class="danger-title">Export All Data</h3>
+                  <p class="danger-description">Download a backup of all school data in CSV format.</p>
+                </div>
+                <button class="btn btn-outline" (click)="exportData()">
+                  <span class="btn-icon">📥</span>
+                  Export Data
+                </button>
+              </div>
+              
+              <div class="danger-item">
+                <div class="danger-info">
+                  <h3 class="danger-title">Reset System</h3>
+                  <p class="danger-description">Reset all settings to factory defaults (does not delete user data).</p>
+                </div>
+                <button class="btn btn-outline" (click)="resetSystem()">
+                  <span class="btn-icon">🔄</span>
+                  Reset System
+                </button>
+              </div>
+            </div>
+          </div>
+        </section> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Save Confirmation Modal -->
+  @if(showSaveModal){
+    <div class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Save Changes</h3>
+        <button class="modal-close" (click)="showSaveModal = false">x</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to save these changes?</p>
+        
+        @if(getChangedFields().length){
+            <div class="change-summary">
+                <h4>Changes to be saved:</h4>
+                <ul>
+                    @for(field of getChangedFields(); track $index){
+                        <li>{{field}}</li>
+                    }
+                </ul>
+            </div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="showSaveModal = false">Cancel</button>
+        <button class="btn btn-primary" (click)="confirmSave()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+  }
+</div>

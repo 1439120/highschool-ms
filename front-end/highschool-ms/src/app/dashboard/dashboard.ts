@@ -13,6 +13,31 @@ export class Dashboard {
     this.createPassRateChart();
   }
 
+  getGradeDistribution(): any[] {
+    const totalStudents = 700;
+    const grades = [];
+    
+
+      const gradeRange = 5;
+      const studentsPerGrade = Math.floor(totalStudents / gradeRange);
+      
+      for (let i = 8; i <= 12; i++) {
+        const count = i === 12
+          ? totalStudents - (studentsPerGrade * (gradeRange - 1))
+          : studentsPerGrade;
+        const percentage = Math.round((count / totalStudents) * 100);
+        
+        grades.push({
+          name: `Grade ${i}`,
+          count: count,
+          percentage: percentage
+        });
+      }
+    
+    
+    return grades;
+  }
+
   createStudentsChart() {
     new Chart('studentsChart', {
       type: 'line',

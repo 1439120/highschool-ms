@@ -22,4 +22,11 @@ export const routes: Routes = [
         loadChildren: ()=>{
             return import('./classrooms/classrooms.routes').then((m) => m.CLASSROOMS_ROUTES)
         }
-    }];
+    },
+    {
+        path: 'settings',
+        loadComponent: ()=>{
+            return import('./configurations/configurations').then((m) => m.Configurations)
+        }
+    }
+];

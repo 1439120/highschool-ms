@@ -1,48 +1,138 @@
 <div class="main-content">
-    <div class="dashboard-header">
-      <h1 class="school-name">Mambane Secondary School</h1>
-      <div class="school-info">
-        <div>Principal: <span>Dr. Jane Smith</span></div>
-        <div>HOD: <span>Mr. John Doe (Mathematics)</span></div>
-      </div>
-    </div>
-
-    <div class="metrics-grid">
-      <div class="metric-card">
-        <div class="metric-title"><span class="metric-icon">📊</span> Number of Grades</div>
-        <div class="metric-value">12</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-title"><span class="metric-icon">👥</span> Number of Students</div>
-        <div class="metric-value">1,250</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-title"><span class="metric-icon">👧</span> Number of Girls</div>
-        <div class="metric-value">620</div>
-      </div>
-      <!-- <div class="metric-card">
-        <div class="metric-title"><span class="metric-icon">🎓</span> Matric Pass Rate</div>
-        <div class="metric-value">92%</div>
-      </div> -->
-      <div class="metric-card">
-        <div class="metric-title"><span class="metric-icon">📖</span> Number of Subjects Offered</div>
-        <div class="metric-value">18</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-title"><span class="metric-icon">🏫</span> Number of Physical Classes</div>
-        <div class="metric-value">35</div>
-      </div>
-    </div>
-
-    <div class="charts-grid">
-        <div class="chart-card">
-          <h3>Student Enrollment Trends</h3>
-          <canvas id="studentsChart"></canvas>
+  <div class="scrollable-content">
+    <div class="dashboard-content">
+        <div class="dashboard-header">
+          <h1 class="school-name">Mambane Secondary School</h1>
+          <div class="school-info">
+            <div>Principal: <span>Dr. Jane Smith</span></div>
+            <div>HOD: <span>Mr. John Doe (Mathematics)</span></div>
+          </div>
         </div>
-      
-        <div class="chart-card">
-          <h3>Matric Pass Rate Trends</h3>
-          <canvas id="passRateChart"></canvas>
+
+        <!-- Staff & Student Numbers -->
+        <section class="config-section">
+          <div class="section-header">
+            <h2 class="section-title">
+              <span class="section-icon">👥</span>
+              Staff & Student Statistics
+            </h2>
+            <!-- <span class="section-status" [class]="getSectionStatus('statistics')">
+              {{getSectionStatus('statistics')}}
+            </span> -->
+          </div>
+          
+          <div class="section-content">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-header">
+                  <span class="stat-icon">👨‍🏫</span>
+                  <h3 class="stat-title">Teaching Staff</h3>
+                </div>
+                <div class="stat-control">
+                  <div class="stat-input">200</div>
+                  <span class="stat-unit">teachers</span>
+                </div>
+                <div class="stat-hint">Full-time teaching staff</div>
+              </div>
+              
+              <div class="stat-card">
+                <div class="stat-header">
+                  <span class="stat-icon">👩‍💼</span>
+                  <h3 class="stat-title">Administrative Staff</h3>
+                </div>
+                <div class="stat-control">
+                  <div class="stat-input">40</div>
+                  <span class="stat-unit">staff</span>
+                </div>
+                <div class="stat-hint">Non-teaching staff</div>
+              </div>
+              
+              <div class="stat-card">
+                <div class="stat-header">
+                  <span class="stat-icon">🎒</span>
+                  <h3 class="stat-title">Total Students</h3>
+                </div>
+                <div class="stat-control">
+                  <div class="stat-input">1350</div>
+                  <span class="stat-unit">students</span>
+                </div>
+                <div class="stat-hint">Currently enrolled students</div>
+              </div>
+              
+              <div class="stat-card">
+                <div class="stat-header">
+                  <span class="stat-icon">🏫</span>
+                  <h3 class="stat-title">Total Classes</h3>
+                </div>
+                <div class="stat-control">
+                  <div class="stat-input">18</div>
+                  <span class="stat-unit">classes</span>
+                </div>
+                <div class="stat-hint">Active classes across all grades</div>
+              </div>
+            </div>
+          
+          </div>
+        </section>
+    <!-- 
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-title"><span class="metric-icon">📊</span> Number of Grades</div>
+            <div class="metric-value">12</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title"><span class="metric-icon">👥</span> Number of Students</div>
+            <div class="metric-value">1,250</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title"><span class="metric-icon">👧</span> Number of Girls</div>
+            <div class="metric-value">620</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title"><span class="metric-icon">🎓</span> Matric Pass Rate</div>
+            <div class="metric-value">92%</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title"><span class="metric-icon">📖</span> Number of Subjects Offered</div>
+            <div class="metric-value">18</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-title"><span class="metric-icon">🏫</span> Number of Physical Classes</div>
+            <div class="metric-value">35</div>
+          </div>
+        </div> -->
+
+        <div class="stats-breakdown">
+            <h3 class="breakdown-title">Student Distribution by Grade</h3>
+            <div class="breakdown-grid">
+              @for(grade of getGradeDistribution(); track $index){
+                  <div class="breakdown-item">
+                      <div class="breakdown-header">
+                          <span class="grade-name">{{grade.name}}</span>
+                          <span class="grade-count">{{grade.count}} students</span>
+                      </div>
+                      <div class="breakdown-bar">
+                          <div class="bar-fill" [style.width]="grade.percentage + '%'"></div>
+                      </div>
+                      <div class="breakdown-percentage">{{grade.percentage}}%</div>
+                  </div>
+              }
+            </div>
+          </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+              <h3>Student Enrollment Trends</h3>
+              <canvas id="studentsChart"></canvas>
+            </div>
+          
+            <div class="chart-card">
+              <h3>Matric Pass Rate Trends</h3>
+              <canvas id="passRateChart"></canvas>
+            </div>
         </div>
-      </div>
+    </div>
+    
+  </div>
+    
   </div>

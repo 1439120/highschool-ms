@@ -3,7 +3,7 @@
 <div class="teacher-details-container">
     
   <!-- Fixed Header -->
-  <div class="details-header">
+  <!-- <div class="details-header">
     <button class="back-btn" routerLink="/teachers">
       <span class="btn-icon">←</span> Back to Teachers
     </button>
@@ -15,7 +15,7 @@
         <span class="btn-icon">✏️</span> Edit Teacher
       </button>
     </div>
-  </div>
+  </div> -->
 
   <!-- Scrollable Content Area -->
   <div class="scrollable-content">
@@ -41,28 +41,108 @@
         <div class="details-sections">
           <!-- Personal Information -->
           <section class="details-section">
-            <h2 class="section-title">
-              <span class="section-icon">👤</span>
-              Personal Information
-            </h2>
+            <div class="section-header">
+              <h2 class="section-title">
+                <span class="section-icon">👤</span>
+                Personal Information
+              </h2>
+              @if(!onEditMode()){
+                <button class="btn-edit-section" (click)="toggleEditMode()">
+                  <span class="edit-icon">✏️</span>
+                  Edit
+                </button>
+              }
+            </div>
+            
             <div class="info-grid">
+              <!-- Name Fields -->
               <div class="info-item">
-                <span class="info-label">Full Name</span>
-                <span class="info-value">{{teacher?.name}} {{teacher?.surname}}</span>
+                @if(onEditMode()){
+                  <div class="form-group-grid">
+                    <div class="form-group">
+                      <label for="teacher_name" class="form-label">First Name</label>
+                      <input 
+                        class="form-input" 
+                        type="text" 
+                        id="teacher_name" 
+                        [(ngModel)]="editTeacher.name"
+                        placeholder="Enter first name"
+                      >
+                    </div>
+                    <div class="form-group">
+                      <label for="teacher_surname" class="form-label">Last Name</label>
+                      <input 
+                        class="form-input" 
+                        type="text" 
+                        id="teacher_surname" 
+                        [(ngModel)]="editTeacher.surname"
+                        placeholder="Enter last name"
+                      >
+                    </div>
+                  </div>
+                }
+                @else {
+                  <span class="info-label">Full Name</span>
+                  <span class="info-value">{{teacher?.name}} {{teacher?.surname}}</span>
+                }
               </div>
+              
+              <!-- Date of Birth -->
               <div class="info-item">
                 <span class="info-label">Date of Birth</span>
-                <span class="info-value">{{formatDate(teacher?.date_of_birth)}}</span>
+                @if(onEditMode()){
+                  <input 
+                    class="form-input" 
+                    type="date" 
+                    id="date_of_birth" 
+                    [(ngModel)]="editTeacher.date_of_birth"
+                    [value]="formatDateForInput(teacher?.date_of_birth)"
+                  >
+                }
+                @else {
+                  <span class="info-value">{{formatDate(teacher?.date_of_birth)}}</span>
+                }
               </div>
+              
+              <!-- Age (Read-only) -->
               <div class="info-item">
                 <span class="info-label">Age</span>
                 <span class="info-value">{{calculateAge(teacher?.date_of_birth)}} years</span>
               </div>
+              
+              <!-- Date Joined -->
+              <div class="info-item">
+                <span class="info-label">Date Joined</span>
+                @if(onEditMode()){
+                  <input 
+                    class="form-input" 
+                    type="date" 
+                    id="date_joined" 
+                    [(ngModel)]="editTeacher.date_joined"
+                    [value]="formatDateForInput(teacher?.date_joined)"
+                  >
+                }
+                @else {
+                  <span class="info-value">{{formatDate(teacher?.date_joined)}}</span>
+                }
+              </div>
+              
+              <!-- Edit Mode Actions -->
+              @if(onEditMode()){
+                <div class="form-actions">
+                  <button class="btn btn-secondary" (click)="cancelEdit()">
+                    Cancel
+                  </button>
+                  <button class="btn btn-primary" (click)="savePersonalInfo()">
+                    Save Changes
+                  </button>
+                </div>
+              }
             </div>
           </section>
 
           <!-- Contact Information -->
-          <section class="details-section">
+          <!-- <section class="details-section">
             <h2 class="section-title">
               <span class="section-icon">📱</span>
               Contact Information
@@ -90,10 +170,12 @@
                 </div>
               </div>
             </div>
-          </section>
+          </section> -->
+          <app-contact-information-section/>
+          
 
           <!-- Subjects & Expertise -->
-          <section class="details-section">
+          <!-- <section class="details-section">
             <h2 class="section-title">
               <span class="section-icon">📚</span>
               Subjects & Expertise
@@ -109,35 +191,132 @@
                   }
                 </div>
               </div>
-              <!-- <div class="subjects-list">
+              <div class="subjects-list">
                 <h3 class="subsection-title">Assigned Subjects</h3>
                 <div class="chips-container">
                   <span class="subject-chip assigned" *ngFor="let subject of teacher?.assigned_subjects">
                     {{subject}}
                   </span>
                 </div>
-              </div> -->
+              </div>
 
             </div>
-          </section>
+          </section> -->
 
           <!-- Assigned Classes -->
-          <section class="details-section">
+          <!-- <section class="details-section">
             <h2 class="section-title">
               <span class="section-icon">🏫</span>
               Assigned Classes
             </h2>
             <div class="classes-grid">
-              <!-- <div class="class-card" *ngFor="let classItem of teacher?.assigned_classes">
-                <span class="class-icon">👩‍🏫</span>
-                <span class="class-name">{{classItem}}</span>
-                <span class="class-stats">24 Students</span>
-              </div> -->
               @for(classItem of teacher?.assigned_classes; track $index){
                 <div class="class-card">
                     <span class="class-icon">👩‍🏫</span>
                     <span class="class-name">{{classItem}}</span>
-                    <span class="class-stats">24 Students</span>
+                  <div class="assigned-container">
+                      <h4 class="subsection-title">Subjects</h4>
+                        <div class="chips-container">
+                          @for(subject of teacher?.expect_subjects; track $index){
+                            <span class="subject-chip">
+                                {{subject}}
+                            </span>
+                          }
+                        </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </section> -->
+          <!-- Class Cards Section -->
+          <section class="details-section">
+            <div class="section-header">
+              <h2 class="section-title">
+                <span class="section-icon">🏫</span>
+                Assigned Classes
+              </h2>
+              <button class="btn btn-primary btn-add" (click)="addClass()">
+                <span class="btn-icon">+</span>
+                Add Class
+              </button>
+            </div>
+            
+            <div class="classes-container">
+              <!-- Add Class Card (First Card) -->
+              <div class="class-card add-card" (click)="addClass()">
+                <div class="add-icon-container">
+                  <span class="add-icon">+</span>
+                </div>
+                <span class="add-label">Add New Class</span>
+              </div>
+              
+              <!-- Existing Class Cards -->
+              @for(classItem of teacher?.assigned_classes; track $index; let parentIndex = $index) {
+                <div class="class-card">
+                  <div class="class-card-header">
+                    <span class="class-icon">👩‍🏫</span>
+                    <span class="class-name">{{classItem}}</span>
+                    <button class="class-action" (click)="removeClass($index)" title="Remove Class">
+                      <span class="action-icon">×</span>
+                    </button>
+                  </div>
+                  
+                  <div class="assigned-container">
+                    <div class="subject-header">
+                      <h4 class="subsection-title">Subjects</h4>
+                      <button class="btn-add-subject" (click)="addSubjectToClass($index)" title="Add Subject">
+                        <span class="add-icon">+</span>
+                      </button>
+                    </div>
+                    
+                    <div class="chips-container">
+                      @for(subject of teacher?.expect_subjects; track $index) {
+                        <span class="subject-chip">
+                          {{subject}}
+                          <button class="chip-remove" (click)="removeSubjectFromClass($index, parentIndex)" title="Remove Subject">
+                            ×
+                          </button>
+                        </span>
+                      }
+                    </div>
+                    
+                    <!-- Add Subject Input (Hidden by default) -->
+                     @if(showAddSubjectInput === $index){
+                        <div class="add-subject-input">
+                          <input 
+                            type="text" 
+                            class="subject-input" 
+                            [(ngModel)]="newSubject"
+                            placeholder="Enter subject name..."
+                            (keyup.enter)="confirmAddSubject($index)"
+                            #subjectInput
+                            (blur)="hideAddSubjectInput()"
+                          >
+                          <button class="btn-confirm" (click)="confirmAddSubject($index)">✓</button>
+                          <button class="btn-cancel" (click)="hideAddSubjectInput()">×</button>
+                        </div>
+                     }
+                    
+                  </div>
+                  
+                  <!-- Class Stats -->
+                  <div class="class-stats">
+                    <div class="stat-item">
+                      <span class="stat-icon">👥</span>
+                      <span class="stat-value">24</span>
+                      <span class="stat-label">Students</span>
+                    </div>
+                    <div class="stat-item">
+                      <span class="stat-icon">📚</span>
+                      <span class="stat-value">{{teacher?.expect_subjects?.length || 0}}</span>
+                      <span class="stat-label">Subjects</span>
+                    </div>
+                    <div class="stat-item">
+                      <span class="stat-icon">⏰</span>
+                      <span class="stat-value">5</span>
+                      <span class="stat-label">Periods/Day</span>
+                    </div>
+                  </div>
                 </div>
               }
             </div>

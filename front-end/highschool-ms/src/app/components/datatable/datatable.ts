@@ -23,6 +23,7 @@ export class Datatable<T> implements OnInit {
   filterBy = input<string>('');
   filterByItems = input<string[]>([])
   showActions = input(true)
+  addButton = input(false)
 
 
   // Filter and search properties

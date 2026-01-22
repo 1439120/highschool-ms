@@ -1,0 +1,588 @@
+$primary-color: #4361ee;
+$secondary-color: #3a0ca3;
+$success-color: #2ecc71;
+$danger-color: #e74c3c;
+$light-color: #f8f9fa;
+$dark-color: #2d3748;
+$border-color: #e2e8f0;
+
+// Contact Cards (View Mode)
+section{
+    margin-bottom: 40px;
+}
+.contact-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.contact-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px;
+  background: white;
+  border: 1px solid $border-color;
+  border-radius: 16px;
+  text-decoration: none;
+  color: $dark-color;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    
+    .contact-action {
+      transform: translateX(4px);
+      opacity: 1;
+    }
+    
+    .contact-copy {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  &.email {
+    border-left: 4px solid #4361ee;
+    
+    &:hover {
+      border-color: #4361ee;
+      background: rgba(#4361ee, 0.03);
+    }
+    
+    .contact-icon {
+      color: #4361ee;
+    }
+  }
+  
+  &.phone {
+    border-left: 4px solid #10b981;
+    
+    &:hover {
+      border-color: #10b981;
+      background: rgba(#10b981, 0.03);
+    }
+    
+    .contact-icon {
+      color: #10b981;
+    }
+  }
+  
+  &.address {
+    border-left: 4px solid #f59e0b;
+    
+    &:hover {
+      border-color: #f59e0b;
+      background: rgba(#f59e0b, 0.03);
+    }
+    
+    .contact-icon {
+      color: #f59e0b;
+    }
+  }
+  
+  &.additional {
+    border-left: 4px solid #8b5cf6;
+    
+    &:hover {
+      border-color: #8b5cf6;
+      background: rgba(#8b5cf6, 0.03);
+    }
+    
+    .contact-icon {
+      color: #8b5cf6;
+    }
+  }
+  
+  .contact-icon {
+    font-size: 28px;
+    opacity: 0.9;
+    flex-shrink: 0;
+  }
+  
+  .contact-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    
+    .contact-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .contact-value {
+      font-size: 16px;
+      font-weight: 600;
+      color: $dark-color;
+      line-height: 1.5;
+    }
+    
+    // .contact-hint {
+    //   font-size: 11px;
+    //   color: #94a3b8;
+    //   opacity: 0;
+    //   transition: opacity 0.3s;
+    // }
+  }
+  
+  &:hover .contact-hint {
+    opacity: 1;
+  }
+  
+  .contact-action {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: $primary-color;
+    opacity: 0;
+    transition: all 0.3s;
+  }
+  
+  .contact-copy {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    background: white;
+    color: $dark-color;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s;
+    
+    &:hover {
+      background: $primary-color;
+      color: white;
+      border-color: $primary-color;
+    }
+    
+    .copy-icon {
+      font-size: 16px;
+    }
+  }
+}
+
+// Additional Contacts in View Mode
+.additional-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.additional-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: $light-color;
+  border-radius: 8px;
+  
+  .contact-type-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    
+    &.mobile {
+      background: rgba(#10b981, 0.1);
+      color: #10b981;
+    }
+    
+    &.home {
+      background: rgba(#3b82f6, 0.1);
+      color: #3b82f6;
+    }
+    
+    &.emergency {
+      background: rgba(#ef4444, 0.1);
+      color: #ef4444;
+    }
+    
+    &.other {
+      background: rgba(#8b5cf6, 0.1);
+      color: #8b5cf6;
+    }
+  }
+  
+  .contact-number {
+    font-size: 14px;
+    font-weight: 500;
+    color: $dark-color;
+    text-decoration: none;
+    
+    &:hover {
+      color: $primary-color;
+    }
+  }
+}
+
+// Edit Mode Form
+.contact-edit-form {
+  background: white;
+  border: 1px solid $border-color;
+  border-radius: 16px;
+  padding: 32px;
+  animation: slideDown 0.4s ease-out;
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+  
+  .form-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: $dark-color;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    
+    .form-icon {
+      font-size: 18px;
+      opacity: 0.8;
+    }
+  }
+}
+
+.form-input {
+  padding: 14px 16px;
+  border: 1px solid $border-color;
+  border-radius: 10px;
+  font-size: 15px;
+  color: $dark-color;
+  background: white;
+  transition: all 0.3s;
+  width: 100%;
+  
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 4px rgba($primary-color, 0.1);
+  }
+  
+  &:hover:not(:focus) {
+    border-color: darken($border-color, 15%);
+  }
+  
+  &::placeholder {
+    color: #a0aec0;
+    opacity: 0.7;
+  }
+  
+  &.textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.5;
+    font-family: inherit;
+  }
+}
+
+// Additional Contacts in Edit Mode
+.additional-contacts {
+  .additional-contact {
+    background: $light-color;
+    border: 1px solid $border-color;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+    animation: fadeIn 0.3s ease-out;
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    &:last-child {
+      margin-bottom: 16px;
+    }
+  }
+  
+  .contact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .contact-type {
+    padding: 8px 12px;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    font-size: 14px;
+    color: $dark-color;
+    background: white;
+    cursor: pointer;
+    
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+  
+  .btn-remove-contact {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 6px;
+    background: rgba($danger-color, 0.1);
+    color: $danger-color;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    
+    &:hover {
+      background: $danger-color;
+      color: white;
+      transform: scale(1.1);
+    }
+    
+    .remove-icon {
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 1;
+    }
+  }
+  
+  .contact-input {
+    padding: 12px 14px;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    font-size: 14px;
+    color: $dark-color;
+    width: 100%;
+    
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+    
+    &::placeholder {
+      color: #a0aec0;
+    }
+  }
+  
+  .btn-add-contact {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: transparent;
+    border: 2px dashed $border-color;
+    border-radius: 10px;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s;
+    
+    &:hover {
+      border-color: $primary-color;
+      color: $primary-color;
+      background: rgba($primary-color, 0.02);
+      transform: translateY(-2px);
+    }
+    
+    .add-icon {
+      font-size: 18px;
+      font-weight: 300;
+    }
+  }
+}
+
+// Form Actions (same as before, but ensure it's included)
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 24px;
+  margin-top: 24px;
+  border-top: 1px solid $border-color;
+}
+
+// Buttons (same as before)
+.btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  
+  &-primary {
+    background: linear-gradient(135deg, $primary-color, $secondary-color);
+    color: white;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba($primary-color, 0.3);
+    }
+  }
+  
+  &-secondary {
+    background: white;
+    color: $dark-color;
+    border: 1px solid $border-color;
+    
+    &:hover {
+      background: #f8f9fa;
+      border-color: darken($border-color, 10%);
+    }
+  }
+}
+
+// Section Header (same as before)
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  
+  .btn-edit-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba($primary-color, 0.1);
+    border: 1px solid rgba($primary-color, 0.3);
+    border-radius: 8px;
+    color: $primary-color;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    
+    &:hover {
+      background: $primary-color;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($primary-color, 0.2);
+    }
+    
+    .edit-icon {
+      font-size: 16px;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .contact-cards {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .contact-card {
+    padding: 20px;
+    gap: 16px;
+    
+    .contact-content {
+      .contact-value {
+        font-size: 15px;
+      }
+    }
+  }
+  
+  .contact-edit-form {
+    padding: 20px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    
+    .btn {
+      width: 100%;
+    }
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .btn-edit-section {
+    align-self: stretch;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .contact-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .form-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// Field Validation
+.form-input.ng-invalid.ng-touched {
+  border-color: $danger-color;
+  background: rgba($danger-color, 0.02);
+  
+  &:focus {
+    box-shadow: 0 0 0 4px rgba($danger-color, 0.1);
+  }
+}
+
+.form-input.ng-valid.ng-touched {
+  border-color: $success-color;
+  
+  &:focus {
+    box-shadow: 0 0 0 4px rgba($success-color, 0.1);
+  }
+}

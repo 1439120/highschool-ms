@@ -24,14 +24,14 @@
       <div class="profile-card">
         <div class="profile-header">
           <div class="avatar-large">
-            {{teacher?.name?.charAt(0)}}{{teacher?.surname?.charAt(0)}}
+            {{teacher().name.charAt(0)}}{{teacher().surname.charAt(0)}}
           </div>
           <div class="profile-info">
-            <h1 class="teacher-name">{{teacher?.name}} {{teacher?.surname}}</h1>
+            <h1 class="teacher-name">{{teacher().name}} {{teacher().surname}}</h1>
             <div class="teacher-meta">
-              <span class="teacher-id">ID: {{teacher?.id}}</span>
-              <span class="role-badge" [class]="getRoleClass(teacher?.role)">
-                {{teacher?.role}}
+              <span class="teacher-id">ID: {{teacher().id}}</span>
+              <span class="role-badge" [class]="getRoleClass(teacher().role)">
+                {{teacher().role}}
               </span>
             </div>
           </div>
@@ -40,7 +40,7 @@
         <!-- Details Sections -->
         <div class="details-sections">
           <!-- Personal Information -->
-          <section class="details-section">
+          <!-- <section class="details-section">
             <div class="section-header">
               <h2 class="section-title">
                 <span class="section-icon">👤</span>
@@ -55,7 +55,6 @@
             </div>
             
             <div class="info-grid">
-              <!-- Name Fields -->
               <div class="info-item">
                 @if(onEditMode()){
                   <div class="form-group-grid">
@@ -87,7 +86,6 @@
                 }
               </div>
               
-              <!-- Date of Birth -->
               <div class="info-item">
                 <span class="info-label">Date of Birth</span>
                 @if(onEditMode()){
@@ -104,13 +102,11 @@
                 }
               </div>
               
-              <!-- Age (Read-only) -->
               <div class="info-item">
                 <span class="info-label">Age</span>
                 <span class="info-value">{{calculateAge(teacher?.date_of_birth)}} years</span>
               </div>
               
-              <!-- Date Joined -->
               <div class="info-item">
                 <span class="info-label">Date Joined</span>
                 @if(onEditMode()){
@@ -127,7 +123,6 @@
                 }
               </div>
               
-              <!-- Edit Mode Actions -->
               @if(onEditMode()){
                 <div class="form-actions">
                   <button class="btn btn-secondary" (click)="cancelEdit()">
@@ -139,7 +134,8 @@
                 </div>
               }
             </div>
-          </section>
+          </section> -->
+          <app-personal-information-section [personalInformation]="teacher()"/>
 
           <!-- Contact Information -->
           <!-- <section class="details-section">
@@ -235,10 +231,10 @@
                 <span class="section-icon">🏫</span>
                 Assigned Classes
               </h2>
-              <button class="btn btn-primary btn-add" (click)="addClass()">
+              <!-- <button class="btn btn-primary btn-add" (click)="addClass()">
                 <span class="btn-icon">+</span>
                 Add Class
-              </button>
+              </button> -->
             </div>
             
             <div class="classes-container">
@@ -251,7 +247,7 @@
               </div>
               
               <!-- Existing Class Cards -->
-              @for(classItem of teacher?.assigned_classes; track $index; let parentIndex = $index) {
+              @for(classItem of assigned_classes(); track $index; let parentIndex = $index) {
                 <div class="class-card">
                   <div class="class-card-header">
                     <span class="class-icon">👩‍🏫</span>
@@ -270,7 +266,7 @@
                     </div>
                     
                     <div class="chips-container">
-                      @for(subject of teacher?.expect_subjects; track $index) {
+                      @for(subject of assigned_subjects(); track $index) {
                         <span class="subject-chip">
                           {{subject}}
                           <button class="chip-remove" (click)="removeSubjectFromClass($index, parentIndex)" title="Remove Subject">
@@ -308,7 +304,7 @@
                     </div>
                     <div class="stat-item">
                       <span class="stat-icon">📚</span>
-                      <span class="stat-value">{{teacher?.expect_subjects?.length || 0}}</span>
+                      <span class="stat-value">{{assigned_subjects().length || 0}}</span>
                       <span class="stat-label">Subjects</span>
                     </div>
                     <div class="stat-item">

@@ -7,5 +7,6 @@ export interface User{
     role: string,
     address: string,
     date_of_birth: Date;
+    date_joined: Date;
     [key: string]: any;
 }

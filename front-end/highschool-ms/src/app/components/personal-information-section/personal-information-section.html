@@ -1,0 +1,100 @@
+<section class="details-section">
+    <div class="section-header">
+        <h2 class="section-title">
+        <span class="section-icon">👤</span>
+        Personal Information
+        </h2>
+        @if(!onEditMode()){
+        <button class="btn-edit-section" (click)="toggleEditMode()">
+            <span class="edit-icon">✏️</span>
+            Edit
+        </button>
+        }
+    </div>
+    
+    <div class="info-grid">
+        <!-- Name Fields -->
+        <div class="info-item">
+        @if(onEditMode()){
+            <div class="form-group-grid">
+            <div class="form-group">
+                <label for="teacher_name" class="form-label">First Name</label>
+                <input 
+                class="form-input" 
+                type="text" 
+                id="teacher_name" 
+                [(ngModel)]="editPersonalInformation().name"
+                placeholder="Enter first name"
+                >
+            </div>
+            <div class="form-group">
+                <label for="teacher_surname" class="form-label">Last Name</label>
+                <input 
+                class="form-input" 
+                type="text" 
+                id="teacher_surname" 
+                [(ngModel)]="editPersonalInformation().surname"
+                placeholder="Enter last name"
+                >
+            </div>
+            </div>
+        }
+        @else {
+            <span class="info-label">Full Name</span>
+            <span class="info-value">{{personalInformation()?.name}} {{personalInformation()?.surname}}</span>
+        }
+        </div>
+        
+        <!-- Date of Birth -->
+        <div class="info-item">
+        <span class="info-label">Date of Birth</span>
+        @if(onEditMode()){
+            <input 
+            class="form-input" 
+            type="date" 
+            id="date_of_birth" 
+            [(ngModel)]="editPersonalInformation().date_of_birth"
+            [value]="formatDateForInput(editPersonalInformation().date_of_birth)"
+            >
+        }
+        @else {
+            <span class="info-value">{{formatDate(personalInformation()?.date_of_birth)}}</span>
+        }
+        </div>
+        
+        <!-- Age (Read-only) -->
+        <div class="info-item">
+        <span class="info-label">Age</span>
+        <span class="info-value">{{calculateAge(personalInformation()?.date_of_birth)}} years</span>
+        </div>
+        
+        <!-- Date Joined -->
+        <div class="info-item">
+        <span class="info-label">Date Joined</span>
+        @if(onEditMode()){
+            <input 
+            class="form-input" 
+            type="date" 
+            id="date_joined" 
+            [(ngModel)]="editPersonalInformation().date_joined"
+            [value]="formatDateForInput(editPersonalInformation().date_joined)"
+            >
+        }
+        @else {
+            <span class="info-value">{{formatDate(personalInformation()?.date_joined)}}</span>
+        }
+        </div>
+        
+        <!-- Edit Mode Actions -->
+        @if(onEditMode()){
+        <div class="form-actions">
+            <button class="btn btn-secondary" (click)="cancelEdit()">
+            Cancel
+            </button>
+            <button class="btn btn-primary" (click)="savePersonalInfo()">
+            Save Changes
+            </button>
+        </div>
+        }
+    </div>
+    </section>

@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { Datamodel } from '../models/Datamodel';
 import { User } from '../models/User';
 import { Datatable } from '../components/datatable/datatable';
-import { students } from '../models/Student';
+// import { students } from '../models/Student';
+import { students } from '../models/User';
 
 @Component({
   selector: 'app-students',

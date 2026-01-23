@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { Datatable } from '../components/datatable/datatable';
 import { User } from '../models/User';
 import { Datamodel } from '../models/Datamodel';
-import { teachers } from '../models/Teacher';
-
+import { teachers } from '../models/User';
 @Component({
   selector: 'app-teachers',
   imports: [ Datatable ],

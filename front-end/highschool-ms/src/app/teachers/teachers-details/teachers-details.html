@@ -40,134 +40,10 @@
         <!-- Details Sections -->
         <div class="details-sections">
           <!-- Personal Information -->
-          <!-- <section class="details-section">
-            <div class="section-header">
-              <h2 class="section-title">
-                <span class="section-icon">👤</span>
-                Personal Information
-              </h2>
-              @if(!onEditMode()){
-                <button class="btn-edit-section" (click)="toggleEditMode()">
-                  <span class="edit-icon">✏️</span>
-                  Edit
-                </button>
-              }
-            </div>
-            
-            <div class="info-grid">
-              <div class="info-item">
-                @if(onEditMode()){
-                  <div class="form-group-grid">
-                    <div class="form-group">
-                      <label for="teacher_name" class="form-label">First Name</label>
-                      <input 
-                        class="form-input" 
-                        type="text" 
-                        id="teacher_name" 
-                        [(ngModel)]="editTeacher.name"
-                        placeholder="Enter first name"
-                      >
-                    </div>
-                    <div class="form-group">
-                      <label for="teacher_surname" class="form-label">Last Name</label>
-                      <input 
-                        class="form-input" 
-                        type="text" 
-                        id="teacher_surname" 
-                        [(ngModel)]="editTeacher.surname"
-                        placeholder="Enter last name"
-                      >
-                    </div>
-                  </div>
-                }
-                @else {
-                  <span class="info-label">Full Name</span>
-                  <span class="info-value">{{teacher?.name}} {{teacher?.surname}}</span>
-                }
-              </div>
-              
-              <div class="info-item">
-                <span class="info-label">Date of Birth</span>
-                @if(onEditMode()){
-                  <input 
-                    class="form-input" 
-                    type="date" 
-                    id="date_of_birth" 
-                    [(ngModel)]="editTeacher.date_of_birth"
-                    [value]="formatDateForInput(teacher?.date_of_birth)"
-                  >
-                }
-                @else {
-                  <span class="info-value">{{formatDate(teacher?.date_of_birth)}}</span>
-                }
-              </div>
-              
-              <div class="info-item">
-                <span class="info-label">Age</span>
-                <span class="info-value">{{calculateAge(teacher?.date_of_birth)}} years</span>
-              </div>
-              
-              <div class="info-item">
-                <span class="info-label">Date Joined</span>
-                @if(onEditMode()){
-                  <input 
-                    class="form-input" 
-                    type="date" 
-                    id="date_joined" 
-                    [(ngModel)]="editTeacher.date_joined"
-                    [value]="formatDateForInput(teacher?.date_joined)"
-                  >
-                }
-                @else {
-                  <span class="info-value">{{formatDate(teacher?.date_joined)}}</span>
-                }
-              </div>
-              
-              @if(onEditMode()){
-                <div class="form-actions">
-                  <button class="btn btn-secondary" (click)="cancelEdit()">
-                    Cancel
-                  </button>
-                  <button class="btn btn-primary" (click)="savePersonalInfo()">
-                    Save Changes
-                  </button>
-                </div>
-              }
-            </div>
-          </section> -->
           <app-personal-information-section [personalInformation]="teacher()"/>
 
           <!-- Contact Information -->
-          <!-- <section class="details-section">
-            <h2 class="section-title">
-              <span class="section-icon">📱</span>
-              Contact Information
-            </h2>
-            <div class="contact-cards">
-              <a [href]="'mailto:' + teacher?.email" class="contact-card email">
-                <span class="contact-icon">✉️</span>
-                <div class="contact-content">
-                  <span class="contact-label">Email Address</span>
-                  <span class="contact-value">{{teacher?.email}}</span>
-                </div>
-              </a>
-              <a [href]="'tel:' + teacher?.phone" class="contact-card phone">
-                <span class="contact-icon">📞</span>
-                <div class="contact-content">
-                  <span class="contact-label">Phone Number</span>
-                  <span class="contact-value">{{teacher?.phone}}</span>
-                </div>
-              </a>
-              <div class="contact-card address">
-                <span class="contact-icon">📍</span>
-                <div class="contact-content">
-                  <span class="contact-label">Physical Address</span>
-                  <span class="contact-value">{{teacher?.address}}</span>
-                </div>
-              </div>
-            </div>
-          </section> -->
-          <app-contact-information-section/>
+          <app-contact-information-section [contactInformation]="teacher()"/>
           
 
           <!-- Subjects & Expertise -->
@@ -199,31 +75,6 @@
             </div>
           </section> -->
 
-          <!-- Assigned Classes -->
-          <!-- <section class="details-section">
-            <h2 class="section-title">
-              <span class="section-icon">🏫</span>
-              Assigned Classes
-            </h2>
-            <div class="classes-grid">
-              @for(classItem of teacher?.assigned_classes; track $index){
-                <div class="class-card">
-                    <span class="class-icon">👩‍🏫</span>
-                    <span class="class-name">{{classItem}}</span>
-                  <div class="assigned-container">
-                      <h4 class="subsection-title">Subjects</h4>
-                        <div class="chips-container">
-                          @for(subject of teacher?.expect_subjects; track $index){
-                            <span class="subject-chip">
-                                {{subject}}
-                            </span>
-                          }
-                        </div>
-                  </div>
-                </div>
-              }
-            </div>
-          </section> -->
           <!-- Class Cards Section -->
           <section class="details-section">
             <div class="section-header">

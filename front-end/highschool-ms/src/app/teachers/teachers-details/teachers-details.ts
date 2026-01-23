@@ -5,7 +5,7 @@ import BreadcrumbModel from '../../models/BreadcrumbModel';
 import { FormsModule } from '@angular/forms';
 import { ContactInformationSection } from '../../components/contact-information-section/contact-information-section';
 import { PersonalInformationSection } from '../../components/personal-information-section/personal-information-section';
-import { Teacher, teachers, findTeacher } from '../../models/Teacher';
+import { findUser, User } from '../../models/User';
 
 @Component({
   selector: 'app-teachers-details',
@@ -18,7 +18,7 @@ export class TeachersDetails {
   private route = inject(ActivatedRoute);
   teacherId!: string;
   breadCrumb!: BreadcrumbModel[];
-  teacher = signal<Teacher>({
+  teacher = signal<User>({
     id: 0,
     name: '',
     surname: '',
@@ -27,7 +27,8 @@ export class TeachersDetails {
     role: '',
     address: '',
     date_of_birth: new Date(),
-    date_joined: new Date()
+    date_joined: new Date(),
+    type: 'teacher'
   })
   assigned_classes = signal<string[]>([])
   assigned_subjects = signal<string[]>([])
@@ -48,7 +49,7 @@ export class TeachersDetails {
   }
 
   loadTeacherData(Id: string) {
-    let value = findTeacher(Id)
+    let value = findUser(Id)
     if (value) this.teacher.set(value)
     this.assigned_classes.set(['Grade 12 A', 'Grade 12 B', 'Grade 10 A'])
     this.assigned_subjects.set(['maths', 'physics', 'life science'])

@@ -1,20 +1,50 @@
-import { TitleCasePipe } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { updateUser, User } from '../../models/User';
+
 
 @Component({
   selector: 'app-contact-information-section',
-  imports: [FormsModule, TitleCasePipe],
+  imports: [FormsModule],
   templateUrl: './contact-information-section.html',
   styleUrl: './contact-information-section.scss',
-  providers: [TitleCasePipe]
+  providers: []
 })
 export class ContactInformationSection {
   onEditMode = signal(false)
-  contactInformation: any;
+  contactInformation = input<User>();
+  editContactInformation = signal<User>({
+    id: 0,
+    name: '',
+    surname: '',
+    phone: '',
+    email: '',
+    role: '',
+    address: '',
+    date_of_birth: new Date(),
+    date_joined: undefined,
+    type: ''
+  });
+
+
   toggleEditMode(){
     this.onEditMode.set(!this.onEditMode())
+    let user = this.contactInformation()
+    this.editContactInformation.set({
+      id: user?.id || 0,
+      name: user?.name || '',
+      surname: user?.surname || '',
+      phone: user?.phone || '',
+      email: user?.email || '',
+      role: user?.role || '',
+      address: user?.address || '',
+      date_of_birth: user?.date_of_birth || new Date(),
+      date_joined: user?.date_joined || new Date(),
+      type: ''
+    })
+
   }
+  
   removeAdditionalContact(index: number){
 
   }
@@ -24,5 +54,17 @@ export class ContactInformationSection {
   cancelEdit(){
     this.toggleEditMode()
   }
-  saveContactInfo(){}
+  saveContactInfo(){
+    console.log('saving the contact information')
+    updateUser(this.editContactInformation())
+
+    // In real app, save to backend here
+    console.log('Saving contact info:', this.editContactInformation);
+    
+    // Exit edit mode
+    this.onEditMode.set(false);    
+    // Show success message
+    alert('Contact information updated successfully!');
+
+  }
 }

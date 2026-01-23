@@ -25,7 +25,7 @@
                     class="form-input" 
                     type="email" 
                     id="teacher_email" 
-                    [(ngModel)]="contactInformation.email"
+                    [(ngModel)]="editContactInformation().email"
                     placeholder="teacher@school.edu"
                 >
             </div>
@@ -39,7 +39,7 @@
                     class="form-input" 
                     type="tel" 
                     id="teacher_phone" 
-                    [(ngModel)]="contactInformation.phone"
+                    [(ngModel)]="editContactInformation().phone"
                     placeholder="(123) 456-7890"
                 >
             </div>
@@ -53,7 +53,7 @@
                 class="form-input textarea" 
                 id="teacher_address" 
                 rows="3"
-                [(ngModel)]="contactInformation.address"
+                [(ngModel)]="editContactInformation().address"
                 placeholder="123 School Street, City, State, ZIP Code"
                 ></textarea>
             </div>
@@ -109,58 +109,30 @@
     @else {
         <!-- View Mode -->
         <div class="contact-cards">
-        <!-- <a [href]="'mailto:' + contactInformation?.email" class="contact-card email">
-            <span class="contact-icon">✉️</span>
-            <div class="contact-content">
-            <span class="contact-label">Email Address</span>
-            <span class="contact-value">{{contactInformation?.email}}</span>
-            <span class="contact-hint">Click to send email</span>
-            </div>
-            <span class="contact-action">→</span>
-        </a>
-        
-        <a [href]="'tel:' + contactInformation?.phone" class="contact-card phone">
-            <span class="contact-icon">📞</span>
-            <div class="contact-content">
-            <span class="contact-label">Phone Number</span>
-            <span class="contact-value">{{contactInformation?.phone}}</span>
-            <span class="contact-hint">Click to call</span>
-            </div>
-            <span class="contact-action">→</span>
-        </a>
-        
-        <div class="contact-card address">
-            <span class="contact-icon">📍</span>
-            <div class="contact-content">
-            <span class="contact-label">Physical Address</span>
-            <span class="contact-value">{{contactInformation?.address}}</span>
-            <span class="contact-hint">Copy to clipboard</span>
-            </div>
-        </div> -->
-        <a [href]="'mailto:' + contactInformation?.email" class="contact-card email">
+        <a [href]="'mailto:' + contactInformation()?.email" class="contact-card email">
             <span class="contact-icon">✉️</span>
             <div class="contact-content">
                 <span class="contact-label">Email Address</span>
-                <span class="contact-value">{{contactInformation?.email}}</span>
+                <span class="contact-value">{{contactInformation()?.email}}</span>
             </div>
         </a>
-        <a [href]="'tel:' + contactInformation?.phone" class="contact-card phone">
+        <a [href]="'tel:' + contactInformation()?.phone" class="contact-card phone">
             <span class="contact-icon">📞</span>
             <div class="contact-content">
                 <span class="contact-label">Phone Number</span>
-                <span class="contact-value">{{contactInformation?.phone}}</span>
+                <span class="contact-value">{{contactInformation()?.phone}}</span>
             </div>
         </a>
         <div class="contact-card address">
             <span class="contact-icon">📍</span>
             <div class="contact-content">
                 <span class="contact-label">Physical Address</span>
-                <span class="contact-value">{{contactInformation?.address}}</span>
+                <span class="contact-value">{{contactInformation()?.address}}</span>
             </div>
         </div>
         
         <!-- Additional Contacts -->
-        @if(contactInformation?.additionalContacts?.length) {
+        <!-- @if(contactInformation?.additionalContacts?.length) {
             <div class="contact-card additional">
             <span class="contact-icon">📱</span>
             <div class="contact-content">
@@ -179,37 +151,7 @@
                 </div>
             </div>
             </div>
-        }
+        } -->
         </div>
     }
-    </section>
-
-<!-- <section class="details-section">
-            <h2 class="section-title">
-              <span class="section-icon">📱</span>
-              Contact Information
-            </h2>
-            <div class="contact-cards">
-              <a [href]="'mailto:' + teacher?.email" class="contact-card email">
-                <span class="contact-icon">✉️</span>
-                <div class="contact-content">
-                  <span class="contact-label">Email Address</span>
-                  <span class="contact-value">{{teacher?.email}}</span>
-                </div>
-              </a>
-              <a [href]="'tel:' + teacher?.phone" class="contact-card phone">
-                <span class="contact-icon">📞</span>
-                <div class="contact-content">
-                  <span class="contact-label">Phone Number</span>
-                  <span class="contact-value">{{teacher?.phone}}</span>
-                </div>
-              </a>
-              <div class="contact-card address">
-                <span class="contact-icon">📍</span>
-                <div class="contact-content">
-                  <span class="contact-label">Physical Address</span>
-                  <span class="contact-value">{{teacher?.address}}</span>
-                </div>
-              </div>
-            </div>
-          </section> -->
+</section>

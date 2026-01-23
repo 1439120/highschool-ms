@@ -1,8 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { User } from '../../models/User';
-import { updateTeacher } from '../../models/Teacher';
+import { updateUser, User } from '../../models/User';
 
 @Component({
   selector: 'app-personal-information-section',
@@ -23,7 +22,8 @@ export class PersonalInformationSection {
     role: '',
     address: '',
     date_of_birth: new Date(),
-    date_joined:  new Date()
+    date_joined: undefined,
+    type: ''
   });
 
   constructor(private datePipe: DatePipe){}
@@ -32,14 +32,15 @@ export class PersonalInformationSection {
     let user = this.personalInformation()
     this.editPersonalInformation.set({
       id: user?.id || 0,
-      name:  user?.name ||'',
+      name: user?.name || '',
       surname: user?.surname || '',
       phone: user?.phone || '',
       email: user?.email || '',
       role: user?.role || '',
       address: user?.address || '',
       date_of_birth: user?.date_of_birth || new Date(),
-      date_joined: user?.date_joined ||  new Date()
+      date_joined: user?.date_joined || new Date(),
+      type: ''
     })
   }
   formatDateForInput(date: Date | string | undefined): string {
@@ -70,8 +71,8 @@ export class PersonalInformationSection {
 
   // Save contact information
   savePersonalInfo() {
-    console.log('aving the data')
-   updateTeacher(this.editPersonalInformation())
+    console.log('saving the personal information')
+    updateUser(this.editPersonalInformation())
 
     // In real app, save to backend here
     console.log('Saving contact info:', this.personalInformation);

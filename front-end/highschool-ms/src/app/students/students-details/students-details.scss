@@ -9,7 +9,7 @@ $light-color: #f8f9fa;
 $dark-color: #2d3748;
 $border-color: #e2e8f0;
 $shadow-color: rgba(0, 0, 0, 0.08);
-
+@use "sass:color";
 // Main Container
 .student-details-container {
   position: fixed;
@@ -51,7 +51,7 @@ $shadow-color: rgba(0, 0, 0, 0.08);
     
     &:hover {
       background: #f8f9fa;
-      border-color: darken($border-color, 10%);
+      border-color: color.adjust($border-color, $lightness: -10%); 
       transform: translateX(-2px);
     }
     
@@ -118,12 +118,12 @@ $shadow-color: rgba(0, 0, 0, 0.08);
   }
   
   &::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, $primary-color, lighten($primary-color, 20%));
+    background: linear-gradient(135deg, $primary-color, color.adjust($primary-color, $lightness: 20%)); 
     border-radius: 4px;
   }
   
   &::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, darken($primary-color, 10%), $primary-color);
+    background: linear-gradient(135deg, color.adjust($primary-color, $lightness: -10%), $primary-color); 
   }
 }
 
@@ -540,7 +540,7 @@ $shadow-color: rgba(0, 0, 0, 0.08);
   
   .progress-bar {
     height: 8px;
-    background: linear-gradient(90deg, $success-color, lighten($success-color, 20%));
+    background: linear-gradient(90deg, $success-color, color.adjust($success-color, $lightness: 20%)); 
     border-radius: 4px;
     transition: width 0.6s ease;
   }
@@ -800,7 +800,7 @@ $shadow-color: rgba(0, 0, 0, 0.08);
     
     &:hover {
       background: #f8f9fa;
-      border-color: darken($border-color, 10%);
+      border-color: color.adjust($border-color, $lightness: -10%); 
     }
   }
 }

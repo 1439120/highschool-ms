@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { Datatable } from '../components/datatable/datatable';
 import { User } from '../models/User';
 import { Datamodel } from '../models/Datamodel';
 import { teachers } from '../models/User';
+
+
 @Component({
   selector: 'app-teachers',
   imports: [ Datatable ],
@@ -10,12 +12,16 @@ import { teachers } from '../models/User';
   styleUrl: './teachers.scss',
 })
 
-export class Teachers extends Datamodel<User> {
+export class Teachers extends Datamodel<User>{
+
 
   constructor(){
     super();
+    this.loadData()
+  }
+
+  loadData() {
     this.title_.set("Teachers");
-    // let teachers: User[] = 
     this.records_.set(teachers);
     this.headers_.set( [
       {'col':'Name', 'groupBy': true},

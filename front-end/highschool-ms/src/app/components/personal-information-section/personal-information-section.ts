@@ -1,7 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { updateUser, User } from '../../models/User';
+import { addUser, findUser, updateUser, User } from '../../models/User';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-personal-information-section',
@@ -12,7 +13,22 @@ import { updateUser, User } from '../../models/User';
 })
 export class PersonalInformationSection {
   onEditMode = signal(false)
-  personalInformation = input<User>();
+  userId = input<string>()
+  userType = input<string>()
+  personalInformation = signal<User>({
+    id: 0,
+    name: '',
+    surname: '',
+    phone: '',
+    email: '',
+    role: '',
+    address: '',
+    date_of_birth: new Date(),
+    date_joined: undefined,
+    type: ''
+  });
+  private route = inject(ActivatedRoute)
+  private router = inject(Router)
   editPersonalInformation = signal<User>({
     id: 0,
     name: '',
@@ -27,6 +43,18 @@ export class PersonalInformationSection {
   });
 
   constructor(private datePipe: DatePipe){}
+  ngOnInit(): void {
+    console.log('When are you running??')
+    this.onEditMode.set(
+      this.route.snapshot.queryParamMap.get('mode') === 'edit'
+    )
+    let Id = this.userId()
+    if(Id){
+      let user = findUser(Id)
+      if(user)
+      this.personalInformation.set(user);
+    }
+  }
   toggleEditMode(){
     this.onEditMode.set(!this.onEditMode())
     let user = this.personalInformation()
@@ -81,6 +109,19 @@ export class PersonalInformationSection {
     this.onEditMode.set(false);    
     // Show success message
     alert('Contact information updated successfully!');
+  }
+
+  addNewUser(){
+    console.log("this is the route", this.router.url)
+    // this.router.url.split('/').map((value, index) => index + 1 === this.router.url.split('/').length ? this.editPersonalInformation().id : value)
+    let userType: string = this.userType() ?? ''
+    let addedUser = addUser(this.editPersonalInformation(), userType)
+    // const newId = this.editPersonalInformation().id;
+    console.log("the new added user has this id", addedUser)
+    // this.router.navigate([this.route.firstChild, this.editPersonalInformation().id])
+    this.personalInformation.set(addedUser);
+    this.onEditMode.set(false)
+    this.router.navigate(['../', addedUser.id], { relativeTo: this.route });
   }
 
 

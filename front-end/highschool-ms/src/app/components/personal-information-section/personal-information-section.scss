@@ -9,6 +9,7 @@ $light-color: #f8f9fa;
 $dark-color: #2d3748;
 $border-color: #e2e8f0;
 $shadow-color: rgba(0, 0, 0, 0.08);
+@use "sass:color";
 
 // Details Sections
 .details-sections {
@@ -199,7 +200,7 @@ $shadow-color: rgba(0, 0, 0, 0.08);
   }
   
   &:hover:not(:focus) {
-    border-color: darken($border-color, 10%);
+    border-color: color.adjust($border-color, $lightness: -10%);
   }
   
   &::placeholder {
@@ -271,7 +272,7 @@ $shadow-color: rgba(0, 0, 0, 0.08);
     
     &:hover {
       background: #f8f9fa;
-      border-color: darken($border-color, 10%);
+      border-color: color.adjust($border-color, $lightness: -10%);
     }
   }
 }

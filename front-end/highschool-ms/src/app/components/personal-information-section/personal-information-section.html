@@ -41,7 +41,7 @@
         }
         @else {
             <span class="info-label">Full Name</span>
-            <span class="info-value">{{personalInformation()?.name}} {{personalInformation()?.surname}}</span>
+            <span class="info-value">{{personalInformation().name}} {{personalInformation().surname}}</span>
         }
         </div>
         
@@ -58,14 +58,14 @@
             >
         }
         @else {
-            <span class="info-value">{{formatDate(personalInformation()?.date_of_birth)}}</span>
+            <span class="info-value">{{formatDate(personalInformation().date_of_birth)}}</span>
         }
         </div>
         
         <!-- Age (Read-only) -->
         <div class="info-item">
         <span class="info-label">Age</span>
-        <span class="info-value">{{calculateAge(personalInformation()?.date_of_birth)}} years</span>
+        <span class="info-value">{{calculateAge(personalInformation().date_of_birth)}} years</span>
         </div>
         
         <!-- Date Joined -->
@@ -81,7 +81,7 @@
             >
         }
         @else {
-            <span class="info-value">{{formatDate(personalInformation()?.date_joined)}}</span>
+            <span class="info-value">{{formatDate(personalInformation().date_joined)}}</span>
         }
         </div>
         
@@ -91,9 +91,17 @@
             <button class="btn btn-secondary" (click)="cancelEdit()">
             Cancel
             </button>
-            <button class="btn btn-primary" (click)="savePersonalInfo()">
-            Save Changes
-            </button>
+            @if(personalInformation().id){
+                <button class="btn btn-primary" (click)="savePersonalInfo()">
+                    Save Changes
+                </button>
+            }
+            @else {
+                <button class="btn btn-primary" (click)="addNewUser()">
+                    Add
+                </button>
+            }
+            
         </div>
         }
     </div>

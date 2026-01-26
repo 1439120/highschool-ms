@@ -9,6 +9,7 @@ $light-color: #f8f9fa;
 $dark-color: #343a40;
 $border-color: #e9ecef;
 $shadow-color: rgba(0, 0, 0, 0.08);
+@use "sass:color";
 
 // Container
 .datatable-container {
@@ -79,7 +80,7 @@ $shadow-color: rgba(0, 0, 0, 0.08);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         
         td {
-          border-color: lighten($primary-color, 30%);
+          border-color: color.adjust($primary-color, $lightness: 30%); 
         }
       }
 
@@ -126,7 +127,7 @@ $shadow-color: rgba(0, 0, 0, 0.08);
   width: 48px;
   height: 48px;
   border-radius: 12px;
-  background: linear-gradient(135deg, $primary-color, lighten($primary-color, 20%));
+  background: linear-gradient(135deg, $primary-color, color.adjust($primary-color, $lightness: 20%)); 
   color: white;
   display: flex;
   align-items: center;
@@ -369,12 +370,12 @@ tbody tr {
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, $primary-color, lighten($primary-color, 20%));
+  background: linear-gradient(135deg, $primary-color, color.adjust($primary-color, $lightness: 20%));
   border-radius: 4px;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, darken($primary-color, 10%), $primary-color);
+  background: linear-gradient(135deg, color.adjust($primary-color, $lightness: -10%), $primary-color);
 }
 
 
@@ -480,7 +481,7 @@ tbody tr {
 
 // Avatar Colors
 @mixin avatar-color($color) {
-  background: linear-gradient(135deg, $color, lighten($color, 20%));
+  background: linear-gradient(135deg, $color, color.adjust($color, $lightness: 20%)); 
 }
 
 .avatar[style*="background"] {

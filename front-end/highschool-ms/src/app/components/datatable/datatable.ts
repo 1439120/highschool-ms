@@ -41,7 +41,7 @@ export class Datatable<T> implements OnInit {
 
   breadcrumbTitle = computed(() => {
     return [
-      {name: this.title(), url: ''}
+      {name: this.title(), url: `/${this.title().toLocaleLowerCase()}`}
     ]
   }
 )

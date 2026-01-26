@@ -5,6 +5,7 @@ $danger-color: #e74c3c;
 $changed-color: #fbbf24;
 $success-color: #2ecc71;
 $light-color: #f8f9fa;
+@use "sass:color";
 
   /* Main Content */
   .main-content {
@@ -32,12 +33,12 @@ $light-color: #f8f9fa;
   }
   
   &::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, $primary-color, lighten($primary-color, 20%));
+    background: linear-gradient(135deg, $primary-color, color.adjust($primary-color, $lightness: 20%)); 
     border-radius: 4px;
   }
   
   &::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, darken($primary-color, 10%), $primary-color);
+    background: linear-gradient(135deg, color.adjust($primary-color, $lightness: -10%), $primary-color); 
   }
 }
 
@@ -222,7 +223,7 @@ $light-color: #f8f9fa;
     
     .bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, $primary-color, lighten($primary-color, 20%));
+      background: linear-gradient(90deg, $primary-color, color.adjust($primary-color, $lightness: 20%)); 
       border-radius: 4px;
       transition: width 1s ease;
     }
@@ -289,7 +290,7 @@ $light-color: #f8f9fa;
     
     &.changed {
       background: rgba($changed-color, 0.1);
-      color: darken($changed-color, 20%);
+      color: color.adjust($changed-color, $lightness: -20%); 
     }
     
     &.saved {

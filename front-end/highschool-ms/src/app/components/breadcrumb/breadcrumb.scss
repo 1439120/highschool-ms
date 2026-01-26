@@ -2,6 +2,7 @@ $border-color: #e9ecef;
 $dark-color: #343a40;
 $primary-color: #4361ee;
 $secondary-color: #3a0ca3;
+@use "sass:color";
 // Header
 .table-header {
   display: flex;
@@ -89,7 +90,7 @@ $secondary-color: #3a0ca3;
     
     &:hover {
       background: #f8f9fa;
-      border-color: darken($border-color, 10%);
+      border-color: color.adjust($border-color, $lightness: -10%); 
     }
   }
 }

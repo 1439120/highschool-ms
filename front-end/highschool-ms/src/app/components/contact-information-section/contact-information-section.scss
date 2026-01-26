@@ -5,6 +5,7 @@ $danger-color: #e74c3c;
 $light-color: #f8f9fa;
 $dark-color: #2d3748;
 $border-color: #e2e8f0;
+@use "sass:color";
 
 // Contact Cards (View Mode)
 section{
@@ -299,7 +300,7 @@ section{
   }
   
   &:hover:not(:focus) {
-    border-color: darken($border-color, 15%);
+    border-color: color.adjust($border-color, $lightness: -15%); 
   }
   
   &::placeholder {
@@ -473,7 +474,7 @@ section{
     
     &:hover {
       background: #f8f9fa;
-      border-color: darken($border-color, 10%);
+      border-color: color.adjust($border-color, $lightness: -10%); 
     }
   }
 }

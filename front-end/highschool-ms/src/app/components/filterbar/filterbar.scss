@@ -8,7 +8,7 @@ $light-color: #f8f9fa;
 $dark-color: #343a40;
 $border-color: #e9ecef;
 $shadow-color: rgba(0, 0, 0, 0.08);
-
+@use "sass:color";
 
 // Filter Controls
 .filter-controls {
@@ -50,7 +50,7 @@ $shadow-color: rgba(0, 0, 0, 0.08);
   }
 
   &:hover {
-    border-color: darken($border-color, 10%);
+    border-color: color.adjust($border-color, $lightness: -10%); 
   }
 }
 

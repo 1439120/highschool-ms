@@ -26,8 +26,8 @@ export class TeachersDetails {
     email: '',
     role: '',
     address: '',
-    date_of_birth: new Date(),
-    date_joined: new Date(),
+    date_of_birth: undefined,
+    date_joined: undefined,
     type: 'teacher'
   })
   assigned_classes = signal<string[]>([])

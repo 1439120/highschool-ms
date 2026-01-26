@@ -1,7 +1,7 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { updateUser, User } from '../../models/User';
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-contact-information-section',
@@ -13,6 +13,7 @@ import { updateUser, User } from '../../models/User';
 export class ContactInformationSection {
   onEditMode = signal(false)
   contactInformation = input<User>();
+  private route = inject(ActivatedRoute)
   editContactInformation = signal<User>({
     id: 0,
     name: '',
@@ -25,6 +26,12 @@ export class ContactInformationSection {
     date_joined: undefined,
     type: ''
   });
+
+  ngOnInit(): void {
+    this.onEditMode.set(
+      this.route.snapshot.queryParamMap.get('mode') === 'edit'
+    )
+  }
 
 
   toggleEditMode(){

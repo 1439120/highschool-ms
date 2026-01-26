@@ -9,6 +9,7 @@ $light-color: #f8f9fa;
 $dark-color: #2d3748;
 $border-color: #e2e8f0;
 $shadow-color: rgba(0, 0, 0, 0.08);
+@use "sass:color";
 
 // Main Container
 .teacher-details-container {
@@ -51,7 +52,7 @@ $shadow-color: rgba(0, 0, 0, 0.08);
     
     &:hover {
       background: #f8f9fa;
-      border-color: darken($border-color, 10%);
+      border-color: color.adjust($border-color, $lightness: -10%);
       transform: translateX(-2px);
     }
     
@@ -84,12 +85,13 @@ $shadow-color: rgba(0, 0, 0, 0.08);
   }
   
   &::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, $primary-color, lighten($primary-color, 20%));
+    background: linear-gradient(135deg, $primary-color, color.adjust($primary-color, $lightness: 20%));
     border-radius: 4px;
   }
   
   &::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, darken($primary-color, 10%), $primary-color);
+    // background: linear-gradient(135deg, darken($primary-color, 10%), $primary-color);
+    background: linear-gradient(135deg, color.adjust($primary-color, $lightness: -10%), $primary-color);
   }
 }
 
@@ -332,7 +334,8 @@ $shadow-color: rgba(0, 0, 0, 0.08);
     
     &:hover {
       background: #f8f9fa;
-      border-color: darken($border-color, 10%);
+      // border-color: darken($border-color, 10%);
+      border-color: color.adjust($border-color, $lightness: -10%);
     }
   }
 }
@@ -467,7 +470,8 @@ $remove-color: #ef4444;
     transition: all 0.3s;
     
     &:hover {
-      background: darken($add-color, 10%);
+      // background: darken($add-color, 10%);
+      background: color.adjust($add-color, $lightness: -10%);
       transform: translateY(-2px);
       box-shadow: 0 4px 15px rgba($add-color, 0.3);
     }
@@ -528,7 +532,7 @@ $remove-color: #ef4444;
       width: 80px;
       height: 80px;
       border-radius: 50%;
-      background: linear-gradient(135deg, $add-color, lighten($add-color, 15%));
+      background: linear-gradient(135deg, $add-color, color.adjust($add-color, $lightness: 15%)); 
       display: flex;
       align-items: center;
       justify-content: center;
@@ -629,7 +633,7 @@ $remove-color: #ef4444;
     height: 32px;
     border: none;
     border-radius: 50%;
-    background: linear-gradient(135deg, $add-color, lighten($add-color, 15%));
+    background: linear-gradient(135deg, $add-color, color.adjust($add-color, $lightness: 15%));
     color: white;
     cursor: pointer;
     display: flex;
@@ -759,7 +763,7 @@ $remove-color: #ef4444;
     transition: all 0.3s;
     
     &:hover {
-      background: darken($add-color, 10%);
+      background: color.adjust($add-color, $lightness: -10%);
       transform: scale(1.1);
     }
   }

@@ -6,7 +6,7 @@ export interface User{
     email: string,
     role: string,
     address: string,
-    date_of_birth: Date;
+    date_of_birth: Date | undefined;
     date_joined: Date | undefined;
     type: string;
     [key: string]: any;
@@ -84,8 +84,18 @@ export function findUser(Id: string){
 }
 
 function getUsersByType(type: string){
+    console.log("these are list", users)
     return users.filter((user)=> user.type === type)
 }
 
 export const teachers = getUsersByType('staff')
 export const students = getUsersByType('student')
+export function addUser(user: User, type: string){
+    // console.log("the last value is ", users[users.length - 1])
+    user.id = users[users.length - 1].id + 1;
+    user.type = type;
+    console.log("before adding the user", user)
+    users.push(user);
+    console.log("the new list of users are", users)
+    return user
+}

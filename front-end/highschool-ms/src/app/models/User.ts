@@ -63,39 +63,3 @@ export const users: User[] = [
             }
         
     ]
-
-export function updateUser(newData: User){
-    let user = findUser(newData.id.toString());
-    if(user){
-        user.name = newData.name;
-        user.surname = newData.surname;
-        user.phone = newData.phone;
-        user.email = newData.email;
-        user.role = newData.role;
-        user.address = newData.address;
-        user.date_of_birth = newData.date_of_birth;
-        user.date_joined = newData.date_joined;
-    }
-    
-}
-
-export function findUser(Id: string){
-    return users.find((user) => user.id.toString() === Id);
-}
-
-function getUsersByType(type: string){
-    console.log("these are list", users)
-    return users.filter((user)=> user.type === type)
-}
-
-export const teachers = getUsersByType('staff')
-export const students = getUsersByType('student')
-export function addUser(user: User, type: string){
-    // console.log("the last value is ", users[users.length - 1])
-    user.id = users[users.length - 1].id + 1;
-    user.type = type;
-    console.log("before adding the user", user)
-    users.push(user);
-    console.log("the new list of users are", users)
-    return user
-}

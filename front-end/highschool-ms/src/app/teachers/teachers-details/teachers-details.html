@@ -40,10 +40,10 @@
         <!-- Details Sections -->
         <div class="details-sections">
           <!-- Personal Information -->
-          <app-personal-information-section [userId]="teacherId" [userType]="'staff'"/>
+          <app-personal-information-section [userId]="teacherId()" [userType]="'staff'"/>
 
           <!-- Contact Information -->
-          <app-contact-information-section [contactInformation]="teacher()"/>
+          <app-contact-information-section/>
           
 
           <!-- Subjects & Expertise -->

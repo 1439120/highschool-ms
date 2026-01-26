@@ -1,9 +1,8 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, computed, effect, inject, OnDestroy } from '@angular/core';
 import { Datatable } from '../components/datatable/datatable';
 import { User } from '../models/User';
 import { Datamodel } from '../models/Datamodel';
-import { teachers } from '../models/User';
-
+import { UsersService } from '../services/users-service';
 
 @Component({
   selector: 'app-teachers',
@@ -14,15 +13,12 @@ import { teachers } from '../models/User';
 
 export class Teachers extends Datamodel<User>{
 
-
-  constructor(){
+  constructor(private service: UsersService){
     super();
-    this.loadData()
-  }
-
-  loadData() {
     this.title_.set("Teachers");
-    this.records_.set(teachers);
+    effect(()=>{
+      this.records_.set(this.service.teachers());
+    })
     this.headers_.set( [
       {'col':'Name', 'groupBy': true},
       {'col':'Phone', 'groupBy': false},
@@ -32,7 +28,7 @@ export class Teachers extends Datamodel<User>{
     this.searchByItems_.set(['name','surname','email','role','phone'])
     this.filterBy_.set('Role')
     const uniqueRoles: string[] = [
-      ...new Set(teachers.map(c => c.role))
+      ...new Set(this.service.teachers().map(c => c.role))
     ];
     this.filterByItems_.set(uniqueRoles);
   }

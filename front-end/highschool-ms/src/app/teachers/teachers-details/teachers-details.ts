@@ -1,11 +1,14 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
 import BreadcrumbModel from '../../models/BreadcrumbModel';
 import { FormsModule } from '@angular/forms';
 import { ContactInformationSection } from '../../components/contact-information-section/contact-information-section';
 import { PersonalInformationSection } from '../../components/personal-information-section/personal-information-section';
-import { findUser, User } from '../../models/User';
+import { User } from '../../models/User';
+
+import { UsersService } from '../../services/users-service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-teachers-details',
@@ -16,19 +19,20 @@ import { findUser, User } from '../../models/User';
 })
 export class TeachersDetails {
   private route = inject(ActivatedRoute);
-  teacherId!: string;
   breadCrumb!: BreadcrumbModel[];
-  teacher = signal<User>({
-    id: 0,
-    name: '',
-    surname: '',
-    phone: '',
-    email: '',
-    role: '',
-    address: '',
-    date_of_birth: undefined,
-    date_joined: undefined,
-    type: 'teacher'
+  teacher = computed(()=>{
+    return this.service.findUser(this.teacherId()) ?? {
+      id: 0,
+      name: '',
+      surname: '',
+      phone: '',
+      email: '',
+      role: '',
+      address: '',
+      date_of_birth: undefined,
+      date_joined: undefined,
+      type: 'teacher'
+    }
   })
   assigned_classes = signal<string[]>([])
   assigned_subjects = signal<string[]>([])
@@ -36,21 +40,27 @@ export class TeachersDetails {
   showAddSubjectInput: number | null = null;
   newSubject: string = '';
   onEditMode = signal(false)
+  teacherId = signal<string | null>(null);
+  private destroy$ = new Subject<void>();
 
-  // constructor(
-  //   private datePipe: DatePipe
-  // ) {}
-
-  ngOnInit(): void {
-    this.teacherId = this.route.snapshot.paramMap.get('id')!;
-    console.log("Teacher ID: ", this.teacherId)
-    this.breadCrumb  = [{name: 'Teachers', url:'/teachers'},{name: `Teacher ${this.teacherId}`, url:''}]
-    this.loadTeacherData(this.teacherId);
+  constructor(
+    private service: UsersService
+  ) {
+    this.route.paramMap.subscribe(params => {
+      this.teacherId.set(params.get('id'));
+    });
   }
 
-  loadTeacherData(Id: string) {
-    let value = findUser(Id)
-    if (value) this.teacher.set(value)
+  ngOnInit(): void {
+    // this.teacherId = this.route.snapshot.paramMap.get('id')!;
+    console.log("Teacher ID: ", this.teacherId)
+    this.breadCrumb  = [{name: 'Teachers', url:'/teachers'},{name: `Teacher ${this.teacherId()}`, url:''}]
+    this.loadTeacherData();
+  }
+
+  loadTeacherData() {
+    // let value = this.service.findUser(Id)
+    // if (value) this.teacher.set(value)
     this.assigned_classes.set(['Grade 12 A', 'Grade 12 B', 'Grade 10 A'])
     this.assigned_subjects.set(['maths', 'physics', 'life science'])
   }
@@ -112,47 +122,6 @@ confirmAddSubject(classIndex: number) {
   }
 }
 
-// // Save contact information
-// saveContactInfo() {
-//   // Validate required fields
-//   if (!this.editTeacher.email?.trim()) {
-//     alert('Please enter an email address');
-//     return;
-//   }
-  
-//   if (!this.editTeacher.phone?.trim()) {
-//     alert('Please enter a phone number');
-//     return;
-//   }
-  
-//   // Validate email format
-//   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//   if (!emailRegex.test(this.editTeacher.email.trim())) {
-//     alert('Please enter a valid email address');
-//     return;
-//   }
-  
-//   // Update the teacher object
-//   this.teacher = {
-//     ...this.teacher,
-//     email: this.editTeacher.email.trim(),
-//     phone: this.editTeacher.phone.trim(),
-//     address: this.editTeacher.address?.trim() || '',
-//     additionalContacts: [] // this.editTeacher.additionalContacts?.filter(
-//       // contact => contact.number.trim()
-//     // ) || []
-//   };
-  
-//   // In real app, save to backend here
-//   console.log('Saving contact info:', this.teacher);
-  
-//   // Exit edit mode
-//   this.onEditMode.set(false);
-//   this.editTeacher = {};
-  
-//   // Show success message
-//   alert('Contact information updated successfully!');
-// }
 
 // Copy to clipboard
 // copyToClipboard(text: string) {
@@ -201,23 +170,9 @@ hideAddSubjectInput() {
     return roleMap[role] || 'user';
   }
 
-    // calculateAge(birthDate: Date): number {
-    //   if (!birthDate) return 0;
-    //   const today = new Date();
-    //   const birth = new Date(birthDate);
-    //   let age = today.getFullYear() - birth.getFullYear();
-    //   const monthDiff = today.getMonth() - birth.getMonth();
-      
-    //   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-    //     age--;
-    //   }
-      
-    //   return age;
-    // }
-
-    // Format date for display
-  // formatDate(date: Date): string {
-  //   return this.datePipe.transform(date, 'longDate') || '';
-  // }
+  ngOnDestroy() {
+  this.destroy$.next();
+  this.destroy$.complete();
+}
 
 }

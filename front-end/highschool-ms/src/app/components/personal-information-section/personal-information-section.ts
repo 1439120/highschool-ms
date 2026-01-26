@@ -1,8 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { addUser, findUser, updateUser, User } from '../../models/User';
+import {  User } from '../../models/User';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UsersService } from '../../services/users-service';
 
 @Component({
   selector: 'app-personal-information-section',
@@ -13,7 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class PersonalInformationSection {
   onEditMode = signal(false)
-  userId = input<string>()
+  userId = input<string | null>()
   userType = input<string>()
   personalInformation = signal<User>({
     id: 0,
@@ -42,15 +43,14 @@ export class PersonalInformationSection {
     type: ''
   });
 
-  constructor(private datePipe: DatePipe){}
+  constructor(private datePipe: DatePipe, private service: UsersService){}
   ngOnInit(): void {
-    console.log('When are you running??')
     this.onEditMode.set(
       this.route.snapshot.queryParamMap.get('mode') === 'edit'
     )
     let Id = this.userId()
     if(Id){
-      let user = findUser(Id)
+      let user = this.service.findUser(Id)
       if(user)
       this.personalInformation.set(user);
     }
@@ -100,10 +100,10 @@ export class PersonalInformationSection {
   // Save contact information
   savePersonalInfo() {
     console.log('saving the personal information')
-    updateUser(this.editPersonalInformation())
+    this.service.updateUser(this.editPersonalInformation())
 
     // In real app, save to backend here
-    console.log('Saving contact info:', this.personalInformation);
+    console.log('Saving contact info:', this.personalInformation());
     
     // Exit edit mode
     this.onEditMode.set(false);    
@@ -112,13 +112,9 @@ export class PersonalInformationSection {
   }
 
   addNewUser(){
-    console.log("this is the route", this.router.url)
-    // this.router.url.split('/').map((value, index) => index + 1 === this.router.url.split('/').length ? this.editPersonalInformation().id : value)
     let userType: string = this.userType() ?? ''
-    let addedUser = addUser(this.editPersonalInformation(), userType)
-    // const newId = this.editPersonalInformation().id;
+    let addedUser = this.service.addUser(this.editPersonalInformation(), userType)
     console.log("the new added user has this id", addedUser)
-    // this.router.navigate([this.route.firstChild, this.editPersonalInformation().id])
     this.personalInformation.set(addedUser);
     this.onEditMode.set(false)
     this.router.navigate(['../', addedUser.id], { relativeTo: this.route });

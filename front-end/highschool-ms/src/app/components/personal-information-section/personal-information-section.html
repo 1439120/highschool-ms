@@ -54,7 +54,7 @@
             type="date" 
             id="date_of_birth" 
             [(ngModel)]="editPersonalInformation().date_of_birth"
-            [value]="formatDateForInput(editPersonalInformation().date_of_birth)"
+            [value]="(editPersonalInformation().date_of_birth)"
             >
         }
         @else {
@@ -77,7 +77,7 @@
             type="date" 
             id="date_joined" 
             [(ngModel)]="editPersonalInformation().date_joined"
-            [value]="formatDateForInput(editPersonalInformation().date_joined)"
+            [value]="(editPersonalInformation().date_joined)"
             >
         }
         @else {

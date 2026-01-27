@@ -5,6 +5,7 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HighSchoolManagementApi.Data;
+using HighSchoolManagementApi.Mappers;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -21,7 +22,7 @@ namespace HighSchoolManagementApi.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var users = _context.Users.ToList();
+            var users = _context.Users.ToList().Select(s => s.ToUsersDto());
             return Ok(users);
         }
         [HttpGet("{id}")]
@@ -29,7 +30,7 @@ namespace HighSchoolManagementApi.Controllers
         {
             var user = _context.Users.Find(id);
             if(user == null) return NotFound();
-            return Ok(user);
+            return Ok(user.ToUsersDto());
         }
 
     }

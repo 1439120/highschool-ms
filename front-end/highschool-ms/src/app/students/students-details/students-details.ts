@@ -1,13 +1,17 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
 import BreadcrumbModel from '../../models/BreadcrumbModel';
+import { PersonalInformationSection } from '../../components/personal-information-section/personal-information-section';
+import { ContactInformationSection } from '../../components/contact-information-section/contact-information-section';
+import { User } from '../../models/User';
+import { UsersService } from '../../services/users-service';
 
 @Component({
   selector: 'app-students-details',
-  imports: [ FormsModule, CommonModule, Breadcrumb],
+  imports: [ FormsModule, CommonModule, Breadcrumb, PersonalInformationSection, ContactInformationSection],
   templateUrl: './students-details.html',
   styleUrl: './students-details.scss',
   providers: [DatePipe]
@@ -15,36 +19,20 @@ import BreadcrumbModel from '../../models/BreadcrumbModel';
 export class StudentsDetails {
   selectedTerm: string = 'term_two';
   studentId: string = '';
-  student: any = null;
+  student = signal<User>({
+    id: 0,
+    name: '',
+    surname: '',
+    phone: '',
+    email: '',
+    role: '',
+    address: '',
+    date_of_birth: undefined,
+    date_joined: undefined,
+    type: ''
+  })
   breadCrumb!: BreadcrumbModel[];
-
-  constructor(
-    private route: ActivatedRoute,
-    private datePipe: DatePipe
-  ) {}
-
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.studentId = params['id'];
-      this.loadStudentData();
-    });
-    this.breadCrumb  = [{name: 'Students', url:'/students'},{name: `Student ${this.studentId}`, url:''}]
-  }
-
-  loadStudentData() {
-    // In real app, you would fetch from API
-    this.student = {
-      id: 2239,
-      name: 'Bheki',
-      surname: 'Cele',
-      phone: '072 171 2233',
-      email: 'bhekic@mail.com',
-      role: 'Student',
-      address: '123 Avenue',
-      date_of_birth: new Date('2006-08-15'),
-      grade: 11,
-      class: 'Grade 11 C',
-      subjects: [
+  subjects = signal([
         {
           name: 'maths',
           term_one: 70,
@@ -73,10 +61,26 @@ export class StudentsDetails {
           term_three: 0,
           term_four: 0,
         }
-      ],
-      current_term: 'term_two',
-      average: 92
-    };
+      ])
+  class_room = signal({
+    grade: 11,
+    class: 'Grade 11 C',
+    average: 92,
+    current_term: 'term_two',
+  })
+  constructor(
+    private route: ActivatedRoute,
+    private datePipe: DatePipe,
+    private service: UsersService
+  ) {}
+
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.studentId = params['id'];
+      let findStudent = this.service.findUser(this.studentId)
+      if(findStudent) this.student.set(findStudent);
+    });
+    this.breadCrumb  = [{name: 'Students', url:'/students'},{name: `Student ${this.studentId}`, url:''}]
   }
 
   getTermDisplayName(term: string): string {
@@ -117,8 +121,8 @@ export class StudentsDetails {
   }
 
   getTermAverage(): number {
-    if (!this.student?.subjects?.length) return 0;
-    const subjects = this.student.subjects;
+    if (!this.subjects()?.length) return 0;
+    const subjects = this.subjects();
     const total = subjects.reduce((sum: number, subject: any) => {
       return sum + (subject[this.selectedTerm] || 0);
     }, 0);
@@ -137,16 +141,17 @@ export class StudentsDetails {
   }
 
    getSubjectTermScore(subjectName: string, term: string): number {
-    if (!this.student?.subjects) return 0;
-    const subject = this.student.subjects.find((s: any) => 
+    if (!this.subjects().length) return 0;
+    const subject = this.subjects().find((s: any) => 
       s.name.toLowerCase() === subjectName.toLowerCase().replace(' ', '_')
     );
-    return subject?.[term] || 0;
+    return 2
+    // return subject?.[term] || 0;
   }
 
   getSubjectsArray(): any[] {
-    if (!this.student?.subjects) return [];
-    return this.student.subjects.map((subject: any) => ({
+    if (!this.subjects()) return [];
+    return this.subjects().map((subject: any) => ({
       name: this.formatSubjectName(subject.name),
       score: subject[this.selectedTerm] || 0
     }));
@@ -165,8 +170,8 @@ export class StudentsDetails {
   }
 
   getTermAverageByTerm(term: string): number {
-    if (!this.student?.subjects?.length) return 0;
-    const subjects = this.student.subjects;
+    if (!this.subjects().length) return 0;
+    const subjects = this.subjects();
     const total = subjects.reduce((sum: number, subject: any) => {
       return sum + (subject[term] || 0);
     }, 0);

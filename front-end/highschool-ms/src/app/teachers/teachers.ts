@@ -18,6 +18,10 @@ export class Teachers extends Datamodel<User>{
     this.title_.set("Teachers");
     effect(()=>{
       this.records_.set(this.service.teachers());
+      const uniqueRoles: string[] = [
+        ...new Set(this.service.teachers().map(c => c.role))
+      ];
+      this.filterByItems_.set(uniqueRoles);
     })
     this.headers_.set( [
       {'col':'Name', 'groupBy': true},
@@ -27,10 +31,6 @@ export class Teachers extends Datamodel<User>{
       {'col':'Address', 'groupBy': true}])
     this.searchByItems_.set(['name','surname','email','role','phone'])
     this.filterBy_.set('Role')
-    const uniqueRoles: string[] = [
-      ...new Set(this.service.teachers().map(c => c.role))
-    ];
-    this.filterByItems_.set(uniqueRoles);
   }
 
 }

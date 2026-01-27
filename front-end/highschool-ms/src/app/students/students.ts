@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { Datamodel } from '../models/Datamodel';
 import { User } from '../models/User';
 import { Datatable } from '../components/datatable/datatable';
-// import { students } from '../models/User';
+import { UsersService } from '../services/users-service';
 
 @Component({
   selector: 'app-students',
@@ -11,10 +11,17 @@ import { Datatable } from '../components/datatable/datatable';
   styleUrl: './students.scss',
 })
 export class Students extends Datamodel<User> {
-  constructor(){
+  constructor(private service: UsersService){
     super();
     this.title_.set("Students")
-    // this.records_.set(students);
+    effect(()=>{
+      this.records_.set(this.service.students());
+      const uniqueRoles: string[] = [
+        ...new Set(this.service.students().map(c => c.role))
+      ];
+      this.filterByItems_.set(uniqueRoles);
+    })
+    
     this.headers_.set( [
       {'col':'Name', 'groupBy': true},
       {'col':'Phone', 'groupBy': false},
@@ -23,10 +30,7 @@ export class Students extends Datamodel<User> {
       {'col':'Address', 'groupBy': true}])
       this.searchByItems_.set(['name','surname','email','role','phone'])
       this.filterBy_.set('Role')
-      // const uniqueRoles: string[] = [
-      //   ...new Set(students.map(c => c.role))
-      // ];
-      // this.filterByItems_.set(uniqueRoles);
+      
   }
 
 }

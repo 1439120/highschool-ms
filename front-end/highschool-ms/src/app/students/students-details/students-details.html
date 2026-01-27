@@ -32,19 +32,19 @@
       <div class="profile-card">
         <div class="profile-header">
           <div class="avatar-large student">
-            {{student?.name?.charAt(0)}}{{student?.surname?.charAt(0)}}
+            {{student().name.charAt(0)}}{{student().surname.charAt(0)}}
           </div>
           <div class="profile-info">
-            <h1 class="student-name">{{student?.name}} {{student?.surname}}</h1>
+            <h1 class="student-name">{{student().name}} {{student().surname}}</h1>
             <div class="student-meta">
-              <span class="student-id">ID: {{student?.id}}</span>
+              <span class="student-id">ID: {{student().id}}</span>
               <span class="grade-badge">
                 <span class="badge-icon">🎓</span>
-                Grade {{student?.grade}} - {{student?.class}}
+                Grade {{class_room().grade}} - {{class_room().class}}
               </span>
               <span class="average-score">
                 <span class="score-icon">⭐</span>
-                Average: {{student?.average}}%
+                Average: {{class_room().average}}%
               </span>
             </div>
           </div>
@@ -53,69 +53,10 @@
         <!-- Details Sections -->
         <div class="details-sections">
           <!-- Personal Information -->
-          <section class="details-section">
-            <h2 class="section-title">
-              <span class="section-icon">👤</span>
-              Personal Information
-            </h2>
-            <div class="info-grid">
-              <div class="info-item">
-                <span class="info-label">Full Name</span>
-                <span class="info-value">{{student?.name}} {{student?.surname}}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">Date of Birth</span>
-                <span class="info-value">{{formatDate(student?.date_of_birth)}}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">Age</span>
-                <span class="info-value">{{calculateAge(student?.date_of_birth)}} years</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">Current Grade</span>
-                <span class="info-value">Grade {{student?.grade}}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">Class</span>
-                <span class="info-value">{{student?.class}}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">Academic Year</span>
-                <span class="info-value">{{getAcademicYear()}}</span>
-              </div>
-            </div>
-          </section>
+          <app-personal-information-section [userId]="studentId" [userType]="'student'"/>
 
           <!-- Contact Information -->
-          <section class="details-section">
-            <h2 class="section-title">
-              <span class="section-icon">📱</span>
-              Contact Information
-            </h2>
-            <div class="contact-cards">
-              <a [href]="'mailto:' + student?.email" class="contact-card email">
-                <span class="contact-icon">✉️</span>
-                <div class="contact-content">
-                  <span class="contact-label">Email Address</span>
-                  <span class="contact-value">{{student?.email}}</span>
-                </div>
-              </a>
-              <a [href]="'tel:' + student?.phone" class="contact-card phone">
-                <span class="contact-icon">📞</span>
-                <div class="contact-content">
-                  <span class="contact-label">Phone Number</span>
-                  <span class="contact-value">{{student?.phone}}</span>
-                </div>
-              </a>
-              <div class="contact-card address">
-                <span class="contact-icon">📍</span>
-                <div class="contact-content">
-                  <span class="contact-label">Physical Address</span>
-                  <span class="contact-value">{{student?.address}}</span>
-                </div>
-              </div>
-            </div>
-          </section>
+          <app-contact-information-section/>
 
           <!-- Academic Performance -->
           <section class="details-section">
@@ -143,7 +84,7 @@
                     </div>
                     <div class="stat-item">
                       <span class="stat-label">Total Subjects</span>
-                      <span class="stat-value">{{student?.subjects?.length || 0}}</span>
+                      <span class="stat-value">{{subjects().length || 0}}</span>
                     </div>
                     <div class="stat-item">
                       <span class="stat-label">Performance</span>

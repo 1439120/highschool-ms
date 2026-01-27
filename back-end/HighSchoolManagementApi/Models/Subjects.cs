@@ -11,6 +11,6 @@ namespace HighSchoolManagementApi.Models
         public string Name { get; set; } = string.Empty;
         public int? GradeId { get; set; }
         public Grades? Grade { get; set; }
-        public DateTime CreatedOn { get; set; } = DateTime.Now();
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
     }
 }

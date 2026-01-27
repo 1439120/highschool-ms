@@ -12,10 +12,9 @@ namespace HighSchoolManagementApi.Models
         public int? GradeId { get; set; }
         public Grades? Grade { get; set; } // Navigation property
         public int? ClassTeacherId { get; set; }
-        public Users ClassTeacher { get; set; } // Navigation property
+        public Users ClassTeacher { get; set; } = new Users(); // Navigation property
         public int MaximumOccupants { get; set; }
         public int RegisteredStudents { get; set; }
-        public int RegisteredStudents { get; set; }
-        public DateTime CreatedOn { get; set; } = DateTime.Now();
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
     }
 }

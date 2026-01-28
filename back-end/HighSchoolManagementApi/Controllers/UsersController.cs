@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HighSchoolManagementApi.Data;
 using HighSchoolManagementApi.Mappers;
+using HighSchoolManagementApi.Dtos.Users;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -26,12 +27,19 @@ namespace HighSchoolManagementApi.Controllers
             return Ok(users);
         }
         [HttpGet("{id}")]
-        public IActionResult GetBydId([FromRoute] int id)
+        public IActionResult GetById([FromRoute] int id)
         {
             var user = _context.Users.Find(id);
             if(user == null) return NotFound();
             return Ok(user.ToUsersDto());
         }
-
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateUsersRequestDto usersDto)
+        {
+            var usersModel = usersDto.ToUsersFromCreateDTO();
+            _context.Users.Add(usersModel);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new {id = usersModel.Id}, usersModel.ToUsersDto());
+        }
     }
 }

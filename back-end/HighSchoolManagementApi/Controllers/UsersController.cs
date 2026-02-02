@@ -35,7 +35,7 @@ namespace HighSchoolManagementApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _usersRepo.GetByIdAsync(id);
             if(user == null) return NotFound();
             return Ok(user.ToUsersDto());
         }
@@ -43,8 +43,7 @@ namespace HighSchoolManagementApi.Controllers
         public async Task<IActionResult> Create([FromBody] CreateUsersRequestDto usersDto)
         {
             var usersModel = usersDto.ToUsersFromCreateDTO();
-            await _context.Users.AddAsync(usersModel); // tracking
-            await _context.SaveChangesAsync(); // now it is sent to the server
+            await _usersRepo.CreateAsync(usersModel);
             return CreatedAtAction(nameof(GetById), new {id = usersModel.Id}, usersModel.ToUsersDto());
         }
 
@@ -52,21 +51,9 @@ namespace HighSchoolManagementApi.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUsersRequestDto updateDto)
         {
-            var usersModel = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var usersModel = await _usersRepo.UpdateAsync(id, updateDto);
             if(usersModel == null) return NotFound();
 
-            usersModel.Name = updateDto.Name;
-            usersModel.Surname = updateDto.Surname;
-            usersModel.Phone = updateDto.Phone;
-            usersModel.Email = updateDto.Email;
-            usersModel.Role = updateDto.Role;
-            usersModel.Address = updateDto.Address;
-            usersModel.DateOfBirth = updateDto.DateOfBirth;
-            usersModel.DateJoined = updateDto.DateJoined;
-            usersModel.Type = updateDto.Type;
-            usersModel.CreatedOn = updateDto.CreatedOn;
-
-            await _context.SaveChangesAsync();
             return Ok(usersModel.ToUsersDto());
         }
 
@@ -74,11 +61,9 @@ namespace HighSchoolManagementApi.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var usersModel = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var usersModel = await _usersRepo.DeleteAsync(id);
             if(usersModel == null) return NotFound();
 
-            _context.Users.Remove(usersModel);
-            await _context.SaveChangesAsync();
             return NoContent();
         }
 

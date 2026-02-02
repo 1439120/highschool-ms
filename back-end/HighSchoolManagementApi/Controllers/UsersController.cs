@@ -9,6 +9,7 @@ using HighSchoolManagementApi.Mappers;
 using HighSchoolManagementApi.Dtos.Users;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
+using HighSchoolManagementApi.Interfaces;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -17,15 +18,17 @@ namespace HighSchoolManagementApi.Controllers
     public class UsersController: ControllerBase
     {
         private readonly ApplicationDBContext _context;
-        public UsersController(ApplicationDBContext context)
+        private readonly IUsersRepository _usersRepo;
+        public UsersController(ApplicationDBContext context, IUsersRepository usersRepo)
         {
             _context = context;
+            _usersRepo = usersRepo;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _usersRepo.GetAllAsync();
             var usersDto = users.Select(s => s.ToUsersDto());
             return Ok(users);
         }

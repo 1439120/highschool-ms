@@ -1,6 +1,8 @@
 
 using HighSchoolManagementApi.Data;
 using Microsoft.EntityFrameworkCore;
+using HighSchoolManagementApi.Interfaces;
+using HighSchoolManagementApi.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDBContext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("NeonDb"));
 });
+
+// Dependancy injections
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 
 var app = builder.Build();
 

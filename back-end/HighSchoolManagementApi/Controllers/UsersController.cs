@@ -8,6 +8,7 @@ using HighSchoolManagementApi.Data;
 using HighSchoolManagementApi.Mappers;
 using HighSchoolManagementApi.Dtos.Users;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.EntityFrameworkCore;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -22,32 +23,33 @@ namespace HighSchoolManagementApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var users = _context.Users.ToList().Select(s => s.ToUsersDto());
+            var users = await _context.Users.ToListAsync();
+            var usersDto = users.Select(s => s.ToUsersDto());
             return Ok(users);
         }
         [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute] int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var user = _context.Users.Find(id);
+            var user = await _context.Users.FindAsync(id);
             if(user == null) return NotFound();
             return Ok(user.ToUsersDto());
         }
         [HttpPost]
-        public IActionResult Create([FromBody] CreateUsersRequestDto usersDto)
+        public async Task<IActionResult> Create([FromBody] CreateUsersRequestDto usersDto)
         {
             var usersModel = usersDto.ToUsersFromCreateDTO();
-            _context.Users.Add(usersModel); // tracking
-            _context.SaveChanges(); // now it is sent to the server
+            await _context.Users.AddAsync(usersModel); // tracking
+            await _context.SaveChangesAsync(); // now it is sent to the server
             return CreatedAtAction(nameof(GetById), new {id = usersModel.Id}, usersModel.ToUsersDto());
         }
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] UpdateUsersRequestDto updateDto)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUsersRequestDto updateDto)
         {
-            var usersModel = _context.Users.FirstOrDefault(x => x.Id == id);
+            var usersModel = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             if(usersModel == null) return NotFound();
 
             usersModel.Name = updateDto.Name;
@@ -61,19 +63,19 @@ namespace HighSchoolManagementApi.Controllers
             usersModel.Type = updateDto.Type;
             usersModel.CreatedOn = updateDto.CreatedOn;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return Ok(usersModel.ToUsersDto());
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var usersModel = _context.Users.FirstOrDefault(x => x.Id == id);
+            var usersModel = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             if(usersModel == null) return NotFound();
 
             _context.Users.Remove(usersModel);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 

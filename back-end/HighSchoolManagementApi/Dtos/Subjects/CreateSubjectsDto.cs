@@ -8,7 +8,7 @@ namespace HighSchoolManagementApi.Dtos.Subjects
 {
     public class CreateSubjectsDto
     {
-         public string Name { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
         public int? GradeId { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
     }

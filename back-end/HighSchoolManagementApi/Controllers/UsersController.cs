@@ -17,11 +17,9 @@ namespace HighSchoolManagementApi.Controllers
     [ApiController]
     public class UsersController: ControllerBase
     {
-        private readonly ApplicationDBContext _context;
         private readonly IUsersRepository _usersRepo;
-        public UsersController(ApplicationDBContext context, IUsersRepository usersRepo)
+        public UsersController(IUsersRepository usersRepo)
         {
-            _context = context;
             _usersRepo = usersRepo;
         }
 

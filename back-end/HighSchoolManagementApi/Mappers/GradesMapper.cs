@@ -18,5 +18,15 @@ namespace HighSchoolManagementApi.Mappers
                 CreatedOn = createDto.CreatedOn
             };
         }
+
+        public static GradesDto ToGradesDto(this Grades gradesModel)
+        {
+             return new GradesDto
+            {
+                Id = gradesModel.Id,
+                Name = gradesModel.Name,
+                GradeNumber = gradesModel.GradeNumber            
+            };
+        }
     }
 }

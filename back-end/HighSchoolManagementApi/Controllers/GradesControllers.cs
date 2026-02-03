@@ -7,6 +7,9 @@ using HighSchoolManagementApi.Dtos.Grades;
 using HighSchoolManagementApi.Mappers;
 using HighSchoolManagementApi.Data;
 using HighSchoolManagementApi.Models;
+using HighSchoolManagementApi.Interfaces;
+using HighSchoolManagementApi.Mappers;
+using HighSchoolManagementApi.Repository;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -14,35 +17,35 @@ namespace HighSchoolManagementApi.Controllers
     [ApiController]
     public class GradesControllers: ControllerBase
     {
-        private readonly ApplicationDBContext _context;
-        public GradesControllers(ApplicationDBContext context)
+        private readonly IGradesRepository _gradesRepo;
+        public GradesControllers(IGradesRepository gradesRepo)
         {
-            _context = context;
+            _gradesRepo = gradesRepo;
         }
         
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var grades = _context.Grades.ToList();
-            if(grades == null) return NotFound();
-            return Ok(grades);
+            var grades = await _gradesRepo.GetAllAsync();
+            var gradesDto = grades.Select(s => s.ToGradesDto());
+            if(gradesDto == null) return NotFound();
+            return Ok(gradesDto);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute] int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var grades = _context.Grades.Find(id);
+            var grades = await _gradesRepo.GetByIdAsync(id);
             if(grades == null) return NotFound();
-            return Ok(grades);
+            return Ok(grades.ToGradesDto());
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] CreateGradesDto createDto)
+        public async Task<IActionResult> Add([FromBody] CreateGradesDto createDto)
         {
             var gradesModel = createDto.ToGradesFromCreateDto();
-            _context.Grades.Add(gradesModel);
-            _context.SaveChanges();
-            return Ok("Added successfully");
+            await _gradesRepo.CreateAsync(gradesModel);
+            return CreatedAtAction(nameof(GetById), new {id = gradesModel.Id}, gradesModel.ToGradesDto());
         }
     }
 }

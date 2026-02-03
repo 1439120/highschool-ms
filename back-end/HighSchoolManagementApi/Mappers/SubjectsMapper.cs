@@ -18,5 +18,15 @@ namespace HighSchoolManagementApi.Mappers
                 CreatedOn = subjectDto.CreatedOn
             };
         }
+
+        public static SubjectsDto ToSubjectsDTO(this Subjects subjectModel)
+        {
+            return new SubjectsDto
+            {
+                Id = subjectModel.Id,
+                Name = subjectModel.Name,
+                GradeId = subjectModel.GradeId,
+            };
+        }
     }
 }

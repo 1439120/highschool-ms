@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HighSchoolManagementApi.Dtos.Subjects;
 using HighSchoolManagementApi.Mappers;
+using HighSchoolManagementApi.Interfaces;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -16,34 +17,33 @@ namespace HighSchoolManagementApi.Controllers
     [ApiController]
     public class SubjectsControllers: ControllerBase
     {
-        private readonly ApplicationDBContext _context;
-        public SubjectsControllers(ApplicationDBContext context){
-            _context = context;
+        private readonly ISubjectRepository _subjectRepo;
+        public SubjectsControllers( ISubjectRepository subjectRepo){
+            _subjectRepo = subjectRepo;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetSubjects(){
-            var subjects = await _context.Subjects.ToListAsync();
+            var subjects = await _subjectRepo.GetAllAsync();
             if(subjects == null) return NotFound();
 
-            return Ok(subjects);
+            var subjectsDto = subjects.Select(x => x.ToSubjectsDTO());
+            return Ok(subjectsDto);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var subjects = await _context.Subjects.FindAsync(id);
+            var subjects = await _subjectRepo.GetByIdAsync(id);
             if(subjects == null) return NotFound();
 
-            return Ok(subjects);
+            return Ok(subjects.ToSubjectsDTO());
         }
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateSubjectsDto createDto ){
             var subjectModel = createDto.ToSubjectsFromCreateDTO();
-            await _context.Subjects.AddAsync(subjectModel);
-            await _context.SaveChangesAsync();
-            // return CreatedAction(nameof(GetById), new {id = createDto.Id}, createDto);
-            return Ok("Created Successfully");
+            await _subjectRepo.CreateAsync(subjectModel);
+            return CreatedAtAction(nameof(GetById), new {id = subjectModel.Id}, subjectModel.ToSubjectsDTO());
         }
     }
     

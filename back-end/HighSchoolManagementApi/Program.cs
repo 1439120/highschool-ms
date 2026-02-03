@@ -24,6 +24,8 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => {
 // Dependancy injections
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IClassroomRepository, ClassroomRepository>();
+builder.Services.AddScoped<IGradesRepository, GradesRepository>();
+builder.Services.AddScoped<ISubjectRepository, SubjectsRepository>();
 
 var app = builder.Build();
 

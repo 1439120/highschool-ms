@@ -118,6 +118,9 @@ namespace HighSchoolManagementApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("ClassroomId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
@@ -130,6 +133,9 @@ namespace HighSchoolManagementApi.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int?>("LearnerClassroomId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -153,6 +159,10 @@ namespace HighSchoolManagementApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClassroomId");
+
+                    b.HasIndex("LearnerClassroomId");
+
                     b.ToTable("Users");
                 });
 
@@ -160,7 +170,8 @@ namespace HighSchoolManagementApi.Migrations
                 {
                     b.HasOne("HighSchoolManagementApi.Models.Users", "ClassTeacher")
                         .WithMany()
-                        .HasForeignKey("ClassTeacherId");
+                        .HasForeignKey("ClassTeacherId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("HighSchoolManagementApi.Models.Grades", "Grade")
                         .WithMany()
@@ -178,6 +189,25 @@ namespace HighSchoolManagementApi.Migrations
                         .HasForeignKey("GradeId");
 
                     b.Navigation("Grade");
+                });
+
+            modelBuilder.Entity("HighSchoolManagementApi.Models.Users", b =>
+                {
+                    b.HasOne("HighSchoolManagementApi.Models.Classroom", "Classroom")
+                        .WithMany()
+                        .HasForeignKey("ClassroomId");
+
+                    b.HasOne("HighSchoolManagementApi.Models.Classroom", null)
+                        .WithMany("Learners")
+                        .HasForeignKey("LearnerClassroomId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Classroom");
+                });
+
+            modelBuilder.Entity("HighSchoolManagementApi.Models.Classroom", b =>
+                {
+                    b.Navigation("Learners");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,5 +18,6 @@ namespace HighSchoolManagementApi.Dtos.Users
         public DateOnly DateJoined { get; set; }
         public string Type { get; set; } = string.Empty;
         // Created On dont need it
+        public int? LearnerClassroomId { get; set; }
     }
 }

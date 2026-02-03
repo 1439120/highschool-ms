@@ -24,7 +24,8 @@ namespace HighSchoolManagementApi.Mappers
                 DateOfBirth = usersModel.DateOfBirth,
                 DateJoined = usersModel.DateJoined,
                 Role = usersModel.Role,
-                Type = usersModel.Type
+                Type = usersModel.Type,
+                LearnerClassroomId = usersModel.LearnerClassroomId
             };
         }
 

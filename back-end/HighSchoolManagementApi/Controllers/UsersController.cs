@@ -30,7 +30,7 @@ namespace HighSchoolManagementApi.Controllers
         {
             var users = await _usersRepo.GetAllAsync();
             var usersDto = users.Select(s => s.ToUsersDto());
-            return Ok(users);
+            return Ok(usersDto);
         }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)

@@ -16,6 +16,6 @@ namespace HighSchoolManagementApi.Dtos.Users
         public DateOnly DateOfBirth { get; set; }
         public DateOnly DateJoined { get; set; }
         public string Type { get; set; } = string.Empty;
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
+        public int? LearnerClassroomId { get; set; }
     }
 }

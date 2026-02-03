@@ -57,7 +57,7 @@ namespace HighSchoolManagementApi.Repository
             usersModel.DateOfBirth = usersDto.DateOfBirth;
             usersModel.DateJoined = usersDto.DateJoined;
             usersModel.Type = usersDto.Type;
-            usersModel.CreatedOn = usersDto.CreatedOn;
+            usersModel.LearnerClassroomId = usersDto.LearnerClassroomId;
 
             await _context.SaveChangesAsync();
             return usersModel;

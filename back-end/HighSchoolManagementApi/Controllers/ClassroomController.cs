@@ -23,15 +23,17 @@ namespace HighSchoolManagementApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
             var classrooms = await _classroomRepo.GetAllAsync();
 
             var classroomDto = classrooms.Select(s => s.ToClassroomDto());
 
             return Ok(classroomDto);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetBydId([FromRoute] int id)
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
             var classroomsModel = await _classroomRepo.GetByIdAsync(id);
             if(classroomsModel == null) return NotFound();
 
@@ -40,6 +42,7 @@ namespace HighSchoolManagementApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateClassroomDto classroomDto)
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
             var classroomsModel = classroomDto.ToClassroomFromCreateDTO();
             await _classroomRepo.AddAsync(classroomsModel);
             return Ok(classroomsModel.ToClassroomDto());

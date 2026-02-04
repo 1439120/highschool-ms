@@ -26,13 +26,15 @@ namespace HighSchoolManagementApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
             var users = await _usersRepo.GetAllAsync();
             var usersDto = users.Select(s => s.ToUsersDto());
             return Ok(usersDto);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
             var user = await _usersRepo.GetByIdAsync(id);
             if(user == null) return NotFound();
             return Ok(user.ToUsersDto());
@@ -40,25 +42,28 @@ namespace HighSchoolManagementApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUsersRequestDto usersDto)
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
             var usersModel = usersDto.ToUsersFromCreateDTO();
             await _usersRepo.CreateAsync(usersModel);
             return CreatedAtAction(nameof(GetById), new {id = usersModel.Id}, usersModel.ToUsersDto());
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUsersRequestDto updateDto)
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
             var usersModel = await _usersRepo.UpdateAsync(id, updateDto);
-            if(usersModel == null) return NotFound();
+            if(usersModel == null) return NotFound("User Not Found");
 
             return Ok(usersModel.ToUsersDto());
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
             var usersModel = await _usersRepo.DeleteAsync(id);
             if(usersModel == null) return NotFound();
 

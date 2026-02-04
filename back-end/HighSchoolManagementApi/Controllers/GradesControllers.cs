@@ -8,7 +8,6 @@ using HighSchoolManagementApi.Mappers;
 using HighSchoolManagementApi.Data;
 using HighSchoolManagementApi.Models;
 using HighSchoolManagementApi.Interfaces;
-using HighSchoolManagementApi.Mappers;
 using HighSchoolManagementApi.Repository;
 
 namespace HighSchoolManagementApi.Controllers
@@ -26,15 +25,17 @@ namespace HighSchoolManagementApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
             var grades = await _gradesRepo.GetAllAsync();
             var gradesDto = grades.Select(s => s.ToGradesDto());
             if(gradesDto == null) return NotFound();
             return Ok(gradesDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
             var grades = await _gradesRepo.GetByIdAsync(id);
             if(grades == null) return NotFound();
             return Ok(grades.ToGradesDto());
@@ -43,6 +44,7 @@ namespace HighSchoolManagementApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateGradesDto createDto)
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
             var gradesModel = createDto.ToGradesFromCreateDto();
             await _gradesRepo.CreateAsync(gradesModel);
             return CreatedAtAction(nameof(GetById), new {id = gradesModel.Id}, gradesModel.ToGradesDto());

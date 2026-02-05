@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using HighSchoolManagementApi.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace HighSchoolManagementApi.Data
 {
-    public class ApplicationDBContext: DbContext
+    public class ApplicationDBContext: IdentityDbContext<AuthUser>
     {
         public ApplicationDBContext(DbContextOptions dbContextOptions): base(dbContextOptions)
         {
@@ -31,6 +33,23 @@ namespace HighSchoolManagementApi.Data
                 .WithOne()                              // each Learner belongs to one Classroom (or none)
                 .HasForeignKey(u => u.LearnerClassroomId)     // ← IMPORTANT: you need this FK on Users!
                 .OnDelete(DeleteBehavior.Restrict);     // or Cascade / SetNull depending on business rule
+
+            List<IdentityRole > roles = new List<IdentityRole >
+            {
+                new IdentityRole 
+                {
+                    Id = "cac43a6e-f7bb-4448-ba05-931d27eb5e93",
+                    Name = "Admin",
+                    NormalizedName = "ADMIN",
+                },
+                new IdentityRole 
+                {
+                    Id = "8af1a341-3b76-4654-979b-57777174620f",
+                    Name = "User",
+                    NormalizedName = "USER",
+                }
+            };
+            modelBuilder.Entity<IdentityRole>().HasData(roles);
         }
 
         public DbSet<Grades> Grades { get; set; }

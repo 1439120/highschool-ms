@@ -23,8 +23,17 @@ namespace HighSchoolManagementApi.Repository
             var users = _context.Users.AsQueryable();
             if(!string.IsNullOrWhiteSpace(query.Name)) users = users.Where(s => s.Name.ToLower().Contains(query.Name.ToLower()));
             if(!string.IsNullOrWhiteSpace(query.Surname)) users = users.Where(s => s.Surname.ToLower().Contains(query.Surname.ToLower()));
+            if (!string.IsNullOrWhiteSpace(query.SortBy))
+            {
+                if (query.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    users = query.IsDescending ? users.OrderByDescending(s => s.Name) : users.OrderBy(s => s.Name);
+                }
+            }
 
-            return await users.ToListAsync();
+            var skipNumber= (query.PageNumber - 1) * query.PageSize;
+
+            return await users.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<Users> CreateAsync(Users usersModel)

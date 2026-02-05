@@ -10,6 +10,7 @@ using HighSchoolManagementApi.Dtos.Users;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using HighSchoolManagementApi.Interfaces;
+using HighSchoolManagementApi.Helpers;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -24,10 +25,10 @@ namespace HighSchoolManagementApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);
-            var users = await _usersRepo.GetAllAsync();
+            var users = await _usersRepo.GetAllAsync(query);
             var usersDto = users.Select(s => s.ToUsersDto());
             return Ok(usersDto);
         }

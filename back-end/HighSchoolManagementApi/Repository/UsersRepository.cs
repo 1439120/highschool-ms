@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using HighSchoolManagementApi.Data;
 using HighSchoolManagementApi.Models;
 using HighSchoolManagementApi.Dtos.Users;
+using HighSchoolManagementApi.Helpers;
 
 namespace HighSchoolManagementApi.Repository
 {
@@ -17,9 +18,13 @@ namespace HighSchoolManagementApi.Repository
         {
             _context = context;
         }
-        public async Task<List<Users>> GetAllAsync()
+        public async Task<List<Users>> GetAllAsync(QueryObject query)
         {
-            return await _context.Users.ToListAsync();
+            var users = _context.Users.AsQueryable();
+            if(!string.IsNullOrWhiteSpace(query.Name)) users = users.Where(s => s.Name.ToLower().Contains(query.Name.ToLower()));
+            if(!string.IsNullOrWhiteSpace(query.Surname)) users = users.Where(s => s.Surname.ToLower().Contains(query.Surname.ToLower()));
+
+            return await users.ToListAsync();
         }
 
         public async Task<Users> CreateAsync(Users usersModel)

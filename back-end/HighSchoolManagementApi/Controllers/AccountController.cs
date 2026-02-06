@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using HighSchoolManagementApi.Models;
 using HighSchoolManagementApi.Dtos.Account;
 using System.Net;
+using HighSchoolManagementApi.Interfaces;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -15,9 +16,11 @@ namespace HighSchoolManagementApi.Controllers
     public class AccountController: ControllerBase
     {
         private readonly UserManager<AuthUser> _userManager;
-        public AccountController(UserManager<AuthUser> userManager)
+        private readonly ITokenService _tokenService;
+        public AccountController(UserManager<AuthUser> userManager,  ITokenService tokenService)
         {
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
@@ -39,7 +42,14 @@ namespace HighSchoolManagementApi.Controllers
                     var roleResult = await _userManager.AddToRoleAsync(authUser, "User");
                     if (roleResult.Succeeded)
                     {
-                        return Ok("User Created");
+                        return Ok(
+                            new NewUserDto
+                            {
+                                UserName = authUser.UserName,
+                                Email = authUser.Email,
+                                Token = _tokenService.CreateToken(authUser),
+                            }
+                        );
                     }else return StatusCode(500, roleResult.Errors);
                 }
 

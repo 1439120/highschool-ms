@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using HighSchoolManagementApi.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,11 +24,11 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 
 builder.Services.AddIdentity<AuthUser, IdentityRole>(options =>
 {
-   options.Password.RequireDigit = true; 
+//    options.Password.RequireDigit = true; 
    options.Password.RequireLowercase = true; 
-   options.Password.RequireUppercase = true; 
-   options.Password.RequireNonAlphanumeric = true; 
-   options.Password.RequiredLength = 12;
+//    options.Password.RequireUppercase = true; 
+//    options.Password.RequireNonAlphanumeric = true; 
+//    options.Password.RequiredLength = 12;
 })
 .AddEntityFrameworkStores<ApplicationDBContext>();
 
@@ -64,6 +65,7 @@ builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IClassroomRepository, ClassroomRepository>();
 builder.Services.AddScoped<IGradesRepository, GradesRepository>();
 builder.Services.AddScoped<ISubjectRepository, SubjectsRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 

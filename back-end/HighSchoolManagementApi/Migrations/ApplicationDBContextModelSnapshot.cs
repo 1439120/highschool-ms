@@ -119,7 +119,7 @@ namespace HighSchoolManagementApi.Migrations
 
                     b.HasIndex("GradeId");
 
-                    b.ToTable("Classroom");
+                    b.ToTable("Classrooms");
                 });
 
             modelBuilder.Entity("HighSchoolManagementApi.Models.Grades", b =>
@@ -170,6 +170,21 @@ namespace HighSchoolManagementApi.Migrations
                     b.ToTable("Subjects");
                 });
 
+            modelBuilder.Entity("HighSchoolManagementApi.Models.UserSubject", b =>
+                {
+                    b.Property<string>("AuthUserId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("AuthUserId", "SubjectId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("UserSubject");
+                });
+
             modelBuilder.Entity("HighSchoolManagementApi.Models.Users", b =>
                 {
                     b.Property<int>("Id")
@@ -179,6 +194,10 @@ namespace HighSchoolManagementApi.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AuthUserId")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -227,7 +246,7 @@ namespace HighSchoolManagementApi.Migrations
 
                     b.HasIndex("LearnerClassroomId");
 
-                    b.ToTable("Users");
+                    b.ToTable("UserDetails");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -401,6 +420,25 @@ namespace HighSchoolManagementApi.Migrations
                     b.Navigation("Grade");
                 });
 
+            modelBuilder.Entity("HighSchoolManagementApi.Models.UserSubject", b =>
+                {
+                    b.HasOne("HighSchoolManagementApi.Models.AuthUser", "AuthUser")
+                        .WithMany("UserSubject")
+                        .HasForeignKey("AuthUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HighSchoolManagementApi.Models.Subjects", "Subjects")
+                        .WithMany("UserSubject")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AuthUser");
+
+                    b.Navigation("Subjects");
+                });
+
             modelBuilder.Entity("HighSchoolManagementApi.Models.Users", b =>
                 {
                     b.HasOne("HighSchoolManagementApi.Models.Classroom", "Classroom")
@@ -466,9 +504,19 @@ namespace HighSchoolManagementApi.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("HighSchoolManagementApi.Models.AuthUser", b =>
+                {
+                    b.Navigation("UserSubject");
+                });
+
             modelBuilder.Entity("HighSchoolManagementApi.Models.Classroom", b =>
                 {
                     b.Navigation("Learners");
+                });
+
+            modelBuilder.Entity("HighSchoolManagementApi.Models.Subjects", b =>
+                {
+                    b.Navigation("UserSubject");
                 });
 #pragma warning restore 612, 618
         }

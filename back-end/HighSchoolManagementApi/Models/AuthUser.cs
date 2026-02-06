@@ -9,6 +9,6 @@ namespace HighSchoolManagementApi.Models
 {
     public class AuthUser: IdentityUser
     {
-        
+        public List<UserSubject> UserSubject {get; set;} = new List<UserSubject>();
     }
 }

@@ -94,6 +94,7 @@ builder.Services.AddScoped<IClassroomRepository, ClassroomRepository>();
 builder.Services.AddScoped<IGradesRepository, GradesRepository>();
 builder.Services.AddScoped<ISubjectRepository, SubjectsRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IUserSubjectRepository, UserSubjectRepository>();
 
 var app = builder.Build();
 

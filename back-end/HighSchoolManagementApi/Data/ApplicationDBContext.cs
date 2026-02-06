@@ -21,6 +21,18 @@ namespace HighSchoolManagementApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            // defining a many 2 many relation wfor subjects and teachers/learners
+            modelBuilder.Entity<UserSubject>(x => x.HasKey(p => new {p.AuthUserId, p.SubjectId}));
+            modelBuilder.Entity<UserSubject>()
+                .HasOne(u => u.AuthUser)
+                .WithMany(u => u.UserSubject)
+                .HasForeignKey(p => p.AuthUserId);
+            
+            modelBuilder.Entity<UserSubject>()
+                .HasOne(u => u.Subjects)
+                .WithMany(u => u.UserSubject)
+                .HasForeignKey(p => p.SubjectId);
+
             modelBuilder.Entity<Classroom>()
                 .HasOne(c => c.ClassTeacher)           // Classroom has one ClassTeacher
                 .WithMany()                             // Teacher has many classrooms (or zero)
@@ -56,5 +68,6 @@ namespace HighSchoolManagementApi.Data
         public DbSet<Users> Users { get; set; }
         public DbSet<Subjects> Subjects { get; set; }
         public DbSet<Classroom> Classroom { get; set; }
+        public DbSet<UserSubject> UserSubject { get; set; }
     }
 }

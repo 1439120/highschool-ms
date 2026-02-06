@@ -4,10 +4,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace HighSchoolManagementApi.Migrations
 {
     /// <inheritdoc />
-    public partial class Identity : Migration
+    public partial class UserSubjectsManyToMany : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,6 +51,21 @@ namespace HighSchoolManagementApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Grades",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    GradeNumber = table.Column<int>(type: "integer", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grades", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,6 +174,118 @@ namespace HighSchoolManagementApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Subjects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    GradeId = table.Column<int>(type: "integer", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subjects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subjects_Grades_GradeId",
+                        column: x => x.GradeId,
+                        principalTable: "Grades",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserSubject",
+                columns: table => new
+                {
+                    AuthUserId = table.Column<string>(type: "text", nullable: false),
+                    SubjectId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserSubject", x => new { x.AuthUserId, x.SubjectId });
+                    table.ForeignKey(
+                        name: "FK_UserSubject_AspNetUsers_AuthUserId",
+                        column: x => x.AuthUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserSubject_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "Subjects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Classrooms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    GradeId = table.Column<int>(type: "integer", nullable: true),
+                    ClassTeacherId = table.Column<int>(type: "integer", nullable: true),
+                    MaximumOccupants = table.Column<int>(type: "integer", nullable: false),
+                    RegisteredStudents = table.Column<int>(type: "integer", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Classrooms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Classrooms_Grades_GradeId",
+                        column: x => x.GradeId,
+                        principalTable: "Grades",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AuthUserId = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Surname = table.Column<string>(type: "text", nullable: false),
+                    Phone = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Role = table.Column<string>(type: "text", nullable: false),
+                    Address = table.Column<string>(type: "text", nullable: false),
+                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
+                    DateJoined = table.Column<DateOnly>(type: "date", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    LearnerClassroomId = table.Column<int>(type: "integer", nullable: true),
+                    ClassroomId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserDetails_Classrooms_ClassroomId",
+                        column: x => x.ClassroomId,
+                        principalTable: "Classrooms",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserDetails_Classrooms_LearnerClassroomId",
+                        column: x => x.LearnerClassroomId,
+                        principalTable: "Classrooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "8af1a341-3b76-4654-979b-57777174620f", null, "User", "USER" },
+                    { "cac43a6e-f7bb-4448-ba05-931d27eb5e93", null, "Admin", "ADMIN" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -193,11 +322,57 @@ namespace HighSchoolManagementApi.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Classrooms_ClassTeacherId",
+                table: "Classrooms",
+                column: "ClassTeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Classrooms_GradeId",
+                table: "Classrooms",
+                column: "GradeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subjects_GradeId",
+                table: "Subjects",
+                column: "GradeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserDetails_ClassroomId",
+                table: "UserDetails",
+                column: "ClassroomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserDetails_LearnerClassroomId",
+                table: "UserDetails",
+                column: "LearnerClassroomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserSubject_SubjectId",
+                table: "UserSubject",
+                column: "SubjectId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Classrooms_UserDetails_ClassTeacherId",
+                table: "Classrooms",
+                column: "ClassTeacherId",
+                principalTable: "UserDetails",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Classrooms_Grades_GradeId",
+                table: "Classrooms");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Classrooms_UserDetails_ClassTeacherId",
+                table: "Classrooms");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -214,10 +389,25 @@ namespace HighSchoolManagementApi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "UserSubject");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Subjects");
+
+            migrationBuilder.DropTable(
+                name: "Grades");
+
+            migrationBuilder.DropTable(
+                name: "UserDetails");
+
+            migrationBuilder.DropTable(
+                name: "Classrooms");
         }
     }
 }

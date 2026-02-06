@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HighSchoolManagementApi.Models
 {
+    [Table("UserDetails")]
     public class Users
     {
         public int Id { get; set; }
+        public string AuthUserId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Surname { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;

@@ -11,6 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using HighSchoolManagementApi.Interfaces;
 using HighSchoolManagementApi.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -25,6 +26,7 @@ namespace HighSchoolManagementApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);

@@ -8,6 +8,7 @@ using HighSchoolManagementApi.Models;
 using HighSchoolManagementApi.Dtos.Account;
 using System.Net;
 using HighSchoolManagementApi.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -17,10 +18,32 @@ namespace HighSchoolManagementApi.Controllers
     {
         private readonly UserManager<AuthUser> _userManager;
         private readonly ITokenService _tokenService;
-        public AccountController(UserManager<AuthUser> userManager,  ITokenService tokenService)
+        private readonly SignInManager<AuthUser> _signinManager;
+        public AccountController(UserManager<AuthUser> userManager,  ITokenService tokenService, SignInManager<AuthUser> signinManager)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _signinManager = signinManager;
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> login(LoginDto loginDto)
+        {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username);
+
+            if(user == null) return Unauthorized("Invalid Username");
+
+            var result = await _signinManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+            if(!result.Succeeded) return Unauthorized("Invalid Username");
+            return Ok(new NewUserDto
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                Token = _tokenService.CreateToken(user),
+            });
         }
 
         [HttpPost("register")]

@@ -1,53 +1,106 @@
-import { computed, Injectable, signal } from '@angular/core';
-import { User, users } from '../models/User';
+import { inject, Injectable, signal } from '@angular/core';
+import { User } from '../models/User';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService {
-  private _users = signal<User[]>([]);
 
-  constructor(){
-    this._users.set(users);
-  }
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:5068';
 
-  updateUser(newData: User) {
-    console.log('Before update:', this._users());
-    console.log('Updating with:', newData);
-    console.log('Looking for ID:', newData.id);
-    
-    this._users.update(users => {
-      const updatedUsers = users.map(u => {
-        console.log('Checking user:', u.id, 'vs', newData.id, 'match?', u.id === newData.id);
-        let type = u.type
-        return u.id === newData.id ? { ...newData, type: type } : u;
-      });
-      
-      console.log('After update:', updatedUsers);
-      return updatedUsers;
+  token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGV4YW1wbGUuY29tIiwiZ2l2ZW5fbmFtZSI6IlVzZXIxIiwibmJmIjoxNzcwMzc1NDYyLCJleHAiOjE3NzA5ODAyNjIsImlhdCI6MTc3MDM3NTQ2MiwiaXNzIjoiaHR0dHA6Ly9sb2NhbGhvc3Q6NTI0NiIsImF1ZCI6Imh0dHRwOi8vbG9jYWxob3N0OjUyNDYifQ.Hg7o-FGOXA2aN6CTVP5_R-r7sgY4gmr_F4j96XRh53q7maaODqoBCNkbI1YcBrObmFxx4d6drg3IfJrHHpY21w";
+
+  teachers = signal<User[]>([]);
+  students = signal<User[]>([]);
+  currentTeacher = signal<User | null>(null);
+
+  private get authHeaders() {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.token}`
     });
   }
 
-  findUser(Id: string | null){
-      return this._users().find(user => user.id.toString() === Id);
+  loadTeachers(): void {
+    const headers = this.authHeaders
+
+    this.http
+      .get<User[]>(`${this.apiUrl}/api/users?Type=staff`, { headers })
+      .subscribe({
+        next: (data) => {
+          console.log('Teachers loaded:', data);
+          this.teachers.set(data);
+        },
+        error: (err) => {
+          console.error('Failed to load teachers', err);
+        }
+      });
   }
 
-  getUsersByType(type: string){
-      return users.filter((user)=> user.type === type)
+  loadStudents(): void {
+    const headers = this.authHeaders
+
+    this.http
+      .get<User[]>(`${this.apiUrl}/api/users?Type=student`, { headers })
+      .subscribe({
+        next: (data) => {
+          console.log('Students loaded:', data);
+          this.students.set(data);
+        },
+        error: (err) => {
+          console.error('Failed to load teachers', err);
+        }
+      });
   }
 
-  teachers = computed(()=> this._users().filter(user => user.type === 'staff')) 
-  students = computed(()=> this._users().filter(user => user.type === 'student')) 
-  addUser(user: User, type: string){
-      const current = this._users();
-    const newUser: User = {
-      ...user,
-      id: current[current.length - 1]?.id + 1 || 1,
-      type
-    };
-
-    this._users.set([...current, newUser]); // 🔥 THIS is the fix
-    return newUser;
+  addTeacher(teacher: User){
+    const headers = this.authHeaders
+    const { id, ...payloadWithoutId } = teacher;
+    const payload = { ...payloadWithoutId, type: 'staff' };
+    console.log("the teacher being added: ", payload)
+    this.http.post<User>(`${this.apiUrl}/api/users`, payload, { headers })
+      .subscribe({
+        next: (data) => {
+          console.log(`Teacher added `, data);
+          this.currentTeacher.set(data);
+        },
+        error: (err) => {
+          console.error('Failed to load teachers', err);
+        }
+      });
   }
 
+  getTeacher(id: string){
+    if(isNaN(parseInt(id))) return;
+    const headers = this.authHeaders
+    this.http
+      .get<User>(`${this.apiUrl}/api/users/${id}`, { headers })
+      .subscribe({
+        next: (data) => {
+          console.log(`Teacher loaded ${id}`, data);
+          this.currentTeacher.set(data);
+        },
+        error: (err) => {
+          console.error('Failed to load teachers', err);
+        }
+      });
+  }
+
+  updateTeacher(id: string, teacher: User){
+    if(isNaN(parseInt(id))) return;
+    const payload = { ...teacher, type: 'staff' };
+    const headers = this.authHeaders
+    this.http
+      .put<User>(`${this.apiUrl}/api/users/${id}`,payload , { headers })
+      .subscribe({
+        next: (data) => {
+          console.log(`Teacher updated ${id}`, data);
+          this.currentTeacher.set(data);
+        },
+        error: (err) => {
+          console.error('Failed to load teachers', err);
+        }
+      });
+  }
 }

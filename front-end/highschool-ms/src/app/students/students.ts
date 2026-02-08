@@ -13,11 +13,13 @@ import { UsersService } from '../services/users-service';
 export class Students extends Datamodel<User> {
   constructor(private service: UsersService){
     super();
+    this.service.loadStudents(); 
+
     this.title_.set("Students")
     effect(()=>{
       this.records_.set(this.service.students());
       const uniqueRoles: string[] = [
-        ...new Set(this.service.students().map(c => c.role))
+        ...new Set(this.records_().map(c => c.role))
       ];
       this.filterByItems_.set(uniqueRoles);
     })

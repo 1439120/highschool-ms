@@ -15,21 +15,23 @@ export class ContactInformationSection {
   onEditMode = signal(false)
   userId = signal<string | null>(null)
   contactInformation = computed(() => {
-  const id = this.userId();
-  if (!id) return null;
-  return this.service.findUser(id) ?? {
-    id: 0,
-    name: '',
-    surname: '',
-    phone: '',
-    email: '',
-    role: '',
-    address: '',
-    dateOfBirth: null,
-    dateJoined: null,
-    type: ''
-  };
-});
+    const currentUser = this.service.currentTeacher();
+    const id = this.userId();
+    if(currentUser && this.userId() == currentUser.id.toString())
+    return currentUser
+    else return {
+        id: 0,
+        name: '',
+        surname: '',
+        phone: '',
+        email: '',
+        role: '',
+        address: '',
+        dateOfBirth: undefined,
+        dateJoined: undefined,
+        type: 'teacher'
+      }
+  });
   private route = inject(ActivatedRoute)
   editContactInformation = signal<User>({
     id: 0,
@@ -91,10 +93,12 @@ export class ContactInformationSection {
   }
   saveContactInfo(){
     console.log('saving the contact information')
-    this.service.updateUser(this.editContactInformation())
+    let Id = this.userId()
+    if(Id)
+    this.service.updateTeacher(Id, this.editContactInformation())
     // In real app, save to backend here
     // console.log('Saving contact info:', this.editContactInformation());
-    console.log('Saving contact info:', this.contactInformation());
+    // console.log('Saving contact info:', this.contactInformation());
     
     // Exit edit mode
     this.onEditMode.set(false);    

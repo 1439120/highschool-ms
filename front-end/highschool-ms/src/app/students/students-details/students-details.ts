@@ -77,8 +77,8 @@ export class StudentsDetails {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.studentId = params['id'];
-      let findStudent = this.service.findUser(this.studentId)
-      if(findStudent) this.student.set(findStudent);
+      // let findStudent = this.service.findUser(this.studentId)
+      // if(findStudent) this.student.set(findStudent);
     });
     this.breadCrumb  = [{name: 'Students', url:'/students'},{name: `Student ${this.studentId}`, url:''}]
   }

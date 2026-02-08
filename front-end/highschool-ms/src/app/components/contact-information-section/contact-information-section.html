@@ -109,25 +109,25 @@
     @else {
         <!-- View Mode -->
         <div class="contact-cards">
-        <a [href]="'mailto:' + contactInformation()?.email" class="contact-card email">
+        <a [href]="'mailto:' + contactInformation().email" class="contact-card email">
             <span class="contact-icon">✉️</span>
             <div class="contact-content">
                 <span class="contact-label">Email Address</span>
-                <span class="contact-value">{{contactInformation()?.email}}</span>
+                <span class="contact-value">{{contactInformation().email}}</span>
             </div>
         </a>
-        <a [href]="'tel:' + contactInformation()?.phone" class="contact-card phone">
+        <a [href]="'tel:' + contactInformation().phone" class="contact-card phone">
             <span class="contact-icon">📞</span>
             <div class="contact-content">
                 <span class="contact-label">Phone Number</span>
-                <span class="contact-value">{{contactInformation()?.phone}}</span>
+                <span class="contact-value">{{contactInformation().phone}}</span>
             </div>
         </a>
         <div class="contact-card address">
             <span class="contact-icon">📍</span>
             <div class="contact-content">
                 <span class="contact-label">Physical Address</span>
-                <span class="contact-value">{{contactInformation()?.address}}</span>
+                <span class="contact-value">{{contactInformation().address}}</span>
             </div>
         </div>
         

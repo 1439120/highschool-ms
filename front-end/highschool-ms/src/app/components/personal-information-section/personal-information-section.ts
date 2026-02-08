@@ -3,7 +3,7 @@ import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {  User } from '../../models/User';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TeacherService } from '../../services/teacher-service';
+import { UsersService } from '../../services/users-service';
 
 @Component({
   selector: 'app-personal-information-section',
@@ -46,7 +46,7 @@ export class PersonalInformationSection {
   // this to check if the addbutton was clicked
   addClicked = signal(false);
 
-  constructor(private datePipe: DatePipe, private service: TeacherService){    
+  constructor(private datePipe: DatePipe, private service: UsersService){    
     effect(() => {
       const currentUser = this.service.currentTeacher();
       let userId = this.userId();
@@ -58,7 +58,7 @@ export class PersonalInformationSection {
       }
 
       if(this.addClicked()){
-        const addedUser = this.service.addedTeacher();
+        const addedUser = this.service.currentTeacher();
         if(addedUser == null) return;
         this.addClicked.set(false);
         this.personalInformation.set(addedUser);

@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, OnDestroy } from '@angular/core';
 import { Datatable } from '../components/datatable/datatable';
 import { User } from '../models/User';
 import { Datamodel } from '../models/Datamodel';
-import { TeacherService } from '../services/teacher-service';
+import { UsersService } from '../services/users-service';
 
 @Component({
   selector: 'app-teachers',
@@ -13,7 +13,7 @@ import { TeacherService } from '../services/teacher-service';
 
 export class Teachers extends Datamodel<User>{
 
-  constructor( private teacherService: TeacherService){
+  constructor( private teacherService: UsersService){
     super();
     this.teacherService.loadTeachers();
 

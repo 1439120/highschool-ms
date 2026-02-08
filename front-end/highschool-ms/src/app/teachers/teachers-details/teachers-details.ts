@@ -5,10 +5,9 @@ import BreadcrumbModel from '../../models/BreadcrumbModel';
 import { FormsModule } from '@angular/forms';
 import { ContactInformationSection } from '../../components/contact-information-section/contact-information-section';
 import { PersonalInformationSection } from '../../components/personal-information-section/personal-information-section';
-import { User } from '../../models/User';
 
-import { UsersService } from '../../services/users-service';
 import { Subject } from 'rxjs';
+import { UsersService } from '../../services/users-service';
 
 @Component({
   selector: 'app-teachers-details',
@@ -21,18 +20,21 @@ export class TeachersDetails {
   private route = inject(ActivatedRoute);
   breadCrumb!: BreadcrumbModel[];
   teacher = computed(()=>{
-    return this.service.findUser(this.teacherId()) ?? {
-      id: 0,
-      name: '',
-      surname: '',
-      phone: '',
-      email: '',
-      role: '',
-      address: '',
-      date_of_birth: undefined,
-      date_joined: undefined,
-      type: 'teacher'
-    }
+    const currentTeacher = this.service.currentTeacher();
+    if(currentTeacher && this.teacherId() == currentTeacher.id.toString())
+    return currentTeacher
+    else return {
+        id: 0,
+        name: '',
+        surname: '',
+        phone: '',
+        email: '',
+        role: '',
+        address: '',
+        dateOfBirth: undefined,
+        dateJoined: undefined,
+        type: 'teacher'
+      }
   })
   assigned_classes = signal<string[]>([])
   assigned_subjects = signal<string[]>([])
@@ -52,7 +54,6 @@ export class TeachersDetails {
   }
 
   ngOnInit(): void {
-    // this.teacherId = this.route.snapshot.paramMap.get('id')!;
     console.log("Teacher ID: ", this.teacherId)
     this.breadCrumb  = [{name: 'Teachers', url:'/teachers'},{name: `Teacher ${this.teacherId()}`, url:''}]
     this.loadTeacherData();

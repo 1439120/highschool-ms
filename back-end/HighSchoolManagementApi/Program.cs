@@ -44,6 +44,21 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
+// Allow my front-end to connect to my api
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngular",
+        policy =>
+        {
+            policy
+                .WithOrigins("http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+});
+
+
 // prevent objects cycling
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
@@ -106,6 +121,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAngular"); 
 
 app.UseAuthentication();
 app.UseAuthorization();

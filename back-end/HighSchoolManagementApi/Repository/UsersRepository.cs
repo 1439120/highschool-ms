@@ -23,6 +23,7 @@ namespace HighSchoolManagementApi.Repository
             var users = _context.Users.AsQueryable();
             if(!string.IsNullOrWhiteSpace(query.Name)) users = users.Where(s => s.Name.ToLower().Contains(query.Name.ToLower()));
             if(!string.IsNullOrWhiteSpace(query.Surname)) users = users.Where(s => s.Surname.ToLower().Contains(query.Surname.ToLower()));
+            if(!string.IsNullOrWhiteSpace(query.Type)) users = users.Where(s => s.Type.ToLower().Contains(query.Type.ToLower()));
             if (!string.IsNullOrWhiteSpace(query.SortBy))
             {
                 if (query.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))

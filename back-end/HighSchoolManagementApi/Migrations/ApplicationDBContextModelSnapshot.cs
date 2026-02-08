@@ -198,7 +198,6 @@ namespace HighSchoolManagementApi.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("AuthUserId")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int?>("ClassroomId")

@@ -194,7 +194,6 @@ namespace HighSchoolManagementApi.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("AuthUserId")
@@ -206,14 +205,13 @@ namespace HighSchoolManagementApi.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateOnly>("DateJoined")
+                    b.Property<DateOnly?>("DateJoined")
                         .HasColumnType("date");
 
-                    b.Property<DateOnly>("DateOfBirth")
+                    b.Property<DateOnly?>("DateOfBirth")
                         .HasColumnType("date");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int?>("LearnerClassroomId")
@@ -224,11 +222,9 @@ namespace HighSchoolManagementApi.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Role")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Surname")

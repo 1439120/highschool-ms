@@ -13,19 +13,16 @@ namespace HighSchoolManagementApi.Dtos.Users
         [MaxLength(20, ErrorMessage = "Name cannot be over 20 characters")]
         public string Name { get; set; } = string.Empty;
         [Required]
-        [MinLength(3, ErrorMessage = "Name must be 3 characters")]
-        [MaxLength(20, ErrorMessage = "Name cannot be over 20 characters")]
+        [MinLength(3, ErrorMessage = "Surname must be 3 characters")]
+        [MaxLength(20, ErrorMessage = "Surname cannot be over 20 characters")]
         public string Surname { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
-        [Required]
         public string Email { get; set; } = string.Empty;
-        [Required]
         public string Role { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
-        public DateOnly DateOfBirth { get; set; }
-        public DateOnly DateJoined { get; set; }
+        public DateOnly? DateOfBirth { get; set; }
+        public DateOnly? DateJoined { get; set; }
         [Required]
         public string Type { get; set; } = string.Empty;
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
     }
 }

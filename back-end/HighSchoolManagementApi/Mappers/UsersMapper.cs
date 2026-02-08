@@ -29,20 +29,19 @@ namespace HighSchoolManagementApi.Mappers
             };
         }
 
-        public static Users ToUsersFromCreateDTO(this CreateUsersRequestDto stockDto)
+        public static Users ToUsersFromCreateDTO(this CreateUsersRequestDto createDto)
         {
             return new Users
             {
-                Name = stockDto.Name,
-                Surname = stockDto.Surname,
-                Phone = stockDto.Phone,
-                Email = stockDto.Email,
-                Role = stockDto.Role,
-                Address = stockDto.Address,
-                DateOfBirth = stockDto.DateOfBirth,
-                DateJoined = stockDto.DateJoined,
-                Type = stockDto.Type,
-                CreatedOn = stockDto.CreatedOn
+                Name = createDto.Name,
+                Surname = createDto.Surname,
+                Phone = createDto.Phone,
+                Email = createDto.Email,
+                Role = createDto.Role,
+                Address = createDto.Address,
+                DateOfBirth = createDto.DateOfBirth,
+                DateJoined = createDto.DateJoined,
+                Type = createDto.Type
             };
         }
     }

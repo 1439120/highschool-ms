@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
@@ -18,18 +18,24 @@ import { UsersService } from '../../services/users-service';
 })
 export class StudentsDetails {
   selectedTerm: string = 'term_two';
-  studentId: string = '';
-  student = signal<User>({
-    id: 0,
-    name: '',
-    surname: '',
-    phone: '',
-    email: '',
-    role: '',
-    address: '',
-    dateOfBirth: null,
-    dateJoined: null,
-    type: ''
+  studentId = signal<string | null>(null);
+
+  student = computed(()=>{
+    const currentTeacher = this.service.currentUser();
+    if(currentTeacher && this.studentId() == currentTeacher.id.toString())
+    return currentTeacher
+    else return {
+        id: 0,
+        name: '',
+        surname: '',
+        phone: '',
+        email: '',
+        role: '',
+        address: '',
+        dateOfBirth: undefined,
+        dateJoined: undefined,
+        type: 'teacher'
+      }
   })
   breadCrumb!: BreadcrumbModel[];
   subjects = signal([
@@ -76,11 +82,9 @@ export class StudentsDetails {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.studentId = params['id'];
-      // let findStudent = this.service.findUser(this.studentId)
-      // if(findStudent) this.student.set(findStudent);
+      this.studentId.set(params['id']);
     });
-    this.breadCrumb  = [{name: 'Students', url:'/students'},{name: `Student ${this.studentId}`, url:''}]
+    this.breadCrumb  = [{name: 'Students', url:'/students'},{name: `Student ${this.studentId()}`, url:''}]
   }
 
   getTermDisplayName(term: string): string {

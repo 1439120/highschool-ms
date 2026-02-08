@@ -20,7 +20,7 @@ export class TeachersDetails {
   private route = inject(ActivatedRoute);
   breadCrumb!: BreadcrumbModel[];
   teacher = computed(()=>{
-    const currentTeacher = this.service.currentTeacher();
+    const currentTeacher = this.service.currentUser();
     if(currentTeacher && this.teacherId() == currentTeacher.id.toString())
     return currentTeacher
     else return {
@@ -60,8 +60,6 @@ export class TeachersDetails {
   }
 
   loadTeacherData() {
-    // let value = this.service.findUser(Id)
-    // if (value) this.teacher.set(value)
     this.assigned_classes.set(['Grade 12 A', 'Grade 12 B', 'Grade 10 A'])
     this.assigned_subjects.set(['maths', 'physics', 'life science'])
   }

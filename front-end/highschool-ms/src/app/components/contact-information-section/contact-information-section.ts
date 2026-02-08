@@ -14,8 +14,9 @@ import { UsersService } from '../../services/users-service';
 export class ContactInformationSection {
   onEditMode = signal(false)
   userId = signal<string | null>(null)
+  userType = input<string>()
   contactInformation = computed(() => {
-    const currentUser = this.service.currentTeacher();
+    const currentUser = this.service.currentUser();
     const id = this.userId();
     if(currentUser && this.userId() == currentUser.id.toString())
     return currentUser
@@ -95,7 +96,7 @@ export class ContactInformationSection {
     console.log('saving the contact information')
     let Id = this.userId()
     if(Id)
-    this.service.updateTeacher(Id, this.editContactInformation())
+    this.service.updateUser(Id, this.editContactInformation(), this.userType() ?? "")
     // In real app, save to backend here
     // console.log('Saving contact info:', this.editContactInformation());
     // console.log('Saving contact info:', this.contactInformation());

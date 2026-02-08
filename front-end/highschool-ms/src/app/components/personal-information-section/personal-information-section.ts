@@ -48,7 +48,7 @@ export class PersonalInformationSection {
 
   constructor(private datePipe: DatePipe, private service: UsersService){    
     effect(() => {
-      const currentUser = this.service.currentTeacher();
+      const currentUser = this.service.currentUser();
       let userId = this.userId();
       if(userId){
         if (currentUser && currentUser.id == parseInt(userId)){
@@ -58,7 +58,7 @@ export class PersonalInformationSection {
       }
 
       if(this.addClicked()){
-        const addedUser = this.service.currentTeacher();
+        const addedUser = this.service.currentUser();
         if(addedUser == null) return;
         this.addClicked.set(false);
         this.personalInformation.set(addedUser);
@@ -75,7 +75,7 @@ export class PersonalInformationSection {
     )
     let Id = this.userId()
     if(Id){
-      this.service.getTeacher(Id)
+      this.service.getUser(Id)
     }
   }
   toggleEditMode(){
@@ -125,7 +125,7 @@ export class PersonalInformationSection {
     console.log('saving the personal information')
     let Id = this.userId()
     if(Id)
-    this.service.updateTeacher(Id, this.editPersonalInformation())
+    this.service.updateUser(Id, this.editPersonalInformation(), this.userType() ?? "")
 
     // In real app, save to backend here
     // console.log('Saving contact info:', this.personalInformation());
@@ -138,7 +138,7 @@ export class PersonalInformationSection {
 
   async addNewUser(){
     this.addClicked.set(true);
-    this.service.addTeacher(this.editPersonalInformation());
+    this.service.addUser(this.editPersonalInformation(), this.userType() ?? "");
     
   }
 

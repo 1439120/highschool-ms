@@ -14,7 +14,7 @@ export class UsersService {
 
   teachers = signal<User[]>([]);
   students = signal<User[]>([]);
-  currentTeacher = signal<User | null>(null);
+  currentUser = signal<User | null>(null);
 
   private get authHeaders() {
     return new HttpHeaders({
@@ -54,16 +54,16 @@ export class UsersService {
       });
   }
 
-  addTeacher(teacher: User){
+  addUser(teacher: User, userType: string){
     const headers = this.authHeaders
     const { id, ...payloadWithoutId } = teacher;
-    const payload = { ...payloadWithoutId, type: 'staff' };
+    const payload = { ...payloadWithoutId, type: userType };
     console.log("the teacher being added: ", payload)
     this.http.post<User>(`${this.apiUrl}/api/users`, payload, { headers })
       .subscribe({
         next: (data) => {
           console.log(`Teacher added `, data);
-          this.currentTeacher.set(data);
+          this.currentUser.set(data);
         },
         error: (err) => {
           console.error('Failed to load teachers', err);
@@ -71,35 +71,35 @@ export class UsersService {
       });
   }
 
-  getTeacher(id: string){
+  getUser(id: string){
     if(isNaN(parseInt(id))) return;
     const headers = this.authHeaders
     this.http
       .get<User>(`${this.apiUrl}/api/users/${id}`, { headers })
       .subscribe({
         next: (data) => {
-          console.log(`Teacher loaded ${id}`, data);
-          this.currentTeacher.set(data);
+          console.log(`User loaded ${id}`, data);
+          this.currentUser.set(data);
         },
         error: (err) => {
-          console.error('Failed to load teachers', err);
+          console.error('Failed to load user', err);
         }
       });
   }
 
-  updateTeacher(id: string, teacher: User){
+  updateUser(id: string, teacher: User, userType: string){
     if(isNaN(parseInt(id))) return;
-    const payload = { ...teacher, type: 'staff' };
+    const payload = { ...teacher, type: userType };
     const headers = this.authHeaders
     this.http
       .put<User>(`${this.apiUrl}/api/users/${id}`,payload , { headers })
       .subscribe({
         next: (data) => {
           console.log(`Teacher updated ${id}`, data);
-          this.currentTeacher.set(data);
+          this.currentUser.set(data);
         },
         error: (err) => {
-          console.error('Failed to load teachers', err);
+          console.error('Failed to load user', err);
         }
       });
   }

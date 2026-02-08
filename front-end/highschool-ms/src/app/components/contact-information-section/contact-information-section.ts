@@ -23,7 +23,7 @@ export class ContactInformationSection {
   //   role: '',
   //   address: '',
   //   date_of_birth: new Date(),
-  //   date_joined: undefined,
+  //   dateJoined: undefined,
   //   type: ''
   // });
   contactInformation = computed(() => {
@@ -37,8 +37,8 @@ export class ContactInformationSection {
     email: '',
     role: '',
     address: '',
-    date_of_birth: new Date(),
-    date_joined: undefined,
+    dateOfBirth: new Date(),
+    dateJoined: undefined,
     type: ''
   };
 });
@@ -51,8 +51,8 @@ export class ContactInformationSection {
     email: '',
     role: '',
     address: '',
-    date_of_birth: new Date(),
-    date_joined: undefined,
+    dateOfBirth: new Date(),
+    dateJoined: undefined,
     type: ''
   });
 
@@ -85,8 +85,8 @@ export class ContactInformationSection {
       email: user?.email || '',
       role: user?.role || '',
       address: user?.address || '',
-      date_of_birth: user?.date_of_birth || new Date(),
-      date_joined: user?.date_joined || new Date(),
+      dateOfBirth: user?.dateOfBirth || new Date(),
+      dateJoined: user?.dateJoined || new Date(),
       type: ''
     });
 

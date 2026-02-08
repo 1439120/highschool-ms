@@ -5,7 +5,11 @@ import { User, users } from '../models/User';
   providedIn: 'root',
 })
 export class UsersService {
-  private _users = signal<User[]>(users);
+  private _users = signal<User[]>([]);
+
+  constructor(){
+    this._users.set(users);
+  }
 
   updateUser(newData: User) {
     console.log('Before update:', this._users());

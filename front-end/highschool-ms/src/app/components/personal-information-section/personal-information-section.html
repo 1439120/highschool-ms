@@ -52,20 +52,20 @@
             <input 
             class="form-input" 
             type="date" 
-            id="date_of_birth" 
-            [(ngModel)]="editPersonalInformation().date_of_birth"
-            [value]="(editPersonalInformation().date_of_birth)"
+            id="dateOfBirth" 
+            [(ngModel)]="editPersonalInformation().dateOfBirth"
+            [value]="(editPersonalInformation().dateOfBirth)"
             >
         }
         @else {
-            <span class="info-value">{{formatDate(personalInformation().date_of_birth)}}</span>
+            <span class="info-value">{{formatDate(personalInformation().dateOfBirth)}}</span>
         }
         </div>
         
         <!-- Age (Read-only) -->
         <div class="info-item">
         <span class="info-label">Age</span>
-        <span class="info-value">{{calculateAge(personalInformation().date_of_birth)}} years</span>
+        <span class="info-value">{{calculateAge(personalInformation().dateOfBirth)}} years</span>
         </div>
         
         <!-- Date Joined -->
@@ -75,13 +75,13 @@
             <input 
             class="form-input" 
             type="date" 
-            id="date_joined" 
-            [(ngModel)]="editPersonalInformation().date_joined"
-            [value]="(editPersonalInformation().date_joined)"
+            id="dateJoined" 
+            [(ngModel)]="editPersonalInformation().dateJoined"
+            [value]="(editPersonalInformation().dateJoined)"
             >
         }
         @else {
-            <span class="info-value">{{formatDate(personalInformation().date_joined)}}</span>
+            <span class="info-value">{{formatDate(personalInformation().dateJoined)}}</span>
         }
         </div>
         

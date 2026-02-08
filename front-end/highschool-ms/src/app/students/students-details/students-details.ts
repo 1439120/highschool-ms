@@ -27,8 +27,8 @@ export class StudentsDetails {
     email: '',
     role: '',
     address: '',
-    date_of_birth: undefined,
-    date_joined: undefined,
+    dateOfBirth: undefined,
+    dateJoined: undefined,
     type: ''
   })
   breadCrumb!: BreadcrumbModel[];

@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, OnDestroy } from '@angular/core';
 import { Datatable } from '../components/datatable/datatable';
 import { User } from '../models/User';
 import { Datamodel } from '../models/Datamodel';
-import { UsersService } from '../services/users-service';
+import { TeacherService } from '../services/teacher-service';
 
 @Component({
   selector: 'app-teachers',
@@ -13,13 +13,17 @@ import { UsersService } from '../services/users-service';
 
 export class Teachers extends Datamodel<User>{
 
-  constructor(private service: UsersService){
+  constructor( private teacherService: TeacherService){
     super();
+    this.teacherService.loadTeachers();
+
     this.title_.set("Teachers");
+    // react to signal changes
     effect(()=>{
-      this.records_.set(this.service.teachers());
+      this.records_.set(this.teacherService.teachers());
+      console.log(this.records_());
       const uniqueRoles: string[] = [
-        ...new Set(this.service.teachers().map(c => c.role))
+        ...new Set(this.records_().map(c => c.role))
       ];
       this.filterByItems_.set(uniqueRoles);
     })

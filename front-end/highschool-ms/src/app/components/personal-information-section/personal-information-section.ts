@@ -24,8 +24,8 @@ export class PersonalInformationSection {
     email: '',
     role: '',
     address: '',
-    date_of_birth: new Date(),
-    date_joined: undefined,
+    dateOfBirth: new Date(),
+    dateJoined: undefined,
     type: ''
   });
   private route = inject(ActivatedRoute)
@@ -38,8 +38,8 @@ export class PersonalInformationSection {
     email: '',
     role: '',
     address: '',
-    date_of_birth: new Date(),
-    date_joined: undefined,
+    dateOfBirth: new Date(),
+    dateJoined: undefined,
     type: ''
   });
 
@@ -66,8 +66,8 @@ export class PersonalInformationSection {
       email: user?.email || '',
       role: user?.role || '',
       address: user?.address || '',
-      date_of_birth: user?.date_of_birth || new Date(),
-      date_joined: user?.date_joined || new Date(),
+      dateOfBirth: user?.dateOfBirth || new Date(),
+      dateJoined: user?.dateJoined || new Date(),
       type: ''
     })
   }

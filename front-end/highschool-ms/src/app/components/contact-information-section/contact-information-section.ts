@@ -14,18 +14,6 @@ import { UsersService } from '../../services/users-service';
 export class ContactInformationSection {
   onEditMode = signal(false)
   userId = signal<string | null>(null)
-  // contactInformation = signal<User>({
-  //   id: 0,
-  //   name: '',
-  //   surname: '',
-  //   phone: '',
-  //   email: '',
-  //   role: '',
-  //   address: '',
-  //   date_of_birth: new Date(),
-  //   dateJoined: undefined,
-  //   type: ''
-  // });
   contactInformation = computed(() => {
   const id = this.userId();
   if (!id) return null;
@@ -37,8 +25,8 @@ export class ContactInformationSection {
     email: '',
     role: '',
     address: '',
-    dateOfBirth: new Date(),
-    dateJoined: undefined,
+    dateOfBirth: null,
+    dateJoined: null,
     type: ''
   };
 });
@@ -51,8 +39,8 @@ export class ContactInformationSection {
     email: '',
     role: '',
     address: '',
-    dateOfBirth: new Date(),
-    dateJoined: undefined,
+    dateOfBirth: null,
+    dateJoined: null,
     type: ''
   });
 
@@ -85,8 +73,8 @@ export class ContactInformationSection {
       email: user?.email || '',
       role: user?.role || '',
       address: user?.address || '',
-      dateOfBirth: user?.dateOfBirth || new Date(),
-      dateJoined: user?.dateJoined || new Date(),
+      dateOfBirth: user?.dateOfBirth || null,
+      dateJoined: user?.dateJoined || null,
       type: ''
     });
 

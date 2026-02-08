@@ -31,7 +31,7 @@ export class Datatable<T> implements OnInit {
   selectedRole = signal('');
   sortBy = signal('name');
   currentPage = signal(1);
-  itemsPerPage = 6;
+  itemsPerPage = 4;
   isLoading = signal(false);
   currentSort = signal('');
 

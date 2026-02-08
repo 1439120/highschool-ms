@@ -20,8 +20,8 @@ namespace HighSchoolManagementApi.Dtos.Users
         public string Email { get; set; } = string.Empty;
         public string Role { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
-        public DateOnly DateOfBirth { get; set; }
-        public DateOnly DateJoined { get; set; }
+        public DateOnly? DateOfBirth { get; set; }
+        public DateOnly? DateJoined { get; set; }
         public string Type { get; set; } = string.Empty;
         public int? LearnerClassroomId { get; set; }
     }

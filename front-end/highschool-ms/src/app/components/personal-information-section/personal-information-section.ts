@@ -1,9 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {  User } from '../../models/User';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UsersService } from '../../services/users-service';
+import { TeacherService } from '../../services/teacher-service';
 
 @Component({
   selector: 'app-personal-information-section',
@@ -24,8 +24,8 @@ export class PersonalInformationSection {
     email: '',
     role: '',
     address: '',
-    dateOfBirth: new Date(),
-    dateJoined: undefined,
+    dateOfBirth: null,
+    dateJoined: null,
     type: ''
   });
   private route = inject(ActivatedRoute)
@@ -38,21 +38,44 @@ export class PersonalInformationSection {
     email: '',
     role: '',
     address: '',
-    dateOfBirth: new Date(),
-    dateJoined: undefined,
+    dateOfBirth: null,
+    dateJoined: null,
     type: ''
   });
 
-  constructor(private datePipe: DatePipe, private service: UsersService){}
+  // this to check if the addbutton was clicked
+  addClicked = signal(false);
+
+  constructor(private datePipe: DatePipe, private service: TeacherService){    
+    effect(() => {
+      const currentUser = this.service.currentTeacher();
+      let userId = this.userId();
+      if(userId){
+        if (currentUser && currentUser.id == parseInt(userId)){
+          this.personalInformation.set(currentUser);
+          this.onEditMode.set(false);
+        }
+      }
+
+      if(this.addClicked()){
+        const addedUser = this.service.addedTeacher();
+        if(addedUser == null) return;
+        this.addClicked.set(false);
+        this.personalInformation.set(addedUser);
+        this.onEditMode.set(false);
+        this.router.navigate(['../', addedUser.id], {
+          relativeTo: this.route,
+        });
+      }
+    });
+  }
   ngOnInit(): void {
     this.onEditMode.set(
       this.route.snapshot.queryParamMap.get('mode') === 'edit'
     )
     let Id = this.userId()
     if(Id){
-      let user = this.service.findUser(Id)
-      if(user)
-      this.personalInformation.set(user);
+      this.service.getTeacher(Id)
     }
   }
   toggleEditMode(){
@@ -66,21 +89,21 @@ export class PersonalInformationSection {
       email: user?.email || '',
       role: user?.role || '',
       address: user?.address || '',
-      dateOfBirth: user?.dateOfBirth || new Date(),
-      dateJoined: user?.dateJoined || new Date(),
+      dateOfBirth: user?.dateOfBirth || null,
+      dateJoined: user?.dateJoined || null,
       type: ''
     })
   }
-  formatDateForInput(date: Date | string | undefined): string {
+  formatDateForInput(date: Date | string | null): string {
     if (!date) return '';
     const d = new Date(date);
     console.log(`Date converted to ${d.toISOString().split('T')[0]}`)
     return d.toISOString().split('T')[0];
   }
-  formatDate(date: Date | undefined): string {
+  formatDate(date: Date | null): string {
     return this.datePipe.transform(date, 'longDate') || '';
   }
-  calculateAge(birthDate: Date | undefined): number {
+  calculateAge(birthDate: Date | null): number {
       if (!birthDate) return 0;
       const today = new Date();
       const birth = new Date(birthDate);
@@ -100,10 +123,12 @@ export class PersonalInformationSection {
   // Save contact information
   savePersonalInfo() {
     console.log('saving the personal information')
-    this.service.updateUser(this.editPersonalInformation())
+    let Id = this.userId()
+    if(Id)
+    this.service.updateTeacher(Id, this.editPersonalInformation())
 
     // In real app, save to backend here
-    console.log('Saving contact info:', this.personalInformation());
+    // console.log('Saving contact info:', this.personalInformation());
     
     // Exit edit mode
     this.onEditMode.set(false);    
@@ -111,13 +136,10 @@ export class PersonalInformationSection {
     alert('Contact information updated successfully!');
   }
 
-  addNewUser(){
-    let userType: string = this.userType() ?? ''
-    let addedUser = this.service.addUser(this.editPersonalInformation(), userType)
-    console.log("the new added user has this id", addedUser)
-    this.personalInformation.set(addedUser);
-    this.onEditMode.set(false)
-    this.router.navigate(['../', addedUser.id], { relativeTo: this.route });
+  async addNewUser(){
+    this.addClicked.set(true);
+    this.service.addTeacher(this.editPersonalInformation());
+    
   }
 
 

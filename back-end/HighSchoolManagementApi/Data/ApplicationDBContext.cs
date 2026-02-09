@@ -69,5 +69,6 @@ namespace HighSchoolManagementApi.Data
         public DbSet<Subjects> Subjects { get; set; }
         public DbSet<Classroom> Classroom { get; set; }
         public DbSet<UserSubject> UserSubject { get; set; }
+        public DbSet<LessonPlan> LessonPlan { get; set; }
     }
 }

@@ -110,6 +110,7 @@ builder.Services.AddScoped<IGradesRepository, GradesRepository>();
 builder.Services.AddScoped<ISubjectRepository, SubjectsRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserSubjectRepository, UserSubjectRepository>();
+builder.Services.AddScoped<ILessonPlanRepository, LessonPlanRepository>();
 
 var app = builder.Build();
 

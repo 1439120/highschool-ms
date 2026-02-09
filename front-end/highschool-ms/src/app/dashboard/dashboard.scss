@@ -21,7 +21,7 @@ $light-color: #f8f9fa;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  // padding: 20px;
+  padding: 60px;
   
   &::-webkit-scrollbar {
     width: 8px;
@@ -117,44 +117,6 @@ $light-color: #f8f9fa;
     font-size: 1.5rem;
     color: #60a5fa; /* blue-400 accent */
   }
-
-  /* Dark Mode Alternative (if you want to toggle) */
-//   @media (prefers-color-scheme: dark) {
-//     body {
-//       background: #0f172a;
-//       color: #e2e8f0;
-//     }
-
-//     .main-content {
-//       background: #0f172a;
-//     }
-
-//     .school-name {
-//       color: #93c5fd; /* blue-300 */
-//     }
-
-//     .school-info {
-//       color: #94a3b8; /* slate-400 */
-//     }
-
-//     .metric-card {
-//       background: #1e293b; /* slate-800 */
-//       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-//     }
-
-//     .metric-title {
-//       color: #cbd5e1; /* slate-300 */
-//     }
-
-//     .metric-value {
-//       color: #f1f5f9; /* slate-100 */
-//     }
-
-//     .metric-icon {
-//       color: #60a5fa;
-//     }
-//   }
-
 
 .charts-grid {
     display: grid;

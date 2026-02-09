@@ -6,7 +6,6 @@ import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
 import BreadcrumbModel from '../../models/BreadcrumbModel';
 import { PersonalInformationSection } from '../../components/personal-information-section/personal-information-section';
 import { ContactInformationSection } from '../../components/contact-information-section/contact-information-section';
-import { User } from '../../models/User';
 import { UsersService } from '../../services/users-service';
 
 @Component({

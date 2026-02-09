@@ -10,7 +10,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class Sidebar {
   menuOptions = signal([
     {title: 'Dashboard', link:'/', icon:'🏠'},
-    {title: 'Subjects', link:'/subjects', icon:'📖'},
+    {title: 'Lesson Plan', link:'/lesson-plan', icon:'📖'},
+    // {title: 'Subjects', link:'/subjects', icon:'📖'},
     {title: 'Classes', link:'/classes', icon:'📚'},
     {title: 'Students', link:'/students', icon:'🎒'},
     {title: 'Teachers', link:'/teachers', icon:'👨‍🏫'},

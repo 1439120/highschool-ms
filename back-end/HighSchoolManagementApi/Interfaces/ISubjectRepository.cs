@@ -11,6 +11,7 @@ namespace HighSchoolManagementApi.Interfaces
     {
         Task<List<Subjects>> GetAllAsync();
         Task<Subjects?> GetByIdAsync(int id); // If user not found it can be null
+        Task<Subjects?> GetBySymbolAsync(string symbol);
         Task<Subjects> CreateAsync(Subjects subjectsModel);
         Task<Subjects?> UpdateAsync(int id, UpdateSubjectsDto subjectsDto);
         Task<Subjects?> DeleteAsync(int id);

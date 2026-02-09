@@ -237,6 +237,8 @@ namespace HighSchoolManagementApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthUserId");
+
                     b.HasIndex("ClassroomId");
 
                     b.HasIndex("LearnerClassroomId");
@@ -436,6 +438,10 @@ namespace HighSchoolManagementApi.Migrations
 
             modelBuilder.Entity("HighSchoolManagementApi.Models.Users", b =>
                 {
+                    b.HasOne("HighSchoolManagementApi.Models.AuthUser", "AuthUser")
+                        .WithMany()
+                        .HasForeignKey("AuthUserId");
+
                     b.HasOne("HighSchoolManagementApi.Models.Classroom", "Classroom")
                         .WithMany()
                         .HasForeignKey("ClassroomId");
@@ -444,6 +450,8 @@ namespace HighSchoolManagementApi.Migrations
                         .WithMany("Learners")
                         .HasForeignKey("LearnerClassroomId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("AuthUser");
 
                     b.Navigation("Classroom");
                 });

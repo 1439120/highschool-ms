@@ -27,6 +27,10 @@ namespace HighSchoolManagementApi.Repository
             var subject = await _context.Subjects.FindAsync(id);
             return subject;
         }
+        public async Task<Subjects?> GetBySymbolAsync(string symbol)
+        {
+            return await _context.Subjects.FirstOrDefaultAsync(s => s.Name == symbol);
+        }
         public async Task<Subjects> CreateAsync(Subjects subjectsModel)
         {
             await _context.Subjects.AddAsync(subjectsModel);

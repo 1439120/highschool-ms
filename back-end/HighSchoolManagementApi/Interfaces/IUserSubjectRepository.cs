@@ -9,5 +9,7 @@ namespace HighSchoolManagementApi.Interfaces
     public interface IUserSubjectRepository
     {
         Task<List<Subjects>> GetUserSubjects(AuthUser user);
+        Task<UserSubject> CreateAsync(UserSubject userSubject);
+        Task<UserSubject> DeeleteUserSubject(AuthUser authUser, string symbol);
     }
 }

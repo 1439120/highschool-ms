@@ -6,6 +6,8 @@ using HighSchoolManagementApi.Interfaces;
 using HighSchoolManagementApi.Models;
 using HighSchoolManagementApi.Data;
 using Microsoft.EntityFrameworkCore;
+using HighSchoolManagementApi.Dtos.LessonPlan;
+using HighSchoolManagementApi.Mappers;
 
 namespace HighSchoolManagementApi.Repository
 {
@@ -22,7 +24,7 @@ namespace HighSchoolManagementApi.Repository
         }
         public async Task<LessonPlan> GetAByTeacher(string authUserId)
         {
-            return await _context.LessonPlan.FirstOrDefaultAsync(c => c.TeacherId == authUserId);
+            return await _context.LessonPlan.FirstOrDefaultAsync(c => c.ResponsibleId == authUserId);
         }
         public async Task<LessonPlan?> Update(LessonPlan lessonPlan, int lessonId)
         {
@@ -30,12 +32,20 @@ namespace HighSchoolManagementApi.Repository
             if(lessonPlanModel == null) return null;
 
             lessonPlanModel.Name = lessonPlan.Name;
-            lessonPlanModel.SubjectId = lessonPlan.SubjectId;
+            lessonPlanModel.SubjectsId = lessonPlan.SubjectsId;
             lessonPlanModel.Name = lessonPlan.Name;
-            lessonPlanModel.GradeId = lessonPlan.GradeId;
-            lessonPlanModel.TeacherId = lessonPlan.TeacherId;
+            lessonPlanModel.GradesId = lessonPlan.GradesId;
+            lessonPlanModel.ResponsibleId = lessonPlan.ResponsibleId;
             lessonPlanModel.LastUpdatedOn = lessonPlan.LastUpdatedOn;
 
+            await _context.SaveChangesAsync();
+            return lessonPlanModel;
+        }
+
+        public async Task<LessonPlan> Add(AddLessonPlanDto lessonPlanDto)
+        {
+            var lessonPlanModel = lessonPlanDto.FromAddDtoToLessonPlan();
+            await _context.LessonPlan.AddAsync(lessonPlanModel);
             await _context.SaveChangesAsync();
             return lessonPlanModel;
         }

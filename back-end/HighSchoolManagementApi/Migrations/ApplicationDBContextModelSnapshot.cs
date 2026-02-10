@@ -156,9 +156,6 @@ namespace HighSchoolManagementApi.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("GradeId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("GradesId")
                         .HasColumnType("integer");
 
@@ -170,17 +167,11 @@ namespace HighSchoolManagementApi.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ResponsibleId")
+                        .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("integer");
 
                     b.Property<int>("SubjectsId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("TeacherId")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -466,7 +457,9 @@ namespace HighSchoolManagementApi.Migrations
 
                     b.HasOne("HighSchoolManagementApi.Models.AuthUser", "Responsible")
                         .WithMany()
-                        .HasForeignKey("ResponsibleId");
+                        .HasForeignKey("ResponsibleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HighSchoolManagementApi.Models.Subjects", "Subjects")
                         .WithMany()

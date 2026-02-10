@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using HighSchoolManagementApi.Data;
 using HighSchoolManagementApi.Mappers;
 using HighSchoolManagementApi.Dtos.Users;
-using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using HighSchoolManagementApi.Interfaces;
 using HighSchoolManagementApi.Helpers;

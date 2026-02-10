@@ -18,12 +18,30 @@ export class Subjects extends Datamodel<SubjectsModel> {
     this.title_.set("Subjects");
     this.records_.set(subjects);
     this.headers_.set( [
-    {'col':'name', 'groupBy': true},
-    {'col':'grade', 'groupBy': true},
-    {'col':'chapters', 'groupBy': true},
-    {'col':'tests', 'groupBy': true},
-    {'col':'assignments', 'groupBy': true},
-    {'col':'exams', 'groupBy': true}])
+    {
+      'col': 'name', 'groupBy': true,
+      displaName: 'Name'
+    },
+    {
+      'col': 'grade', 'groupBy': true,
+      displaName: 'Grade'
+    },
+    {
+      'col': 'chapters', 'groupBy': true,
+      displaName: 'Chapters'
+    },
+    {
+      'col': 'tests', 'groupBy': true,
+      displaName: 'Tests'
+    },
+    {
+      'col': 'assignments', 'groupBy': true,
+      displaName: 'Assignments'
+    },
+    {
+      'col': 'exams', 'groupBy': true,
+      displaName: 'Exams'
+    }])
     this.searchByItems_.set(['name'])
     this.filterBy_.set('grade')
     const uniqueGrades: string[] = [

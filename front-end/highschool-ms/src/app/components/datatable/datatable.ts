@@ -36,6 +36,8 @@ export class Datatable<T> implements OnInit {
   currentSort = signal('');
 
   getFieldValue(item: T, key: string): any {
+    console.log(`key: ${JSON.stringify(item)} - value: ${key}`);
+    console.log((item as any)[key])
     return (item as any)[key];
   }
 

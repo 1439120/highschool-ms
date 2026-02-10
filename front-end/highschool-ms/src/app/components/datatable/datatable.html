@@ -21,10 +21,10 @@
     <table class="datatable">
       <thead>
         @for(column of columns(); track $index){
-          @let temp = column.col.toLowerCase();
+          @let temp = column.displaName.toLowerCase();
           <th class="{{temp}}-col">
             <div class="th-content" (click)="sortByColumn(temp)">
-              {{column.col.replaceAll('_',' ')}}
+              {{column.displaName.replaceAll('_',' ')}}
               @if(column.groupBy){
                 <span class="sort-indicator" [class.active]="currentSort() === temp">▼</span>
               }
@@ -67,7 +67,7 @@
                }
               
                @for(col of columns(); track $index){
-                @let temp = col.col.toLocaleLowerCase();
+                @let temp = col.col;
                 @if(!(temp == 'name' && getFieldValue(user,'name') && getFieldValue(user,'surname'))){
                   <td class="{{temp}}-col">
                     @if(['phone','email'].includes(temp)){

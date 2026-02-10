@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { Datamodel } from '../models/Datamodel';
 import LessonPlanModel from '../models/LessonPlanModel';
 import { Datatable } from '../components/datatable/datatable';
+import { LessonPlanService } from '../services/lesson-plan-service';
 
 @Component({
   selector: 'app-lesson-plan',
@@ -10,16 +11,35 @@ import { Datatable } from '../components/datatable/datatable';
   styleUrl: './lesson-plan.scss',
 })
 export class LessonPlan extends Datamodel<LessonPlanModel> {
-  constructor(){
+  constructor(private service: LessonPlanService){
       super()
+      service.loadLessonPlans();
       this.title_.set("Lesson Plan");
-      // this.records_.set(subjects);
+      effect(()=>{
+        this.records_.set(service.lessonPlans());
+      })
+      
       this.headers_.set( [
-        {'col':'lastUpdatedOn', 'groupBy': false},
-        {'col':'name', 'groupBy': true},
-        {'col':'subject', 'groupBy': true},
-        {'col':'teacher', 'groupBy': true},
-        {'col':'grade', 'groupBy': false},
+        {
+          'col': 'lastUpdatedOn', 'groupBy': false,
+          displaName: 'Last Updated On'
+        },
+        {
+          'col': 'name', 'groupBy': true,
+          displaName: 'Name'
+        },
+        {
+          'col': 'subjectsId', 'groupBy': true,
+          displaName: 'Subject'
+        },
+        {
+          'col': 'responsibleId', 'groupBy': true,
+          displaName: 'Responsible'
+        },
+        {
+          'col': 'gradesId', 'groupBy': false,
+          displaName: 'Grade'
+        },
       ])
       this.searchByItems_.set(['name'])
       this.filterBy_.set('grade')

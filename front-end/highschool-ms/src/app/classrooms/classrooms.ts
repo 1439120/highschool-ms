@@ -15,12 +15,30 @@ export class Classrooms extends Datamodel<Classroom> {
       this.title_.set("Teachers");
       this.records_.set(classrooms);
       this.headers_.set( [
-      {'col':'Name', 'groupBy': true},
-      {'col':'class_teacher', 'groupBy': true},
-      {'col':'Grade', 'groupBy': true},
-      {'col':'number_of_subjecteds', 'groupBy': true},
-      {'col':'maximum_occupants', 'groupBy': true},
-      {'col':'regsitered_students', 'groupBy': true}])
+      {
+        'col': 'name', 'groupBy': true,
+        displaName: 'Name'
+      },
+      {
+        'col': 'class_teacher', 'groupBy': true,
+        displaName: 'Class Teacher'
+      },
+      {
+        'col': 'grade', 'groupBy': true,
+        displaName: 'Grade'
+      },
+      {
+        'col': 'number_of_subjecteds', 'groupBy': true,
+        displaName: 'Number of Subjects'
+      },
+      {
+        'col': 'maximum_occupants', 'groupBy': true,
+        displaName: 'Maximum Occupants'
+      },
+      {
+        'col': 'regsitered_students', 'groupBy': true,
+        displaName: 'Registered Students'
+      }])
       this.searchByItems_.set(['name','class_teacher'])
       this.filterBy_.set('Grade')
       const uniqueGrades: string[] = [

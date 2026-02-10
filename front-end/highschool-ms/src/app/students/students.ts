@@ -25,11 +25,26 @@ export class Students extends Datamodel<User> {
     })
     
     this.headers_.set( [
-      {'col':'Name', 'groupBy': true},
-      {'col':'Phone', 'groupBy': false},
-      {'col':'Email', 'groupBy': true},
-      {'col':'Role', 'groupBy': true},
-      {'col':'Address', 'groupBy': true}])
+      {
+        'col': 'name', 'groupBy': true,
+        displaName: 'Name'
+      },
+      {
+        'col': 'phone', 'groupBy': false,
+        displaName: 'Phone'
+      },
+      {
+        'col': 'email', 'groupBy': true,
+        displaName: 'Email'
+      },
+      {
+        'col': 'role', 'groupBy': true,
+        displaName: 'Role'
+      },
+      {
+        'col': 'address', 'groupBy': true,
+        displaName: 'Address'
+      }])
       this.searchByItems_.set(['name','surname','email','role','phone'])
       this.filterBy_.set('Role')
       

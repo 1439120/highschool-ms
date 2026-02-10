@@ -1,8 +1,8 @@
 
 export default interface LessonPlanModel{
     name: string,
-    subject: string,
-    teacher: string,
-    grade: string,
+    subjectsId: string,
+    responsibleId: string,
+    gradesId: string,
     lastUpdatedOn: Date,
 }

@@ -23,10 +23,8 @@ export class UsersService {
   }
 
   loadTeachers(): void {
-    const headers = this.authHeaders
-
     this.http
-      .get<User[]>(`${this.apiUrl}/api/users?Type=staff`, { headers })
+      .get<User[]>(`${this.apiUrl}/api/users?Type=staff`)
       .subscribe({
         next: (data) => {
           console.log('Teachers loaded:', data);

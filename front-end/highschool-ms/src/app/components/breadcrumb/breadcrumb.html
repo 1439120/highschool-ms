@@ -6,7 +6,7 @@
             @if (!first) { <div> / </div> }
             <div [class.header-title]="!last" 
                     [routerLink]="heading.url || null">
-                {{ heading.name }}
+                {{ heading.name.replaceAll('-',' ') }}
             </div>
         }
     </div>

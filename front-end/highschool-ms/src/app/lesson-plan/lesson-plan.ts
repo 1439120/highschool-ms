@@ -13,10 +13,10 @@ import { LessonPlanService } from '../services/lesson-plan-service';
 export class LessonPlan extends Datamodel<LessonPlanModel> {
   constructor(private service: LessonPlanService){
       super()
-      service.loadLessonPlans();
-      this.title_.set("Lesson Plan");
+      this.service.loadLessonPlans();
+      this.title_.set("Lesson-Plan");
       effect(()=>{
-        this.records_.set(service.lessonPlans());
+        this.records_.set(this.service.lessonPlans());
       })
       
       this.headers_.set( [
@@ -29,15 +29,15 @@ export class LessonPlan extends Datamodel<LessonPlanModel> {
           displaName: 'Name'
         },
         {
-          'col': 'subjectsId', 'groupBy': true,
+          'col': 'subjects', 'groupBy': true,
           displaName: 'Subject'
         },
         {
-          'col': 'responsibleId', 'groupBy': true,
+          'col': 'responsible', 'groupBy': true,
           displaName: 'Responsible'
         },
         {
-          'col': 'gradesId', 'groupBy': false,
+          'col': 'grades', 'groupBy': false,
           displaName: 'Grade'
         },
       ])

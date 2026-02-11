@@ -13,7 +13,7 @@ namespace HighSchoolManagementApi.Mappers
         {
             return new UserDto
             {
-                UserName = auhtUser.UserName,
+                Name = auhtUser.UserName,
                 Email = auhtUser.Email
             };
         }

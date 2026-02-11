@@ -40,5 +40,10 @@ export const routes: Routes = [
         loadComponent: ()=>{
             return import('./lesson-plan/lesson-plan').then((m) => m.LessonPlan)
         }
-    }
+    },{
+        path: 'lesson-plan',
+        loadChildren: ()=>{
+            return import('./lesson-plan/lesson-plan.routes').then((m) => m.LESSONPLAN_ROUTES)
+        }
+    },
 ];

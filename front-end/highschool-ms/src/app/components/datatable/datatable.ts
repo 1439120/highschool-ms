@@ -37,8 +37,19 @@ export class Datatable<T> implements OnInit {
 
   getFieldValue(item: T, key: string): any {
     console.log(`key: ${JSON.stringify(item)} - value: ${key}`);
-    console.log((item as any)[key])
-    return (item as any)[key];
+
+    if (['lastUpdatedOn','createdOn'].includes(key)) {
+      const date = new Date((item as any)[key]);
+      const options: Intl.DateTimeFormatOptions = { 
+        year: 'numeric', 
+        month: 'short', 
+        day: '2-digit' 
+      };
+      return date.toLocaleDateString('en-US', options);
+    }
+    return (item as any)[key] ? 
+    (typeof (item as any)[key] !== 'object' ? (item as any)[key] : (item as any)[key]['name']) 
+    : null;
   }
 
   breadcrumbTitle = computed(() => {
@@ -165,11 +176,6 @@ export class Datatable<T> implements OnInit {
     }
   }
   
-  // User actions
-  editUser(user: any) {
-    console.log('Edit user:', user);
-    // Implement edit logic
-  }
   
   deleteUser(user: any) {
     if (confirm(`Are you sure you want to delete ${user.name} ${user.surname}?`)) {
@@ -190,11 +196,7 @@ export class Datatable<T> implements OnInit {
     }, 500);
   }
   
-  addNew() {
-    console.log('Add new user');
-    // Implement add new logic
-  }
-  
+
   // Helper methods
   getRoleClass(role: string): string {
     const roleMap: {[key: string]: string} = {

@@ -1,0 +1,510 @@
+<app-breadcrumb [titleBreadcrumbs]="breadCrumb"/>
+
+<div class="lesson-plan-container">
+  <!-- Fixed Header -->
+  <div class="details-header">
+    <button class="back-btn" routerLink="/lesson-plans">
+      <span class="btn-icon">←</span> Back to Lesson Plans
+    </button>
+    <div class="header-actions">
+      <div class="lesson-stats">
+        <div class="stat-badge subject">
+          <span class="stat-icon">📚</span>
+          <span class="stat-text">{{lessonPlan.subjects?.name || 'Mathematics'}}</span>
+        </div>
+        <div class="stat-badge grade">
+          <span class="stat-icon">🎓</span>
+          <span class="stat-text">Grade {{lessonPlan.grades?.name || '8'}}</span>
+        </div>
+        <div class="stat-badge teacher">
+          <span class="stat-icon">👨‍🏫</span>
+          <span class="stat-text">{{lessonPlan.responsible?.name || 'Alice Mbatha'}}</span>
+        </div>
+      </div>
+      <div class="status-badge" [class]="getStatusClass()">
+        {{lessonPlan.status || 'Draft'}}
+      </div>
+      <button class="btn btn-secondary" (click)="previewLesson()">
+        <span class="btn-icon">👁️</span> Preview
+      </button>
+      <button class="btn btn-primary" (click)="saveLessonPlan()" [disabled]="!lessonForm.valid">
+        <span class="btn-icon">💾</span> Save Plan
+      </button>
+    </div>
+  </div>
+
+  <!-- Scrollable Content Area -->
+  <div class="scrollable-content">
+    <div class="details-content-wrapper">
+      <!-- Lesson Plan Header Card -->
+      <div class="lesson-header-card">
+        <div class="lesson-header">
+          <div class="lesson-avatar">
+            <div class="lesson-icon">{{getSubjectIcon(lessonPlan.subjects?.name)}}</div>
+            <div class="lesson-subject-icon">{{getSubjectInitials(lessonPlan.subjects?.name)}}</div>
+          </div>
+          <div class="lesson-info">
+            <h1 class="lesson-name">{{lessonPlan.name || 'New Lesson Plan'}}</h1>
+            <div class="lesson-meta">
+              <div class="meta-item">
+                <span class="meta-icon">📅</span>
+                <span class="meta-label">Last Updated:</span>
+                <span class="meta-value">{{lessonPlan.lastUpdatedOn}}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">⏱️</span>
+                <span class="meta-label">Duration:</span>
+                <span class="meta-value">{{lessonDuration}} minutes</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-icon">📊</span>
+                <span class="meta-label">Status:</span>
+                <span class="meta-value status-badge" [class]="getStatusClass()">{{lessonPlan.status || 'Draft'}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Form Container -->
+        <div class="lesson-form-container">
+          <form #lessonForm="ngForm">
+            <!-- Basic Information Section -->
+            <section class="form-section">
+              <div class="section-header">
+                <h2 class="section-title">
+                  <span class="section-icon">📋</span>
+                  Basic Information
+                </h2>
+              </div>
+              
+              <div class="form-grid">
+                <div class="form-group full-width">
+                  <label>
+                    <span class="label-icon">📝</span>
+                    Lesson Plan Title
+                    <span class="required">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    [(ngModel)]="lessonPlan.name"
+                    name="lessonName"
+                    #lessonName="ngModel"
+                    required
+                    minlength="5"
+                    maxlength="100"
+                    placeholder="e.g., Introduction to Algebra, Cell Structure, World War II"
+                    [class.error]="lessonName.invalid && lessonName.touched"
+                  >
+                  <div class="error-message" *ngIf="lessonName.invalid && lessonName.touched">
+                    <span *ngIf="lessonName.errors?.['required']">Lesson plan title is required</span>
+                    <span *ngIf="lessonName.errors?.['minlength']">Minimum 5 characters</span>
+                  </div>
+                  <div class="char-counter">
+                    {{lessonPlan.name?.length || 0}}/100 characters
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>
+                    <span class="label-icon">📚</span>
+                    Subject
+                    <span class="required">*</span>
+                  </label>
+                  <select 
+                    class="form-control" 
+                    [(ngModel)]="lessonPlan.subjects"
+                    name="subject"
+                    #subject="ngModel"
+                    required
+                    [class.error]="subject.invalid && subject.touched"
+                  >
+                    <option value="">Select Subject</option>
+                    <option *ngFor="let subject of subjects" [ngValue]="subject">
+                      {{subject.name}}
+                    </option>
+                  </select>
+                  <div class="error-message" *ngIf="subject.invalid && subject.touched">
+                    Please select a subject
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>
+                    <span class="label-icon">🎓</span>
+                    Grade Level
+                    <span class="required">*</span>
+                  </label>
+                  <select 
+                    class="form-control" 
+                    [(ngModel)]="lessonPlan.grades"
+                    name="grade"
+                    #grade="ngModel"
+                    required
+                    [class.error]="grade.invalid && grade.touched"
+                  >
+                    <option value="">Select Grade</option>
+                    <option *ngFor="let grade of grades" [ngValue]="grade">
+                      Grade {{grade.name}}
+                    </option>
+                  </select>
+                  <div class="error-message" *ngIf="grade.invalid && grade.touched">
+                    Please select a grade level
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>
+                    <span class="label-icon">👨‍🏫</span>
+                    Responsible Teacher
+                    <span class="required">*</span>
+                  </label>
+                  <select 
+                    class="form-control" 
+                    [(ngModel)]="lessonPlan.responsible"
+                    name="responsible"
+                    #responsible="ngModel"
+                    required
+                    [class.error]="responsible.invalid && responsible.touched"
+                  >
+                    <option value="">Select Teacher</option>
+                    <option *ngFor="let teacher of teachers" [ngValue]="teacher">
+                      {{teacher.name}}
+                    </option>
+                  </select>
+                  <div class="error-message" *ngIf="responsible.invalid && responsible.touched">
+                    Please select a teacher
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>
+                    <span class="label-icon">⏱️</span>
+                    Total Duration (minutes)
+                  </label>
+                  <div class="input-wrapper">
+                    <input 
+                      type="number" 
+                      class="form-control" 
+                      [(ngModel)]="lessonDuration"
+                      name="duration"
+                      min="15"
+                      max="180"
+                      step="15"
+                    >
+                    <span class="input-suffix">mins</span>
+                  </div>
+                  <small class="help-text">Recommended: 45-60 minutes</small>
+                </div>
+
+                <div class="form-group">
+                  <label>
+                    <span class="label-icon">📅</span>
+                    Lesson Date
+                  </label>
+                  <input 
+                    type="date" 
+                    class="form-control" 
+                    [(ngModel)]="lessonDate"
+                    name="lessonDate"
+                    [min]="today"
+                  >
+                </div>
+              </div>
+            </section>
+
+            <!-- Learning Objectives Section -->
+             <section class="form-section">
+              <div class="section-header">
+                <h2 class="section-title">
+                  <span class="section-icon">🎯</span>
+                  Learning Objectives
+                  <span class="section-badge">{{learningObjectives.length}} objectives</span>
+                </h2>
+                <button type="button" class="btn btn-outline" (click)="addObjective()">
+                  <span class="btn-icon">➕</span> Add Objective
+                </button>
+              </div>
+              
+              <div class="objectives-container">
+                <div class="objectives-header">
+                  <span>Objective</span>
+                  <span>Actions</span>
+                </div>
+                
+                <div class="objectives-list">
+                  <div *ngFor="let objective of learningObjectives; let i = index" class="objective-item">
+                    <div class="objective-content">
+                      <span class="objective-drag">⋮⋮</span>
+                      <span class="objective-text">{{objective}}</span>
+                    </div>
+                    <div class="objective-actions">
+                      <button type="button" class="action-btn edit-btn" (click)="editObjective(i)">
+                        <span class="btn-icon">✏️</span>
+                      </button>
+                      <button type="button" class="action-btn delete-btn" (click)="removeObjective(i)">
+                        <span class="btn-icon">🗑️</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="add-objective">
+                  <input 
+                    type="text" 
+                    [(ngModel)]="newObjective"
+                    name="newObjective"
+                    placeholder="Enter a learning objective..."
+                    (keyup.enter)="addObjective()"
+                  >
+                  <button type="button" class="btn btn-primary" (click)="addObjective()" [disabled]="!newObjective">
+                    Add
+                  </button>
+                </div>
+              </div>
+              
+              <div *ngIf="learningObjectives.length === 0" class="no-items">
+                <span class="no-items-icon">🎯</span>
+                <h3>No learning objectives added</h3>
+                <p>Add clear, measurable objectives that students should achieve by the end of this lesson.</p>
+              </div>
+            </section>
+
+            <!-- Materials & Resources Section -->
+            <section class="form-section">
+              <div class="section-header">
+                <h2 class="section-title">
+                  <span class="section-icon">📁</span>
+                  Materials & Resources
+                </h2>
+                <button type="button" class="btn btn-outline" (click)="openAddMaterialModal()">
+                  <span class="btn-icon">➕</span> Add Material
+                </button>
+              </div>
+              
+              <div class="materials-grid">
+                <div *ngFor="let material of materials" class="material-card">
+                  <div class="material-icon">{{getMaterialIcon(material.type)}}</div>
+                  <div class="material-content">
+                    <h4 class="material-name">{{material.name}}</h4>
+                    <span class="material-type">{{material.type}}</span>
+                  </div>
+                  <button type="button" class="material-action" (click)="removeMaterial(material)">
+                    <span class="btn-icon">🗑️</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div *ngIf="materials.length === 0" class="no-items">
+                <span class="no-items-icon">📁</span>
+                <h3>No materials added</h3>
+                <p>Add textbooks, handouts, presentations, or other resources needed for this lesson.</p>
+              </div>
+            </section>
+
+            <!-- Lesson Activities Section -->
+            <section class="form-section">
+              <div class="section-header">
+                <h2 class="section-title">
+                  <span class="section-icon">⏳</span>
+                  Lesson Activities
+                </h2>
+                <button type="button" class="btn btn-outline" (click)="openAddActivityModal()">
+                  <span class="btn-icon">➕</span> Add Activity
+                </button>
+              </div>
+              
+              <div class="activities-timeline">
+                <div class="timeline-header">
+                  <span>Time</span>
+                  <span>Activity Description</span>
+                  <span>Duration</span>
+                  <span>Type</span>
+                  <span>Actions</span>
+                </div>
+                
+                <div class="timeline-item" *ngFor="let activity of activities; let i = index">
+                  <div class="activity-time">
+                    <input 
+                      type="time" 
+                      class="form-control" 
+                      [(ngModel)]="activity.startTime"
+                      name="startTime{{i}}"
+                      style="width: 100px; padding: 6px;"
+                    >
+                  </div>
+                  <div class="activity-description">
+                    <textarea 
+                      class="form-control" 
+                      [(ngModel)]="activity.description"
+                      name="activityDesc{{i}}"
+                      rows="1"
+                      style="resize: none;"
+                      placeholder="Describe the activity..."
+                    ></textarea>
+                  </div>
+                  <div class="activity-duration">
+                    <input 
+                      type="number" 
+                      class="form-control" 
+                      [(ngModel)]="activity.duration"
+                      name="activityDuration{{i}}"
+                      min="5"
+                      max="60"
+                      step="5"
+                      style="width: 70px;"
+                    > min
+                  </div>
+                  <div class="activity-type">
+                    <select 
+                      class="form-control" 
+                      [(ngModel)]="activity.type"
+                      name="activityType{{i}}"
+                      style="width: 120px;"
+                    >
+                      <option value="intro">Introduction</option>
+                      <option value="direct">Direct Instruction</option>
+                      <option value="guided">Guided Practice</option>
+                      <option value="independent">Independent Practice</option>
+                      <option value="assessment">Assessment</option>
+                      <option value="closing">Closing</option>
+                    </select>
+                  </div>
+                  <div class="activity-actions">
+                    <button type="button" class="action-btn delete-btn" (click)="removeActivity(i)">
+                      <span class="btn-icon">🗑️</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div *ngIf="activities.length === 0" class="no-items">
+                <span class="no-items-icon">⏳</span>
+                <h3>No activities added</h3>
+                <p>Create a sequence of learning activities for your lesson.</p>
+              </div>
+            </section>
+
+            <!-- Assessment Methods Section -->
+            <section class="form-section">
+              <div class="section-header">
+                <h2 class="section-title">
+                  <span class="section-icon">📝</span>
+                  Assessment Methods
+                </h2>
+                <button type="button" class="btn btn-outline" (click)="openAddAssessmentModal()">
+                  <span class="btn-icon">➕</span> Add Assessment
+                </button>
+              </div>
+              
+              <div class="assessment-grid">
+                <div *ngFor="let assessment of assessments" class="assessment-card">
+                  <div class="assessment-icon">{{getAssessmentIcon(assessment.type)}}</div>
+                  <h4 class="assessment-title">{{assessment.name}}</h4>
+                  <p class="assessment-description">{{assessment.description}}</p>
+                  <div class="assessment-meta">
+                    <span class="meta-weight">{{assessment.weight}}%</span>
+                    <span class="meta-date">{{assessment.dueDate | date:'mediumDate'}}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div *ngIf="assessments.length === 0" class="no-items">
+                <span class="no-items-icon">📝</span>
+                <h3>No assessments added</h3>
+                <p>Add formative or summative assessments to evaluate student learning.</p>
+              </div>
+            </section>
+
+            <!-- Differentiation Section -->
+            <section class="form-section">
+              <div class="section-header">
+                <h2 class="section-title">
+                  <span class="section-icon">🔄</span>
+                  Differentiation & Support
+                </h2>
+              </div>
+              
+              <div class="differentiation-grid">
+                <div class="differentiation-card">
+                  <div class="card-header">
+                    <span class="card-icon">🌟</span>
+                    <h3 class="card-title">Extension Activities</h3>
+                  </div>
+                  <ul class="support-list">
+                    <li *ngFor="let extension of extensions">
+                      <span class="bullet">•</span>
+                      {{extension}}
+                    </li>
+                  </ul>
+                  <button type="button" class="btn btn-text" (click)="addExtension()">
+                    <span class="btn-icon">➕</span> Add Extension
+                  </button>
+                </div>
+                
+                <div class="differentiation-card">
+                  <div class="card-header">
+                    <span class="card-icon">🤝</span>
+                    <h3 class="card-title">Support Strategies</h3>
+                  </div>
+                  <ul class="support-list">
+                    <li *ngFor="let support of supportStrategies">
+                      <span class="bullet">•</span>
+                      {{support}}
+                    </li>
+                  </ul>
+                  <button type="button" class="btn btn-text" (click)="addSupportStrategy()">
+                    <span class="btn-icon">➕</span> Add Support
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            <!-- Notes & Reflections Section -->
+            <section class="form-section">
+              <div class="section-header">
+                <h2 class="section-title">
+                  <span class="section-icon">📓</span>
+                  Notes & Reflections
+                </h2>
+              </div>
+              
+              <div class="form-group full-width">
+                <textarea 
+                  class="form-control" 
+                  [(ngModel)]="lessonPlan.notes"
+                  name="notes"
+                  rows="4"
+                  placeholder="Add any additional notes, teacher reflections, or reminders for this lesson..."
+                ></textarea>
+              </div>
+            </section>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" routerLink="/lesson-plans">
+                Cancel
+              </button>
+              <button 
+                type="submit" 
+                class="btn btn-secondary" 
+                (click)="saveAsDraft()"
+                [disabled]="!lessonForm.valid"
+              >
+                <span class="btn-icon">📥</span> Save as Draft
+              </button>
+              <button 
+                type="submit" 
+                class="btn btn-primary" 
+                (click)="publishLesson()"
+                [disabled]="!lessonForm.valid || learningObjectives.length === 0"
+              >
+                <span class="btn-icon">🚀</span> Publish Lesson
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,7 +11,7 @@ namespace HighSchoolManagementApi.Interfaces
     {
         Task<List<LessonPlan>> GetAll();
         Task<LessonPlan> GetAByTeacher(string authUserId);
-        Task<LessonPlan> Update(LessonPlan lessonPlan, int lessonId);
+        Task<LessonPlan?> Update(LessonPlan lessonPlan, int lessonId);
         Task<LessonPlan> Add(AddLessonPlanDto lessonPlanDto);
     }
 }

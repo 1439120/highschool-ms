@@ -26,8 +26,8 @@ namespace HighSchoolManagementApi.Mappers
             {
                 Id = lessonPlanModel.Id,
                 Name = lessonPlanModel.Name,
-                SubjectsId = lessonPlanModel.SubjectsId,
-                ResponsibleId = lessonPlanModel.ResponsibleId,
+                Subjects = lessonPlanModel.Subjects?.ToSubjectsDTO(),
+                Responsible = lessonPlanModel.Responsible?.ToUserDto(),
                 Grades = lessonPlanModel.Grades?.ToGradesDto(),
                 CreatedOn = lessonPlanModel.CreatedOn,
                 LastUpdatedOn = lessonPlanModel.LastUpdatedOn,

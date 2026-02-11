@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using HighSchoolManagementApi.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using HighSchoolManagementApi.Dtos.LessonPlan;
+using HighSchoolManagementApi.Mappers;
+using Microsoft.VisualBasic;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -23,7 +25,8 @@ namespace HighSchoolManagementApi.Controllers
         public async Task<IActionResult> GetAll()
         {
             var lessonPlans = await _lessonPlanRepo.GetAll();
-            return Ok(lessonPlans);
+            var lessonPlanDto = lessonPlans.Select(a => a.ToLessonPlanDto());
+            return Ok(lessonPlanDto);
         }
 
         [HttpPost]
@@ -31,7 +34,8 @@ namespace HighSchoolManagementApi.Controllers
         public async Task<IActionResult> Add([FromBody] AddLessonPlanDto lessonPlanDto)
         {
             var lessonPlan = await _lessonPlanRepo.Add(lessonPlanDto);
-            return Ok(lessonPlan);
+            
+            return Ok(lessonPlan.ToLessonPlanDto());
         }
     }
 }

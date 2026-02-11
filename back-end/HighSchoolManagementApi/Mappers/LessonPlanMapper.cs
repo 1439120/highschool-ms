@@ -19,5 +19,19 @@ namespace HighSchoolManagementApi.Mappers
                 GradesId = createDto.GradesId,
             };
         }
+
+        public static LessonPlanDto ToLessonPlanDto(this LessonPlan lessonPlanModel)
+        {
+            return new LessonPlanDto
+            {
+                Id = lessonPlanModel.Id,
+                Name = lessonPlanModel.Name,
+                SubjectsId = lessonPlanModel.SubjectsId,
+                ResponsibleId = lessonPlanModel.ResponsibleId,
+                Grades = lessonPlanModel.Grades?.ToGradesDto(),
+                CreatedOn = lessonPlanModel.CreatedOn,
+                LastUpdatedOn = lessonPlanModel.LastUpdatedOn,
+            };
+        }
     }
 }

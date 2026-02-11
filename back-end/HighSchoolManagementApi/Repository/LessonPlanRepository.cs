@@ -20,7 +20,7 @@ namespace HighSchoolManagementApi.Repository
         }
         public async Task<List<LessonPlan>> GetAll()
         {
-            return await _context.LessonPlan.ToListAsync();
+            return await _context.LessonPlan.Include(c => c.Grades).ToListAsync();
         }
         public async Task<LessonPlan> GetAByTeacher(string authUserId)
         {

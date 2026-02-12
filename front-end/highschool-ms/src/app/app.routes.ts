@@ -35,12 +35,13 @@ export const routes: Routes = [
             return import('./subjects/subjects').then((m) => m.Subjects)
         }
     },
+    // {
+    //     path: 'lesson-plan',
+    //     loadComponent: ()=>{
+    //         return import('./lesson-plan/lesson-plan').then((m) => m.LessonPlan)
+    //     }
+    // },
     {
-        path: 'lesson-plan',
-        loadComponent: ()=>{
-            return import('./lesson-plan/lesson-plan').then((m) => m.LessonPlan)
-        }
-    },{
         path: 'lesson-plan',
         loadChildren: ()=>{
             return import('./lesson-plan/lesson-plan.routes').then((m) => m.LESSONPLAN_ROUTES)

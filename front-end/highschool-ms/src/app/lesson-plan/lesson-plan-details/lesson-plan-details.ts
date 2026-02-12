@@ -202,7 +202,7 @@ export class LessonPlanDetails implements OnInit {
     });
 
     this.breadCrumb = [
-      { name: 'Lesson Plans', url: '/lesson-plans' },
+      { name: 'Lesson Plans', url: '/lesson-plan' },
       { name: this.lessonPlan?.name || 'New Lesson Plan', url: '' }
     ];
   }

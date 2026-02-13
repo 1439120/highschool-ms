@@ -1,17 +1,22 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
 import BreadcrumbModel from '../../models/BreadcrumbModel';
 import { FormsModule } from '@angular/forms';
 import { ContactInformationSection } from '../../components/contact-information-section/contact-information-section';
 import { PersonalInformationSection } from '../../components/personal-information-section/personal-information-section';
+import { User } from '../../models/User';
 
 import { Subject } from 'rxjs';
 import { UsersService } from '../../services/users-service';
+import { DetailsHeader } from '../../components/details-header/details-header';
 
 @Component({
   selector: 'app-teachers-details',
-  imports: [Breadcrumb, FormsModule, ContactInformationSection, PersonalInformationSection],
+  imports: [
+    Breadcrumb, FormsModule, ContactInformationSection, PersonalInformationSection,
+    DetailsHeader
+  ],
   templateUrl: './teachers-details.html',
   styleUrl: './teachers-details.scss',
   providers: []
@@ -23,7 +28,8 @@ export class TeachersDetails {
     const currentTeacher = this.service.currentUser();
     if(currentTeacher && this.teacherId() == currentTeacher.id.toString())
     return currentTeacher
-    else return {
+    else {
+      return {
         id: 0,
         name: '',
         surname: '',
@@ -31,10 +37,11 @@ export class TeachersDetails {
         email: '',
         role: '',
         address: '',
-        dateOfBirth: undefined,
-        dateJoined: undefined,
+        dateOfBirth: null,
+        dateJoined: null,
         type: 'teacher'
       }
+    }
   })
   assigned_classes = signal<string[]>([])
   assigned_subjects = signal<string[]>([])
@@ -51,12 +58,10 @@ export class TeachersDetails {
     this.route.paramMap.subscribe(params => {
       this.teacherId.set(params.get('id'));
     });
-  }
-
-  ngOnInit(): void {
-    console.log("Teacher ID: ", this.teacherId)
-    this.breadCrumb  = [{name: 'Teachers', url:'/teachers'},{name: `Teacher ${this.teacherId()}`, url:''}]
     this.loadTeacherData();
+    effect(()=>{
+      this.breadCrumb  = [{name: 'Teachers', url:'/teachers'},{name: `${this.teacher().name} ${this.teacher().surname}`, url:''}]
+    })
   }
 
   loadTeacherData() {
@@ -154,24 +159,24 @@ confirmAddSubject(classIndex: number) {
 //   });
 // }
 
-hideAddSubjectInput() {
-  this.showAddSubjectInput = null;
-  this.newSubject = '';
-}
-
-  getRoleClass(role: string): string {
-    const roleMap: {[key: string]: string} = {
-      'Admin': 'admin',
-      'User': 'user',
-      'Editor': 'editor',
-      'Teacher': 'user'
-    };
-    return roleMap[role] || 'user';
+  hideAddSubjectInput() {
+    this.showAddSubjectInput = null;
+    this.newSubject = '';
   }
 
+  // getRoleClass(role: string): string {
+  //   const roleMap: {[key: string]: string} = {
+  //     'Admin': 'admin',
+  //     'User': 'user',
+  //     'Editor': 'editor',
+  //     'Teacher': 'user'
+  //   };
+  //   return roleMap[role] || 'user';
+  // }
+
   ngOnDestroy() {
-  this.destroy$.next();
-  this.destroy$.complete();
-}
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
 }

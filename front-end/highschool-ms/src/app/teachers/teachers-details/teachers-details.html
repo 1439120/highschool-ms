@@ -22,20 +22,8 @@
     <div class="details-content-wrapper">
       <!-- Teacher Profile Card -->
       <div class="profile-card">
-        <div class="profile-header">
-          <div class="avatar-large">
-            {{teacher().name.charAt(0)}}{{teacher().surname.charAt(0)}}
-          </div>
-          <div class="profile-info">
-            <h1 class="teacher-name">{{teacher().name}} {{teacher().surname}}</h1>
-            <div class="teacher-meta">
-              <span class="teacher-id">ID: {{teacher().id}}</span>
-              <span class="role-badge" [class]="getRoleClass(teacher().role)">
-                {{teacher().role}}
-              </span>
-            </div>
-          </div>
-        </div>
+        <!-- Details Header -->
+        <app-details-header [user]="teacher()"/>
 
         <!-- Details Sections -->
         <div class="details-sections">

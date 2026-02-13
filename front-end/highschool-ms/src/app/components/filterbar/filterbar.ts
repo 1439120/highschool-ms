@@ -21,7 +21,7 @@ export class Filterbar {
   filterByItems = input<string[]>([])
 
   // stats inputs
-  filteredUsers = input(0);
+  showingUsers = input(0);
   totalUsers = input(0);
 
   onFilterChange(){

@@ -12,7 +12,7 @@
     <!-- Filter Bar -->
     <app-filterbar [selectedRole]="selectedRole()" (filterChange)="onFilterChange($event)"
       [sortBy]="sortBy()" (orderByChange)="getSortByFromChild($event)" 
-      [filteredUsers]="filteredUsers().length" [totalUsers]="originalUsers().length"
+      [showingUsers]="paginatedUsers().length" [totalUsers]="originalUsers().length"
       [filterBy]="filterBy()" [filterByItems]="filterByItems()"
       />
 

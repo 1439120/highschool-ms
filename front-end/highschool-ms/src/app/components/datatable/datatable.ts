@@ -53,11 +53,11 @@ export class Datatable<T> implements OnInit {
   }
 
   breadcrumbTitle = computed(() => {
-    return [
-      {name: this.title(), url: `/${this.title().toLocaleLowerCase()}`}
-    ]
-  }
-)
+      return [
+        {name: this.title(), url: `/${this.title().toLocaleLowerCase()}`}
+      ]
+    }
+  )
   
   // Computed filtered users
   filteredUsers = computed(() => {

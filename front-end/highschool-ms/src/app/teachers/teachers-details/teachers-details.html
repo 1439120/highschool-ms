@@ -23,16 +23,13 @@
       <!-- Teacher Profile Card -->
       <div class="profile-card">
         <!-- Details Header -->
-        <app-details-header [user]="teacher()"/>
+        <app-details-header [user]="teacher()" [displayName]="teacher().name + ' ' + teacher().surname"
+          [recordId]="teacherId()" [role]="teacher().role"/>
 
         <!-- Details Sections -->
         <div class="details-sections">
           <!-- Personal Information -->
-          <app-personal-information-section [userId]="teacherId()" [userType]="'staff'"/>
-
-          <!-- Contact Information -->
-          <app-contact-information-section [userType]="'staff'"/>
-          
+          <app-personal-information-section [userId]="teacherId()" [userType]="'staff'"/>        
 
           <!-- Subjects & Expertise -->
           <!-- <section class="details-section">

@@ -1,28 +1,28 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, effect, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
 import BreadcrumbModel from '../../models/BreadcrumbModel';
 import { PersonalInformationSection } from '../../components/personal-information-section/personal-information-section';
-import { ContactInformationSection } from '../../components/contact-information-section/contact-information-section';
 import { UsersService } from '../../services/users-service';
+import { DetailsHeader } from '../../components/details-header/details-header';
 
 @Component({
   selector: 'app-students-details',
-  imports: [ FormsModule, CommonModule, Breadcrumb, PersonalInformationSection, ContactInformationSection],
+  imports: [FormsModule, CommonModule, Breadcrumb, PersonalInformationSection, DetailsHeader],
   templateUrl: './students-details.html',
   styleUrl: './students-details.scss',
-  providers: [DatePipe]
+  providers: [DatePipe, DetailsHeader]
 })
 export class StudentsDetails {
   selectedTerm: string = 'term_two';
   studentId = signal<string | null>(null);
 
   student = computed(()=>{
-    const currentTeacher = this.service.currentUser();
-    if(currentTeacher && this.studentId() == currentTeacher.id.toString())
-    return currentTeacher
+    const currentStudent = this.service.currentUser();
+    if(currentStudent && this.studentId() == currentStudent.id.toString())
+    return currentStudent
     else return {
         id: 0,
         name: '',
@@ -31,8 +31,8 @@ export class StudentsDetails {
         email: '',
         role: '',
         address: '',
-        dateOfBirth: undefined,
-        dateJoined: undefined,
+        dateOfBirth: null,
+        dateJoined: null,
         type: 'teacher'
       }
   })
@@ -77,13 +77,13 @@ export class StudentsDetails {
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private service: UsersService
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.route.params.subscribe(params => {
       this.studentId.set(params['id']);
     });
-    this.breadCrumb  = [{name: 'Students', url:'/students'},{name: `Student ${this.studentId()}`, url:''}]
+    effect(()=>{
+      this.breadCrumb  = [{name: 'Students', url:'/students'},{name: `${this.student().name} ${this.student().surname}`, url:''}]
+    })
   }
 
   getTermDisplayName(term: string): string {

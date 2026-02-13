@@ -11,98 +11,191 @@
         </button>
         }
     </div>
-    
-    <div class="info-grid">
-        <!-- Name Fields -->
-        <div class="info-item">
-        @if(onEditMode()){
-            <div class="form-group-grid">
-            <div class="form-group">
-                <label for="teacher_name" class="form-label">First Name</label>
-                <input 
-                class="form-input" 
-                type="text" 
-                id="teacher_name" 
-                [(ngModel)]="editPersonalInformation().name"
-                placeholder="Enter first name"
-                >
-            </div>
-            <div class="form-group">
-                <label for="teacher_surname" class="form-label">Last Name</label>
-                <input 
-                class="form-input" 
-                type="text" 
-                id="teacher_surname" 
-                [(ngModel)]="editPersonalInformation().surname"
-                placeholder="Enter last name"
-                >
-            </div>
-            </div>
-        }
-        @else {
-            <span class="info-label">Full Name</span>
-            <span class="info-value">{{personalInformation().name}} {{personalInformation().surname}}</span>
-        }
-        </div>
-        
-        <!-- Date of Birth -->
-        <div class="info-item">
-        <span class="info-label">Date of Birth</span>
-        @if(onEditMode()){
-            <input 
-            class="form-input" 
-            type="date" 
-            id="dateOfBirth" 
-            [(ngModel)]="editPersonalInformation().dateOfBirth"
-            [value]="(editPersonalInformation().dateOfBirth)"
-            >
-        }
-        @else {
-            <span class="info-value">{{formatDate(personalInformation().dateOfBirth)}}</span>
-        }
-        </div>
-        
-        <!-- Age (Read-only) -->
-        <div class="info-item">
-        <span class="info-label">Age</span>
-        <span class="info-value">{{calculateAge(personalInformation().dateOfBirth)}} years</span>
-        </div>
-        
-        <!-- Date Joined -->
-        <div class="info-item">
-        <span class="info-label">Date Joined</span>
-        @if(onEditMode()){
-            <input 
-            class="form-input" 
-            type="date" 
-            id="dateJoined" 
-            [(ngModel)]="editPersonalInformation().dateJoined"
-            [value]="(editPersonalInformation().dateJoined)"
-            >
-        }
-        @else {
-            <span class="info-value">{{formatDate(personalInformation().dateJoined)}}</span>
-        }
-        </div>
-        
-        <!-- Edit Mode Actions -->
-        @if(onEditMode()){
-        <div class="form-actions">
-            <button class="btn btn-secondary" (click)="cancelEdit()">
-            Cancel
-            </button>
-            @if(personalInformation().id){
-                <button class="btn btn-primary" (click)="savePersonalInfo()">
-                    Save Changes
-                </button>
+    <div class="contact-info-wrapper">
+
+        <div class="info-grid">
+            <!-- Name Fields -->
+            <div class="info-item">
+            @if(onEditMode()){
+                <div class="form-group-grid">
+                <div class="form-group">
+                    <label for="teacher_name" class="form-label">First Name</label>
+                    <input 
+                    class="form-input" 
+                    type="text" 
+                    id="teacher_name" 
+                    [(ngModel)]="editPersonalInformation().name"
+                    placeholder="Enter first name"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="teacher_surname" class="form-label">Last Name</label>
+                    <input 
+                    class="form-input" 
+                    type="text" 
+                    id="teacher_surname" 
+                    [(ngModel)]="editPersonalInformation().surname"
+                    placeholder="Enter last name"
+                    >
+                </div>
+                </div>
             }
             @else {
-                <button class="btn btn-primary" (click)="addNewUser()">
-                    Add
-                </button>
+                <span class="info-label">Full Name</span>
+                <span class="info-value">{{personalInformation().name}} {{personalInformation().surname}}</span>
             }
+            </div>
+            
+            <!-- Date of Birth -->
+            <div class="info-item">
+            <span class="info-label">Date of Birth</span>
+            @if(onEditMode()){
+                <input 
+                class="form-input" 
+                type="date" 
+                id="dateOfBirth" 
+                [(ngModel)]="editPersonalInformation().dateOfBirth"
+                [value]="(editPersonalInformation().dateOfBirth)"
+                >
+            }
+            @else {
+                <span class="info-value">{{formatDate(personalInformation().dateOfBirth)}}</span>
+            }
+            </div>
+            
+            <!-- Age (Read-only) -->
+            <div class="info-item">
+            <span class="info-label">Age</span>
+            <span class="info-value">{{calculateAge(personalInformation().dateOfBirth)}} years</span>
+            </div>
+            
+            <!-- Date Joined -->
+            <div class="info-item">
+            <span class="info-label">Date Joined</span>
+            @if(onEditMode()){
+                <input 
+                class="form-input" 
+                type="date" 
+                id="dateJoined" 
+                [(ngModel)]="editPersonalInformation().dateJoined"
+                [value]="(editPersonalInformation().dateJoined)"
+                >
+            }
+            @else {
+                <span class="info-value">{{formatDate(personalInformation().dateJoined)}}</span>
+            }
+            </div>
             
         </div>
+        @if(onEditMode()){
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="teacher_email" class="form-label">
+                        <span class="form-icon">✉️</span>
+                        Email Address
+                    </label>
+                    <input 
+                        class="form-input" 
+                        type="email" 
+                        id="teacher_email" 
+                        [(ngModel)]="editPersonalInformation().email"
+                        placeholder="teacher@school.edu"
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="teacher_phone" class="form-label">
+                        <span class="form-icon">📞</span>
+                        Phone Number
+                    </label>
+                    <input 
+                        class="form-input" 
+                        type="tel" 
+                        id="teacher_phone" 
+                        [(ngModel)]="editPersonalInformation().phone"
+                        placeholder="(123) 456-7890"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="teacher_address" class="form-label">
+                    <span class="form-icon">📍</span>
+                    Physical Address
+                    </label>
+                    <textarea 
+                    class="form-input textarea" 
+                    id="teacher_address" 
+                    rows="3"
+                    [(ngModel)]="editPersonalInformation().address"
+                    placeholder="123 School Street, City, State, ZIP Code"
+                    ></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-secondary" (click)="cancelEdit()">
+                Cancel
+                </button>
+                <button class="btn btn-primary" (click)="savePersonalInfo()">
+                Save Changes
+                </button>
+            </div>
         }
     </div>
 </section>
+@if(!onEditMode()){
+    <section class="details-section">
+        <div class="section-header">
+            <h2 class="section-title">
+            <span class="section-icon">📱</span>
+            Contact Information
+            </h2>
+        </div>
+            <!-- View Mode -->
+            <div class="contact-cards">
+                <a [href]="'mailto:' + personalInformation().email" class="contact-card email">
+                    <span class="contact-icon">✉️</span>
+                    <div class="contact-content">
+                        <span class="contact-label">Email Address</span>
+                        <span class="contact-value">{{personalInformation().email}}</span>
+                    </div>
+                </a>
+                <a [href]="'tel:' + personalInformation().phone" class="contact-card phone">
+                    <span class="contact-icon">📞</span>
+                    <div class="contact-content">
+                        <span class="contact-label">Phone Number</span>
+                        <span class="contact-value">{{personalInformation().phone}}</span>
+                    </div>
+                </a>
+                <div class="contact-card address">
+                    <span class="contact-icon">📍</span>
+                    <div class="contact-content">
+                        <span class="contact-label">Physical Address</span>
+                        <span class="contact-value">{{personalInformation().address}}</span>
+                    </div>
+                </div>
+                
+                <!-- Additional Contacts -->
+                <!-- @if(contactInformation?.additionalContacts?.length) {
+                    <div class="contact-card additional">
+                    <span class="contact-icon">📱</span>
+                    <div class="contact-content">
+                        <span class="contact-label">Additional Contacts</span>
+                        <div class="additional-list">
+                        @for(contact of contactInformation?.additionalContacts; track $index) {
+                            <div class="additional-item">
+                            <span class="contact-type-badge" [class]="contact.type">
+                                {{contact.type | titlecase}}
+                            </span>
+                            <a [href]="'tel:' + contact.number" class="contact-number">
+                                {{contact.number}}
+                            </a>
+                            </div>
+                        }
+                        </div>
+                    </div>
+                    </div>
+                } -->
+            </div>
+        
+    </section>
+}

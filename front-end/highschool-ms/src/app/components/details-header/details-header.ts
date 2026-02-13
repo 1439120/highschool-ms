@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { User } from '../../models/User';
 
 @Component({
@@ -9,7 +9,18 @@ import { User } from '../../models/User';
 })
 export class DetailsHeader {
   user = input<User>();
+  displayName = input<string>();
+  recordId = input();
+  role = input<string>();
+  classroom = input<string>();
+  averageScore = input<number>();
 
+  initals = computed(()=>{
+    let temp = this.displayName()?.split(' ')
+    if(temp?.length && temp?.length == 1) return [temp[0][0]]
+    if(temp?.length && temp.length>= 2) return [temp[0][0], temp[1][0]]
+    return []
+  })
   getRoleClass(role: string | undefined): string {
     const roleMap: {[key: string]: string} = {
       'Admin': 'admin',

@@ -1,14 +1,28 @@
 <div class="profile-header">
     <div class="avatar-large">
-    {{user()?.name?.charAt(0)}}{{user()?.surname?.charAt(0)}}
+    {{initals()[0]}}{{initals()[1]}}
     </div>
     <div class="profile-info">
-    <h1 class="teacher-name">{{user()?.name}} {{user()?.surname}}</h1>
-    <div class="teacher-meta">
-        <span class="teacher-id">ID: {{user()?.id}}</span>
-        <span class="role-badge" [class]="getRoleClass(user()?.role)">
-        {{user()?.role}}
+    <h1 class="record-name">{{displayName()}}</h1>
+    <div class="record-meta">
+        <span class="record-id">ID: {{recordId()}}</span>
+        @if(classroom()){
+            <span class="grade-badge">
+                <span class="badge-icon">🎓</span>
+                Grade {{classroom()}}
+            </span>
+        }
+        @if(role()){
+        <span class="role-badge" [class]="getRoleClass(role())">
+            {{role()}}
         </span>
+        }
+        @if(averageScore()){
+            <span class="average-score">
+                <span class="score-icon">⭐</span>
+                Average: {{averageScore()}}%
+            </span>
+        }
     </div>
     </div>
 </div>

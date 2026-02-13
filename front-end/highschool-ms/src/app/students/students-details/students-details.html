@@ -30,33 +30,14 @@
     <div class="details-content-wrapper">
       <!-- Student Profile Card -->
       <div class="profile-card">
-        <div class="profile-header">
-          <div class="avatar-large student">
-            {{student().name.charAt(0)}}{{student().surname.charAt(0)}}
-          </div>
-          <div class="profile-info">
-            <h1 class="student-name">{{student().name}} {{student().surname}}</h1>
-            <div class="student-meta">
-              <span class="student-id">ID: {{student().id}}</span>
-              <span class="grade-badge">
-                <span class="badge-icon">🎓</span>
-                Grade {{class_room().grade}} - {{class_room().class}}
-              </span>
-              <span class="average-score">
-                <span class="score-icon">⭐</span>
-                Average: {{class_room().average}}%
-              </span>
-            </div>
-          </div>
-        </div>
+        <!-- Profile header -->
+        <app-details-header [displayName]="student().name + ' ' + student().surname" [recordId]="studentId()"
+          [role]="student().role" [classroom]="class_room().class" [averageScore]="class_room().average"/>
 
         <!-- Details Sections -->
         <div class="details-sections">
           <!-- Personal Information -->
           <app-personal-information-section [userId]="studentId()" [userType]="'student'"/>
-
-          <!-- Contact Information -->
-          <app-contact-information-section [userType]="'student'"/>
 
           <!-- Academic Performance -->
           <section class="details-section">

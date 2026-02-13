@@ -27,24 +27,55 @@ $dark-color: #2d3748;
   .profile-info {
     flex: 1;
     
-    .teacher-name {
+    .record-name {
       margin: 0 0 12px 0;
       font-size: 32px;
       font-weight: 700;
     }
     
-    .teacher-meta {
+    .record-meta {
       display: flex;
       align-items: center;
       gap: 20px;
+      flex-wrap: wrap;
     }
     
-    .teacher-id {
+    .record-id {
       background: rgba(255, 255, 255, 0.2);
       padding: 6px 16px;
       border-radius: 20px;
       font-size: 14px;
       font-weight: 500;
+    }
+
+    .grade-badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      
+      .badge-icon {
+        font-size: 16px;
+      }
+    }
+
+    .average-score {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      
+      .score-icon {
+        font-size: 16px;
+      }
     }
   }
 }

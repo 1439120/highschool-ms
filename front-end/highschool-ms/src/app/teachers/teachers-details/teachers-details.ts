@@ -3,9 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
 import BreadcrumbModel from '../../models/BreadcrumbModel';
 import { FormsModule } from '@angular/forms';
-import { ContactInformationSection } from '../../components/contact-information-section/contact-information-section';
 import { PersonalInformationSection } from '../../components/personal-information-section/personal-information-section';
-import { User } from '../../models/User';
 
 import { Subject } from 'rxjs';
 import { UsersService } from '../../services/users-service';
@@ -14,7 +12,7 @@ import { DetailsHeader } from '../../components/details-header/details-header';
 @Component({
   selector: 'app-teachers-details',
   imports: [
-    Breadcrumb, FormsModule, ContactInformationSection, PersonalInformationSection,
+    Breadcrumb, FormsModule, PersonalInformationSection,
     DetailsHeader
   ],
   templateUrl: './teachers-details.html',

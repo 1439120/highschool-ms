@@ -37,8 +37,8 @@ export const routes: Routes = [
     },
     {
         path: 'subject-plan',
-        loadComponent: ()=>{
-            return import('./subject-plan/subject-plan').then((m) => m.SubjectPlan)
+        loadChildren: ()=>{
+            return import('./subject-plan/subject-plan.routes').then((m) => m.SUBJECTPLAN_ROUTES)
         }
     },
     {

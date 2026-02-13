@@ -11,7 +11,7 @@ export class Sidebar {
   menuOptions = signal([
     {title: 'Dashboard', link:'/', icon:'🏠'},
     {title: 'Subject Plan', link:'/subject-plan', icon:'📝'},
-    {title: 'Lesson Plan', link:'/lesson-plan', icon:'📖'},
+    // {title: 'Lesson Plan', link:'/lesson-plan', icon:'📖'},
     // {title: 'Subjects', link:'/subjects', icon:'📖'},
     {title: 'Classes', link:'/classes', icon:'📚'},
     {title: 'Students', link:'/students', icon:'🎒'},

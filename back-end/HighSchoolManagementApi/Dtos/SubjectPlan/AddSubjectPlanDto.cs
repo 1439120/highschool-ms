@@ -1,0 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace HighSchoolManagementApi.Dtos.SubjectPlan
+{
+    public class AddSubjectPlanDto
+    {
+        public string Name { get; set; }
+        public int SubjectId { get; set; }
+        public string CreatedById { get; set; }
+        public int GradeId { get; set; }
+    }
+}

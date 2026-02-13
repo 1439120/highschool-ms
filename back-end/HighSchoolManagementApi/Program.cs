@@ -13,9 +13,9 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+// builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
@@ -111,6 +111,7 @@ builder.Services.AddScoped<ISubjectRepository, SubjectsRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserSubjectRepository, UserSubjectRepository>();
 builder.Services.AddScoped<ILessonPlanRepository, LessonPlanRepository>();
+builder.Services.AddScoped<ISubjectPlanRepository, SubjectPlanRepository>();
 
 var app = builder.Build();
 
@@ -131,8 +132,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

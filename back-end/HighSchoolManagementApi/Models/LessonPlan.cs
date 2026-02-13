@@ -17,5 +17,7 @@ namespace HighSchoolManagementApi.Models
         public Grades Grades { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         public DateTime LastUpdatedOn { get; set; } = DateTime.UtcNow;
+        public int? SubjectPlanId { get; set; }
+        public SubjectPlan? SubjectPlan { get; set; }
     }
 }

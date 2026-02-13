@@ -170,6 +170,9 @@ namespace HighSchoolManagementApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("SubjectPlanId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("SubjectsId")
                         .HasColumnType("integer");
 
@@ -179,9 +182,50 @@ namespace HighSchoolManagementApi.Migrations
 
                     b.HasIndex("ResponsibleId");
 
+                    b.HasIndex("SubjectPlanId");
+
                     b.HasIndex("SubjectsId");
 
                     b.ToTable("LessonPlan");
+                });
+
+            modelBuilder.Entity("HighSchoolManagementApi.Models.SubjectPlan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("GradeId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("LastUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("GradeId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("SubjectPlan");
                 });
 
             modelBuilder.Entity("HighSchoolManagementApi.Models.Subjects", b =>
@@ -461,6 +505,10 @@ namespace HighSchoolManagementApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HighSchoolManagementApi.Models.SubjectPlan", "SubjectPlan")
+                        .WithMany("LessonPlans")
+                        .HasForeignKey("SubjectPlanId");
+
                     b.HasOne("HighSchoolManagementApi.Models.Subjects", "Subjects")
                         .WithMany()
                         .HasForeignKey("SubjectsId")
@@ -471,7 +519,36 @@ namespace HighSchoolManagementApi.Migrations
 
                     b.Navigation("Responsible");
 
+                    b.Navigation("SubjectPlan");
+
                     b.Navigation("Subjects");
+                });
+
+            modelBuilder.Entity("HighSchoolManagementApi.Models.SubjectPlan", b =>
+                {
+                    b.HasOne("HighSchoolManagementApi.Models.AuthUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HighSchoolManagementApi.Models.Grades", "Grade")
+                        .WithMany()
+                        .HasForeignKey("GradeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HighSchoolManagementApi.Models.Subjects", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Grade");
+
+                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("HighSchoolManagementApi.Models.Subjects", b =>
@@ -581,6 +658,11 @@ namespace HighSchoolManagementApi.Migrations
             modelBuilder.Entity("HighSchoolManagementApi.Models.Classroom", b =>
                 {
                     b.Navigation("Learners");
+                });
+
+            modelBuilder.Entity("HighSchoolManagementApi.Models.SubjectPlan", b =>
+                {
+                    b.Navigation("LessonPlans");
                 });
 
             modelBuilder.Entity("HighSchoolManagementApi.Models.Subjects", b =>

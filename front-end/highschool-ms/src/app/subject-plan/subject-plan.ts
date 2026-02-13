@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { Datamodel } from '../models/Datamodel';
 import SubjectPlanModel from '../models/SubjectPlanModel';
 import { Datatable } from "../components/datatable/datatable";
+import { SubjectPlanService } from '../services/subject-plan-service';
 
 
 @Component({
@@ -11,30 +12,33 @@ import { Datatable } from "../components/datatable/datatable";
   styleUrl: './subject-plan.scss',
 })
 export class SubjectPlan extends Datamodel<SubjectPlanModel> {
-  constructor(){
+  constructor(private service: SubjectPlanService){
       super()
       this.title_.set("Subject-Plan");
-      // this.service.loadLessonPlans();
-      this.title_.set("Lesson-Plan");
-      // effect(()=>{
-      //   this.records_.set(this.service.lessonPlans());
-      // })
+      this.service.loadSubjectPlans();
+
+      effect(()=>{
+        this.records_.set(this.service.subjectPlans());
+      })
       
       this.headers_.set( [
-        {
-          'col': 'lastUpdatedOn', 'groupBy': false, displaName: 'Last Updated On'
-        },
         {
           'col': 'name', 'groupBy': true, displaName: 'Name'
         },
         {
-          'col': 'subjects', 'groupBy': true, displaName: 'Subject'
+          'col': 'createdBy', 'groupBy': true, displaName: 'Created By'
         },
         {
-          'col': 'responsible', 'groupBy': true, displaName: 'Responsible'
+          'col': 'subject', 'groupBy': true, displaName: 'Subject'
         },
         {
-          'col': 'grades', 'groupBy': false, displaName: 'Grade'
+          'col': 'grade', 'groupBy': false, displaName: 'Grade'
+        },
+        {
+          'col': 'createdOn', 'groupBy': false, displaName: 'Created On'
+        },
+        {
+          'col': 'lastUpdatedOn', 'groupBy': false, displaName: 'Last Updated On'
         },
       ])
       this.searchByItems_.set(['name'])

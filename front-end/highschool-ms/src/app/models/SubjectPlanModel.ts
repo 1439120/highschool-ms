@@ -5,10 +5,10 @@ import { User } from "./User";
 export default interface SubjectPlanModel{
     id: number,
     name: string,
-    subjects: SubjectsModel,
-    responsible: User,
-    grades: Grades,
+    subject: SubjectsModel,
+    createdById: User,
+    grade: Grades,
     lastUpdatedOn: Date,
-    start: Date,
-    end: Date,
+    createdOn: Date,
+    year: number,
 }

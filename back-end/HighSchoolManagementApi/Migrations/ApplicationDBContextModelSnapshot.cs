@@ -217,6 +217,9 @@ namespace HighSchoolManagementApi.Migrations
                     b.Property<int>("SubjectId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");

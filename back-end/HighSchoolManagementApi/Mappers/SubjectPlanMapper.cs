@@ -20,7 +20,7 @@ namespace HighSchoolManagementApi.Mappers
             };
         }
 
-        public static SubjectPlanDto ToLessonPlanDto(this SubjectPlan subjectPlanModel)
+        public static SubjectPlanDto ToSubjectPlanDto(this SubjectPlan subjectPlanModel)
         {
             return new SubjectPlanDto
             {

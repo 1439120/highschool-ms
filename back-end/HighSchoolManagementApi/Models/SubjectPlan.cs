@@ -15,8 +15,9 @@ namespace HighSchoolManagementApi.Models
         public AuthUser CreatedBy { get; set; }
         public int GradeId { get; set; }
         public Grades Grade { get; set; }
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
-        public DateTime LastUpdatedOn { get; set; } = DateTime.Now;
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public DateTime LastUpdatedOn { get; set; } = DateTime.UtcNow;
+        public int Year { get; set; }
         public List<LessonPlan> LessonPlans {get; set;} = new List<LessonPlan>();
     }
 }

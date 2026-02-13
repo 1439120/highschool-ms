@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using HighSchoolManagementApi.Dtos.SubjectPlan;
 using HighSchoolManagementApi.Models;
 using HighSchoolManagementApi.Interfaces;
+using HighSchoolManagementApi.Mappers;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -24,8 +25,8 @@ namespace HighSchoolManagementApi.Controllers
         public async Task<IActionResult> GetAll()
         {
             var subjectPlans = await _subjectPlanRepo.GetAll();
-            // var lessonPlanDto = lessonPlans.Select(a => a.ToLessonPlanDto());
-            return Ok(subjectPlans);
+            var subjectPlanDto = subjectPlans.Select(a => a.ToSubjectPlanDto());
+            return Ok(subjectPlanDto);
         }
 
         [HttpPost]

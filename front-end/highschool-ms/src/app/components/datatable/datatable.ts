@@ -48,7 +48,7 @@ export class Datatable<T> implements OnInit {
       return date.toLocaleDateString('en-US', options);
     }
     return (item as any)[key] ? 
-    (typeof (item as any)[key] !== 'object' ? (item as any)[key] : (item as any)[key]['name']) 
+    (typeof (item as any)[key] !== 'object' ? (item as any)[key] : (item as any)[key]['name'] + ' ' + ((item as any)[key]?.surname || ''))
     : null;
   }
 

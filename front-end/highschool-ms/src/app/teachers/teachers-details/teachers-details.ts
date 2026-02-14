@@ -56,10 +56,10 @@ export class TeachersDetails {
     id: 1,
     name: 'Grade 8A',
     grade: 8,
-    class_teacher: '',
-    maximum_occupants: 0,
-    regsitered_students: 0,
-    number_of_subjecteds: 0
+    classTeacher: '',
+    maximumOccupants: 0,
+    registeredStudents: 0,
+    numberOfSubjecteds: 0
   })
 
   constructor(

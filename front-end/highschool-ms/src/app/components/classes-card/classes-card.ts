@@ -19,7 +19,7 @@ export class ClassesCard {
 
   }
   addSubjectToClass(index: number | undefined){
-
+    this.showAddSubjectInput.set(true);
   }
   removeSubjectFromClass(){
 

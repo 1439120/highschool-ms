@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { Datamodel } from '../models/Datamodel';
-import { Classroom, classrooms } from '../models/Classroom';
+import { Classroom } from '../models/Classroom';
 import { Datatable } from '../components/datatable/datatable';
+import { ClassroomService } from '../services/classroom-service';
 
 @Component({
   selector: 'app-classrooms',
@@ -10,17 +11,25 @@ import { Datatable } from '../components/datatable/datatable';
   styleUrl: './classrooms.scss',
 })
 export class Classrooms extends Datamodel<Classroom> {
-  constructor(){
+  constructor(private service: ClassroomService){
       super();
       this.title_.set("Teachers");
-      this.records_.set(classrooms);
+      this.service.loadClassrooms();
+      effect(()=>{
+        this.records_.set(this.service.classrooms());
+        const uniqueGrades: string[] = [
+          ...new Set(this.records_().map(c => c.grade.toString()))
+        ];
+        this.filterByItems_.set(uniqueGrades);
+      })
+      
       this.headers_.set( [
       {
         'col': 'name', 'groupBy': true,
         displaName: 'Name'
       },
       {
-        'col': 'class_teacher', 'groupBy': true,
+        'col': 'classTeacher', 'groupBy': true,
         displaName: 'Class Teacher'
       },
       {
@@ -32,18 +41,16 @@ export class Classrooms extends Datamodel<Classroom> {
         displaName: 'Number of Subjects'
       },
       {
-        'col': 'maximum_occupants', 'groupBy': true,
+        'col': 'maximumOccupants', 'groupBy': true,
         displaName: 'Maximum Occupants'
       },
       {
-        'col': 'regsitered_students', 'groupBy': true,
+        'col': 'registeredStudents', 'groupBy': true,
         displaName: 'Registered Students'
       }])
       this.searchByItems_.set(['name','class_teacher'])
       this.filterBy_.set('Grade')
-      const uniqueGrades: string[] = [
-        ...new Set(classrooms.map(c => c.grade.toString()))
-      ];
-      this.filterByItems_.set(uniqueGrades);
+      
+      
     }
 }

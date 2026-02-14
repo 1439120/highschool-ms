@@ -1,21 +1,6 @@
 <app-breadcrumb [titleBreadcrumbs]="breadCrumb"/>
 
 <div class="teacher-details-container">
-    
-  <!-- Fixed Header -->
-  <!-- <div class="details-header">
-    <button class="back-btn" routerLink="/teachers">
-      <span class="btn-icon">←</span> Back to Teachers
-    </button>
-    <div class="header-actions">
-      <button class="btn btn-secondary">
-        <span class="btn-icon">📋</span> Print
-      </button>
-      <button class="btn btn-primary">
-        <span class="btn-icon">✏️</span> Edit Teacher
-      </button>
-    </div>
-  </div> -->
 
   <!-- Scrollable Content Area -->
   <div class="scrollable-content">
@@ -75,16 +60,18 @@
             
             <div class="classes-container">
               <!-- Add Class Card (First Card) -->
-              <div class="class-card add-card" (click)="addClass()">
+              <!-- <div class="class-card add-card">
                 <div class="add-icon-container">
                   <span class="add-icon">+</span>
                 </div>
                 <span class="add-label">Add New Class</span>
               </div>
-              
+               -->
+              <app-classes-card [addClass]="true"/>
+              <app-classes-card [classroom]="testClassroom()"/>
               <!-- Existing Class Cards -->
               @for(classItem of assigned_classes(); track $index; let parentIndex = $index) {
-                <div class="class-card">
+                <!-- <div class="class-card">
                   <div class="class-card-header">
                     <span class="class-icon">👩‍🏫</span>
                     <span class="class-name">{{classItem}}</span>
@@ -112,7 +99,6 @@
                       }
                     </div>
                     
-                    <!-- Add Subject Input (Hidden by default) -->
                      @if(showAddSubjectInput === $index){
                         <div class="add-subject-input">
                           <input 
@@ -130,8 +116,6 @@
                      }
                     
                   </div>
-                  
-                  <!-- Class Stats -->
                   <div class="class-stats">
                     <div class="stat-item">
                       <span class="stat-icon">👥</span>
@@ -149,7 +133,7 @@
                       <span class="stat-label">Periods/Day</span>
                     </div>
                   </div>
-                </div>
+                </div> -->
               }
             </div>
           </section>

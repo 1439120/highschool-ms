@@ -8,11 +8,13 @@ import { PersonalInformationSection } from '../../components/personal-informatio
 import { Subject } from 'rxjs';
 import { UsersService } from '../../services/users-service';
 import { DetailsHeader } from '../../components/details-header/details-header';
+import { ClassesCard } from '../../components/classes-card/classes-card';
+import { Classroom } from '../../models/Classroom';
 
 @Component({
   selector: 'app-teachers-details',
   imports: [
-    Breadcrumb, FormsModule, PersonalInformationSection,
+    Breadcrumb, FormsModule, PersonalInformationSection, ClassesCard,
     DetailsHeader
   ],
   templateUrl: './teachers-details.html',
@@ -50,6 +52,16 @@ export class TeachersDetails {
   teacherId = signal<string | null>(null);
   private destroy$ = new Subject<void>();
 
+  testClassroom = signal<Classroom>({
+    id: 1,
+    name: 'Grade 8A',
+    grade: 8,
+    class_teacher: '',
+    maximum_occupants: 0,
+    regsitered_students: 0,
+    number_of_subjecteds: 0
+  })
+
   constructor(
     private service: UsersService
   ) {
@@ -67,12 +79,12 @@ export class TeachersDetails {
     this.assigned_subjects.set(['maths', 'physics', 'life science'])
   }
 
-  addClass() {
-    const className = prompt('Enter class name (e.g., Grade 12 A):');
-    if (className && this.assigned_classes().length) {
-      this.assigned_classes.update(value => [...value, className]) //.push(className);
-    }
-  }
+  // addClass() {
+  //   const className = prompt('Enter class name (e.g., Grade 12 A):');
+  //   if (className && this.assigned_classes().length) {
+  //     this.assigned_classes.update(value => [...value, className]) //.push(className);
+  //   }
+  // }
 
   removeClass(index: number) {
     if (confirm('Are you sure you want to remove this class?')) {
@@ -161,16 +173,6 @@ confirmAddSubject(classIndex: number) {
     this.showAddSubjectInput = null;
     this.newSubject = '';
   }
-
-  // getRoleClass(role: string): string {
-  //   const roleMap: {[key: string]: string} = {
-  //     'Admin': 'admin',
-  //     'User': 'user',
-  //     'Editor': 'editor',
-  //     'Teacher': 'user'
-  //   };
-  //   return roleMap[role] || 'user';
-  // }
 
   ngOnDestroy() {
     this.destroy$.next();

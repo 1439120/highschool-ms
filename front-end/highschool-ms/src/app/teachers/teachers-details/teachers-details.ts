@@ -10,6 +10,7 @@ import { UsersService } from '../../services/users-service';
 import { DetailsHeader } from '../../components/details-header/details-header';
 import { ClassesCard } from '../../components/classes-card/classes-card';
 import { Classroom } from '../../models/Classroom';
+import Grades from '../../models/Grades';
 
 @Component({
   selector: 'app-teachers-details',
@@ -51,15 +52,21 @@ export class TeachersDetails {
   onEditMode = signal(false)
   teacherId = signal<string | null>(null);
   private destroy$ = new Subject<void>();
-
+  classroomGrade: Grades = {
+    id: 1,
+    name: 'Grade 8',
+    gradeNumber: 8
+  }
   testClassroom = signal<Classroom>({
     id: 1,
     name: 'Grade 8A',
-    grade: 8,
+    grade: this.classroomGrade,
     classTeacher: '',
     maximumOccupants: 0,
     registeredStudents: 0,
-    numberOfSubjecteds: 0
+    numberOfSubjecteds: 0,
+    academicYear: 0,
+    roomNumber: ''
   })
 
   constructor(

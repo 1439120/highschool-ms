@@ -38,43 +38,7 @@
         <!-- Details Sections -->
         <div class="details-sections">
           <!-- Class Overview -->
-          <section class="details-section">
-            <h2 class="section-title">
-              <span class="section-icon">📋</span>
-              Class Overview
-            </h2>
-            <div class="overview-grid">
-              <div class="overview-card">
-                <div class="overview-icon">🎓</div>
-                <div class="overview-content">
-                  <span class="overview-label">Grade Level</span>
-                  <span class="overview-value">Grade {{classData?.grade}}</span>
-                </div>
-              </div>
-              <div class="overview-card">
-                <div class="overview-icon">📅</div>
-                <div class="overview-content">
-                  <span class="overview-label">Academic Year</span>
-                  <span class="overview-value">{{getAcademicYear()}}</span>
-                </div>
-              </div>
-              <div class="overview-card">
-                <div class="overview-icon">⏰</div>
-                <div class="overview-content">
-                  <span class="overview-label">Class Schedule</span>
-                  <span class="overview-value">Mon-Fri, 7:30 AM - 2:30 PM</span>
-                </div>
-              </div>
-              <div class="overview-card">
-                <div class="overview-icon">📍</div>
-                <div class="overview-content">
-                  <span class="overview-label">Room Number</span>
-                  <span class="overview-value">Room {{classData?.grade}}A-{{classData?.id}}</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
+          <app-classroom-information-section/>
           <!-- Students Roster -->
           <section class="details-section">
             <!-- <div class="section-header">

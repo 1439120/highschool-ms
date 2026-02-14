@@ -1,11 +1,15 @@
+import Grades from "./Grades"
+
 export interface Classroom{
     id: number,
     name: string,
-    grade: number,
+    grade: Grades,
     classTeacher: string,
     maximumOccupants: number,
     registeredStudents: number,
     numberOfSubjecteds: number,
+    academicYear: number,
+    roomNumber: string
     [key: string]: any
 }
 

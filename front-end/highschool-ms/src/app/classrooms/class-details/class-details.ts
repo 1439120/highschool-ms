@@ -6,6 +6,8 @@ import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
 import BreadcrumbModel from '../../models/BreadcrumbModel';
 import { DetailsHeader } from '../../components/details-header/details-header';
 import Grades from '../../models/Grades';
+import { ClassroomInformationSection } from '../../components/classroom-information-section/classroom-information-section';
+import { Classroom } from '../../models/Classroom';
 
 /**
  * ** Over the ovierview boards
@@ -18,7 +20,7 @@ import Grades from '../../models/Grades';
 
 @Component({
   selector: 'app-class-details',
-  imports: [FormsModule, Breadcrumb, DetailsHeader],
+  imports: [FormsModule, Breadcrumb, DetailsHeader, ClassroomInformationSection],
   templateUrl: './class-details.html',
   styleUrl: './class-details.scss',
   providers: [DatePipe]

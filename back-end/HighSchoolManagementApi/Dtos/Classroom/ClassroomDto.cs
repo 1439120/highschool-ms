@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HighSchoolManagementApi.Dtos.Users;
+using HighSchoolManagementApi.Dtos.Grades;
 
 namespace HighSchoolManagementApi.Dtos.Classroom
 {
@@ -10,8 +11,8 @@ namespace HighSchoolManagementApi.Dtos.Classroom
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public int? GradeId { get; set; }
-        public int? ClassTeacherId { get; set; }
+        public GradesDto? Grade { get; set; }
+        public UsersDto? ClassTeacher { get; set; }
         public int MaximumOccupants { get; set; }
         public int RegisteredStudents { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;

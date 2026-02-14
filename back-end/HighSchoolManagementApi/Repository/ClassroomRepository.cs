@@ -18,7 +18,10 @@ namespace HighSchoolManagementApi.Repository
         }
         public async Task<List<Classroom>> GetAllAsync()
         {
-            return await _context.Classroom.Include(c => c.Learners).ToListAsync();
+            return await _context.Classroom.Include(c => c.Learners)
+                .Include(c => c.Grade)
+                .Include(c => c.ClassTeacher)
+                .ToListAsync();
         }
         public async Task<Classroom> GetByIdAsync(int id)
         {

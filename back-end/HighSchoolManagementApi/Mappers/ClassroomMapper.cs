@@ -15,8 +15,8 @@ namespace HighSchoolManagementApi.Mappers
             {
                 Id = classromModel.Id,
                 Name = classromModel.Name,
-                GradeId = classromModel.GradeId,
-                ClassTeacherId = classromModel.ClassTeacherId,
+                Grade = classromModel.Grade.ToGradesDto(),
+                ClassTeacher = classromModel.ClassTeacher.ToUsersDto(),
                 MaximumOccupants = classromModel.MaximumOccupants,
                 RegisteredStudents = classromModel.RegisteredStudents,
                 CreatedOn = classromModel.CreatedOn,

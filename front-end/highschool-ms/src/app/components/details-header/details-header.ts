@@ -1,5 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 import { User } from '../../models/User';
+import { Classroom } from '../../models/Classroom';
+import Grades from '../../models/Grades';
 
 @Component({
   selector: 'app-details-header',
@@ -14,6 +16,9 @@ export class DetailsHeader {
   role = input<string>();
   classroom = input<string>();
   averageScore = input<number>();
+  grade = input<Grades>();
+  classTeacher = input<string>()
+  occupancy = input<number>()
 
   initals = computed(()=>{
     let temp = this.displayName()?.split(' ')

@@ -22,6 +22,24 @@ $dark-color: #2d3748;
     // color: white;
     color: $dark-color;
     border: 3px solid rgba(255, 255, 255, 0.3);
+    .main-icon-avatar{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+    }
+    .class-icon {
+      padding-top: 15px;
+      font-size: 48px;
+    }
+    
+    .class-grade {
+      font-size: 24px;
+      font-weight: 800;
+      margin-top: 10px;
+      padding: 8px;
+    }
   }
   
   .profile-info {
@@ -75,6 +93,55 @@ $dark-color: #2d3748;
       
       .score-icon {
         font-size: 16px;
+      }
+    }
+
+    .teacher-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 8px 20px;
+      border-radius: 20px;
+      
+      .meta-icon {
+        font-size: 16px;
+      }
+      
+      .meta-label {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+      
+      .meta-value {
+        font-size: 15px;
+        font-weight: 600;
+      }
+    }
+
+    .capacity-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      
+      .capacity-bar {
+        width: 200px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 4px;
+        overflow: hidden;
+        
+        .capacity-fill {
+          height: 100%;
+          background: linear-gradient(90deg, #4cc9f0, #4895ef);
+          transition: width 0.6s ease;
+        }
+      }
+      
+      .capacity-text {
+        font-size: 14px;
+        font-weight: 600;
+        min-width: 80px;
       }
     }
   }

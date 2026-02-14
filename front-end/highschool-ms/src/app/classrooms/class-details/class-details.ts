@@ -1,9 +1,11 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
 import BreadcrumbModel from '../../models/BreadcrumbModel';
+import { DetailsHeader } from '../../components/details-header/details-header';
+import Grades from '../../models/Grades';
 
 /**
  * ** Over the ovierview boards
@@ -16,7 +18,7 @@ import BreadcrumbModel from '../../models/BreadcrumbModel';
 
 @Component({
   selector: 'app-class-details',
-  imports: [FormsModule, Breadcrumb],
+  imports: [FormsModule, Breadcrumb, DetailsHeader],
   templateUrl: './class-details.html',
   styleUrl: './class-details.scss',
   providers: [DatePipe]
@@ -26,6 +28,11 @@ export class ClassDetails {
   filteredStudents: string[] = [];
   classData: any = null;
   breadCrumb!: BreadcrumbModel[];
+  testGrade = signal<Grades>({
+    id: 2,
+    name: 'Grade 8',
+    gradeNumber: 8
+  });
   
   constructor(private route: ActivatedRoute) {}
 

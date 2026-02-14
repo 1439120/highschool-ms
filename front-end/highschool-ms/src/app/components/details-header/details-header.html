@@ -1,28 +1,54 @@
 <div class="profile-header">
-    <div class="avatar-large">
-    {{initals()[0]}}{{initals()[1]}}
+    <div class="avatar-large"> 
+        @if(grade()){
+            <div class="main-icon-avatar">
+                <div class="class-icon">🏫</div>
+                <div class="class-grade">{{grade()?.gradeNumber}}</div>
+            </div>
+        }
+        @else{
+            {{initals()[0]}}{{initals()[1]}}
+        }
     </div>
     <div class="profile-info">
-    <h1 class="record-name">{{displayName()}}</h1>
-    <div class="record-meta">
-        <span class="record-id">ID: {{recordId()}}</span>
-        @if(classroom()){
-            <span class="grade-badge">
-                <span class="badge-icon">🎓</span>
-                Grade {{classroom()}}
+        <h1 class="record-name">{{displayName()}}</h1>
+        <div class="record-meta">
+            @if(recordId()){
+                <span class="record-id">ID: {{recordId()}}</span>
+            }
+            @if(classroom()){
+                <span class="grade-badge">
+                    <span class="badge-icon">🎓</span>
+                    Grade {{classroom()}}
+                </span>
+            }
+            @if(role()){
+            <span class="role-badge" [class]="getRoleClass(role())">
+                {{role()}}
             </span>
-        }
-        @if(role()){
-        <span class="role-badge" [class]="getRoleClass(role())">
-            {{role()}}
-        </span>
-        }
-        @if(averageScore()){
-            <span class="average-score">
-                <span class="score-icon">⭐</span>
-                Average: {{averageScore()}}%
-            </span>
-        }
-    </div>
+            }
+            @if(classTeacher()){
+                <div class="teacher-info">
+                    <span class="meta-icon">👨‍🏫</span>
+                    <span class="meta-label">Class Teacher:</span>
+                    <span class="meta-value">{{classTeacher()}}</span>
+                </div>
+            }
+            @if(averageScore()){
+                <span class="average-score">
+                    <span class="score-icon">⭐</span>
+                    Average: {{averageScore()}}%
+                </span>
+            }
+            @if(occupancy()){
+                <div class="capacity-info">
+                    <div class="capacity-bar">
+                        <div class="capacity-fill" [style.width]="occupancy() + '%'"></div>
+                    </div>
+                    <span class="capacity-text">{{occupancy()}}% Full</span>
+                </div>
+            }
+            
+        </div>
     </div>
 </div>

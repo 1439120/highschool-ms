@@ -31,28 +31,9 @@
     <div class="details-content-wrapper">
       <!-- Class Profile Card -->
       <div class="profile-card">
-        <div class="profile-header">
-          <div class="class-avatar">
-            <div class="class-icon">🏫</div>
-            <div class="class-grade">{{classData?.grade}}</div>
-          </div>
-          <div class="profile-info">
-            <h1 class="class-name">{{classData?.name}}</h1>
-            <div class="class-meta">
-              <div class="teacher-info">
-                <span class="meta-icon">👨‍🏫</span>
-                <span class="meta-label">Class Teacher:</span>
-                <span class="meta-value">{{classData?.class_teacher}}</span>
-              </div>
-              <div class="capacity-info">
-                <div class="capacity-bar">
-                  <div class="capacity-fill" [style.width]="getOccupancyPercentage() + '%'"></div>
-                </div>
-                <span class="capacity-text">{{getOccupancyPercentage()}}% Full</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <app-details-header [grade]="testGrade()" [displayName]="classData.name" [classTeacher]="classData?.class_teacher"
+          [occupancy]="getOccupancyPercentage()"  
+        />
 
         <!-- Details Sections -->
         <div class="details-sections">

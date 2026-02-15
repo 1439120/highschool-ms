@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, computed, effect, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
@@ -8,6 +8,7 @@ import { DetailsHeader } from '../../components/details-header/details-header';
 import Grades from '../../models/Grades';
 import { ClassroomInformationSection } from '../../components/classroom-information-section/classroom-information-section';
 import { Classroom } from '../../models/Classroom';
+import { ClassroomService } from '../../services/classroom-service';
 
 /**
  * ** Over the ovierview boards
@@ -28,59 +29,81 @@ import { Classroom } from '../../models/Classroom';
 export class ClassDetails {
  studentSearchQuery: string = '';
   filteredStudents: string[] = [];
-  classData: any = null;
-  breadCrumb!: BreadcrumbModel[];
-  testGrade = signal<Grades>({
-    id: 2,
-    name: 'Grade 8',
-    gradeNumber: 8
-  });
-  
-  constructor(private route: ActivatedRoute) {}
-
-  ngOnInit() {
-    this.route.params.subscribe(params => {
-      const classId = params['id'];
-      this.loadClassData(classId);
-    });
-    this.breadCrumb  = [{name: 'Classes', url:'/classes'},{name: `${this.classData?.name}`, url:''}]
-  }
-
-  loadClassData(classId: string) {
-    // In real app, you would fetch from API
-    this.classData = {
-      id: 1,
-      name: 'Grade 8A',
-      grade: 8,
-      class_teacher: 'Alice Mbatha',
-      maximum_occupants: 60,
-      regsitered_students: [
-        'Bheki Cele',
-        'Musa Maziya',
-        'Freddie Khumalo',
-        'Thembi Ntimba',
-        'Silva Mlambo',
-        'Lindiwe Zulu',
-        'Thabo Mbeki',
-        'Nelson Mandela',
-        'Winnie Madikizela',
-        'Desmond Tutu'
-      ],
-      subjects_offered: [
+  // classData: any = null;
+  subjects_offered = [
         'english',
         'maths',
         'natural sciences',
         'social sciences',
         'life orientation'
       ]
-    };
+  // breadCrumb!: BreadcrumbModel[];
+  breadCrumb = signal<BreadcrumbModel[]>([]);
+  testGrade = signal<Grades>({
+    id: 2,
+    name: 'Grade 8',
+    gradeNumber: 8
+  });
+  classroomId = signal<string>("")
+  classroom = computed(()=>{
+    return this.service.currentClassroom()
+  })
+  classTeacher = computed(()=>{
+    let classTeacher = this.classroom().classTeacher;
+    return classTeacher.name + ' ' + classTeacher.surname;
+  })
+  
+  constructor(private route: ActivatedRoute, private service: ClassroomService) {
+    this.route.params.subscribe(params => {
+      const classId = params['id'];
+      this.classroomId.set(classId);
+      if(classId){
+        this.service.getClassroomById(classId);
+        // this.breadCrumb.set([{name: 'Classes', url:'/classes'},{name: `${this.classroom().name}`, url:''}])
+      }
+    });
+    effect(()=>{
+      console.log("running....")
+      this.breadCrumb.set([{name: 'Classes', url:'/classes'},{name: `${this.classroom().name}`, url:''}])
+    })
     
-    this.filteredStudents = [...this.classData.regsitered_students];
   }
 
+  // loadClassData(classId: string) {
+  //   // In real app, you would fetch from API
+  //   this.classData = {
+  //     id: 1,
+  //     name: 'Grade 8A',
+  //     grade: 8,
+  //     class_teacher: 'Alice Mbatha',
+  //     maximum_occupants: 60,
+  //     regsitered_students: [
+  //       'Bheki Cele',
+  //       'Musa Maziya',
+  //       'Freddie Khumalo',
+  //       'Thembi Ntimba',
+  //       'Silva Mlambo',
+  //       'Lindiwe Zulu',
+  //       'Thabo Mbeki',
+  //       'Nelson Mandela',
+  //       'Winnie Madikizela',
+  //       'Desmond Tutu'
+  //     ],
+  //     subjects_offered: [
+  //       'english',
+  //       'maths',
+  //       'natural sciences',
+  //       'social sciences',
+  //       'life orientation'
+  //     ]
+  //   };
+    
+  //   this.filteredStudents = [...this.classData.regsitered_students];
+  // }
+
   getOccupancyPercentage(): number {
-    if (!this.classData?.maximum_occupants || !this.classData?.regsitered_students) return 0;
-    return Math.round((this.classData.regsitered_students.length / this.classData.maximum_occupants) * 100);
+    if (!this.classroom().maximumOccupants || !this.classroom().registeredStudents) return 0;
+    return Math.round((this.classroom().registeredStudents / this.classroom().maximumOccupants) * 100);
   }
 
   getAcademicYear(): string {
@@ -89,15 +112,15 @@ export class ClassDetails {
   }
 
   filterStudents() {
-    if (!this.studentSearchQuery.trim()) {
-      this.filteredStudents = [...this.classData.regsitered_students];
-      return;
-    }
+    // if (!this.studentSearchQuery.trim()) {
+    //   this.filteredStudents = [...this.classData.regsitered_students];
+    //   return;
+    // }
     
-    const query = this.studentSearchQuery.toLowerCase();
-    this.filteredStudents = this.classData.regsitered_students.filter((student: string) =>
-      student.toLowerCase().includes(query)
-    );
+    // const query = this.studentSearchQuery.toLowerCase();
+    // this.filteredStudents = this.classData.regsitered_students.filter((student: string) =>
+    //   student.toLowerCase().includes(query)
+    // );
   }
 
   sortStudents(field: string) {
@@ -174,9 +197,10 @@ export class ClassDetails {
   }
 
   getRandomStudent(): string {
-    if (!this.classData?.regsitered_students?.length) return 'N/A';
-    const randomIndex = Math.floor(Math.random() * this.classData.regsitered_students.length);
-    return this.classData.regsitered_students[randomIndex].split(' ')[0];
+    // if (!this.classData?.regsitered_students?.length) return 'N/A';
+    // const randomIndex = Math.floor(Math.random() * this.classData.regsitered_students.length);
+    // return this.classData.regsitered_students[randomIndex].split(' ')[0];
+    return 'N/A';
   }
 
   getDays(): string[] {
@@ -231,19 +255,20 @@ export class ClassDetails {
   }
 
   getTopSubjects(count: number): any[] {
-    return this.classData.subjects_offered.slice(0, count).map((subject: string) => ({
-      name: this.formatSubjectName(subject),
-      score: this.getRandomScore(70, 95)
-    }));
+    // return this.classData.subjects_offered.slice(0, count).map((subject: string) => ({
+    //   name: this.formatSubjectName(subject),
+    //   score: this.getRandomScore(70, 95)
+    // }));
+    return []
   }
 
   getTopStudentsCount(): number {
-    const total = this.classData?.regsitered_students?.length || 0;
+    const total = this.classroom().registeredStudents || 0;
     return Math.ceil(total * 0.1); // Top 10%
   }
 
   getSupportNeededCount(): number {
-    const total = this.classData?.regsitered_students?.length || 0;
+    const total = this.classroom().registeredStudents || 0;
     return Math.ceil(total * 0.15); // 15% need support
   }
 }

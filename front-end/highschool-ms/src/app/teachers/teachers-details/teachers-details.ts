@@ -11,6 +11,7 @@ import { DetailsHeader } from '../../components/details-header/details-header';
 import { ClassesCard } from '../../components/classes-card/classes-card';
 import { Classroom } from '../../models/Classroom';
 import Grades from '../../models/Grades';
+import { User } from '../../models/User';
 
 @Component({
   selector: 'app-teachers-details',
@@ -57,11 +58,23 @@ export class TeachersDetails {
     name: 'Grade 8',
     gradeNumber: 8
   }
+  defaultUser: User = {
+    id: 0,
+    name: '',
+    surname: '',
+    phone: '',
+    email: '',
+    role: '',
+    address: '',
+    dateOfBirth: null,
+    dateJoined: null,
+    type: ''
+  }
   testClassroom = signal<Classroom>({
     id: 1,
     name: 'Grade 8A',
     grade: this.classroomGrade,
-    classTeacher: '',
+    classTeacher: this.defaultUser,
     maximumOccupants: 0,
     registeredStudents: 0,
     numberOfSubjecteds: 0,

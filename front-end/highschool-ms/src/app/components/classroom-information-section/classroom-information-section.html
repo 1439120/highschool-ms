@@ -13,7 +13,7 @@
     </div>
     
     <!-- View Mode -->
-    @if(!onEditMode()){
+    <!-- @if(!onEditMode()){
     <div class="overview-grid">
         <div class="overview-card">
             <div class="overview-icon">🏫</div>
@@ -26,7 +26,7 @@
             <div class="overview-icon">👨‍🏫</div>
             <div class="overview-content">
                 <span class="overview-label">Class Teacher</span>
-                <span class="overview-value">{{classroom().classTeacher}}</span>
+                <span class="overview-value">{{classTeacher()}}</span>
             </div>
         </div>
         <div class="overview-card">
@@ -51,6 +51,13 @@
             </div>
         </div>
         <div class="overview-card">
+            <div class="overview-icon">👥</div>
+            <div class="overview-content">
+                <span class="overview-label">Classroom Capacity</span>
+                <span class="overview-value">{{classroom().maximumOccupants}}</span>
+            </div>
+        </div>
+        <div class="overview-card">
             <div class="overview-icon">⏰</div>
             <div class="overview-content">
                 <span class="overview-label">Class Schedule</span>
@@ -58,43 +65,97 @@
             </div>
         </div>
     </div>
-    }
+    } -->
 
     <!-- Edit Mode -->
-    @if(onEditMode()){
+    <!-- @if(onEditMode()){ -->
     <form [formGroup]="overviewForm" (ngSubmit)="saveOverview()" class="edit-form-container">
         <div class="edit-form-grid">
-            <!-- Grade Level Field -->
-            <div class="form-field">
-                <label class="form-label">
-                    <span class="label-icon">🎓</span>
-                    Grade Level
-                </label>
-                <select formControlName="grade" class="form-control">
-                    <option value="">Select Grade</option>
-                    <option *ngFor="let grade of grades" [value]="grade.id">
-                        Grade {{grade.gradeNumber}}
-                    </option>
-                </select>
-                @if(overviewForm.get('grade')?.invalid && overviewForm.get('grade')?.touched){
-                <span class="error-message">Grade is required</span>
-                }
-            </div>
-
             <!-- Class Name Field (NEW) -->
             <div class="form-field">
                 <label class="form-label">
                     <span class="label-icon">🏫</span>
                     Class Name
                 </label>
-                <input 
-                    type="text" 
-                    formControlName="className" 
-                    class="form-control"
-                    placeholder="e.g., Grade 8A"
-                >
+                @if(onEditMode()){
+                    <input 
+                        type="text" 
+                        formControlName="className" 
+                        class="form-control"
+                        placeholder="e.g., Grade 8A"
+                    >
+                }
+                @else {
+                    <span class="input-read-only">{{classroom().name}}</span>
+                }
+                
                 @if(overviewForm.get('className')?.invalid && overviewForm.get('className')?.touched){
                 <span class="error-message">Class name is required</span>
+                }
+            </div>
+
+            <!-- Class Teacher Field (NEW) -->
+            <div class="form-field">
+                <!-- <label class="form-label">
+                    <span class="label-icon">👨‍🏫</span>
+                    Class Teacher
+                </label> -->
+                @if(onEditMode()){
+                    <!-- <select formControlName="classTeacher" class="form-control">
+                        <option value="">Select Teacher</option>
+                        <option *ngFor="let teacher of teachers" [value]="teacher.id">
+                            {{teacher.name}}
+                        </option>
+                    </select> -->
+                    <app-search-field-component
+                        [label]="'Class Teacher'"
+                        [placeholder]="'Search for a teacher...'"
+                        [icon]="'👨‍🏫'"
+                        [items]="teachers"
+                        [searchFn]="searchTeachers"
+                        [minChars]="2"
+                        [debounceTime]="400"
+                        [allowAddNew]="true"
+                        [required]="true"
+                        [showAvatars]="true"
+                        [displayField]="'name'"
+                        [subtitleField]="'email'"
+                        (itemSelected)="onTeacherSelected($event)"
+                        (addNew)="onAddNewTeacher($event)"
+                        formControlName="classTeacher"
+                    />
+                }
+                @else {
+                    <label class="form-label">
+                        <span class="label-icon">👨‍🏫</span>
+                        Class Teacher
+                    </label>
+                    <span class="input-read-only">{{classTeacher()}}</span>
+                }
+                @if(overviewForm.get('classTeacher')?.invalid && overviewForm.get('classTeacher')?.touched){
+                <span class="error-message">Class teacher is required</span>
+                }
+            </div>
+
+            <!-- Grade Level Field -->
+            <div class="form-field">
+                <label class="form-label">
+                    <span class="label-icon">🎓</span>
+                    Grade Level
+                </label>
+                @if(onEditMode()){
+                    <select formControlName="grade" class="form-control">
+                        <option value="">Select Grade</option>
+                        <option *ngFor="let grade of grades" [value]="grade.id">
+                            Grade {{grade.gradeNumber}}
+                        </option>
+                    </select>
+                }
+                @else {
+                    <span class="input-read-only">{{classroom().grade.name}}</span>
+                }
+                @if(overviewForm.get('grade')?.invalid && overviewForm.get('grade')?.touched){
+                <span class="error-message">Grade is required</span>
                 }
             </div>
 
@@ -104,31 +165,19 @@
                     <span class="label-icon">📅</span>
                     Academic Year
                 </label>
-                <input 
-                    type="text" 
-                    formControlName="academicYear" 
-                    class="form-control"
-                    placeholder="e.g., 2024"
-                >
+                @if(onEditMode()){
+                    <input 
+                        type="text" 
+                        formControlName="academicYear" 
+                        class="form-control"
+                        placeholder="e.g., 2024"
+                    >
+                }
+                @else {
+                    <span class="input-read-only">{{classroom().academicYear}}</span>
+                }
                 @if(overviewForm.get('academicYear')?.invalid && overviewForm.get('academicYear')?.touched){
                 <span class="error-message">Academic year is required</span>
-                }
-            </div>
-
-            <!-- Class Teacher Field (NEW) -->
-            <div class="form-field">
-                <label class="form-label">
-                    <span class="label-icon">👨‍🏫</span>
-                    Class Teacher
-                </label>
-                <select formControlName="classTeacher" class="form-control">
-                    <option value="">Select Teacher</option>
-                    <option *ngFor="let teacher of teachers" [value]="teacher.id">
-                        {{teacher.name}}
-                    </option>
-                </select>
-                @if(overviewForm.get('classTeacher')?.invalid && overviewForm.get('classTeacher')?.touched){
-                <span class="error-message">Class teacher is required</span>
                 }
             </div>
 
@@ -138,12 +187,17 @@
                     <span class="label-icon">📍</span>
                     Room Number
                 </label>
-                <input 
-                    type="text" 
-                    formControlName="roomNumber" 
-                    class="form-control"
-                    placeholder="e.g., 8A-101"
-                >
+                @if(onEditMode()){
+                    <input 
+                        type="text" 
+                        formControlName="roomNumber" 
+                        class="form-control"
+                        placeholder="e.g., 8A-101"
+                    >
+                }
+                @else {
+                    <span class="input-read-only">{{classroom().roomNumber}}</span>
+                }
                 @if(overviewForm.get('roomNumber')?.invalid && overviewForm.get('roomNumber')?.touched){
                 <span class="error-message">Room number is required</span>
                 }
@@ -179,13 +233,18 @@
                     <span class="label-icon">👥</span>
                     Maximum Capacity
                 </label>
-                <input 
-                    type="number" 
-                    formControlName="capacity" 
-                    class="form-control"
-                    min="1"
-                    max="100"
-                >
+                @if(onEditMode()){
+                    <input 
+                        type="number" 
+                        formControlName="capacity" 
+                        class="form-control"
+                        min="1"
+                        max="100"
+                    >
+                }
+                @else {
+                    <span class="input-read-only">{{classroom().maximumOccupants}}</span>
+                }
                 @if(overviewForm.get('capacity')?.invalid && overviewForm.get('capacity')?.touched){
                 <span class="error-message">Enter a valid capacity (1-100)</span>
                 }
@@ -217,5 +276,5 @@
             </button>
         </div>
     </form>
-    }
+    <!-- } -->
 </section>

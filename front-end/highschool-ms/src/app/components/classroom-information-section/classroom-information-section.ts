@@ -1,12 +1,17 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, computed, effect, input, signal } from '@angular/core';
 import { Classroom } from '../../models/Classroom';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import Grades from '../../models/Grades';
+import { User } from '../../models/User';
+import { ClassroomService } from '../../services/classroom-service';
+import { SearchFieldComponent, SearchItem } from '../search-field-component/search-field-component';
+import { UsersService } from '../../services/users-service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-classroom-information-section',
-  imports: [CommonModule, ReactiveFormsModule,],
+  imports: [CommonModule, ReactiveFormsModule, SearchFieldComponent],
   templateUrl: './classroom-information-section.html',
   styleUrl: './classroom-information-section.scss',
 })
@@ -16,21 +21,36 @@ export class ClassroomInformationSection {
         name: '',
         gradeNumber: 0
   }
+  defaultUser: User = {
+    id: 0,
+    name: '',
+    surname: '',
+    phone: '',
+    email: '',
+    role: '',
+    address: '',
+    dateOfBirth: null,
+    dateJoined: null,
+    type: ''
+  }
   classroom = signal<Classroom>({
     id: 0,
-    name: 'Grade 8A',
+    name: '',
     grade: this.grade,
-    classTeacher: 'Mrs Mthethwa',
+    classTeacher: this.defaultUser,
     maximumOccupants: 0,
     registeredStudents: 0,
     numberOfSubjecteds: 0,
     academicYear: 2025,
-    roomNumber: 'A1'
+    roomNumber: ''
   })
   onEditMode = signal(false);
-  
-
   overviewForm: FormGroup;
+  classTeacher = computed(()=>{
+    let teacher = this.classroom().classTeacher;
+    return `${teacher.name} ${teacher.surname}`
+  })
+  classroomId = input<string>()
 
   grades = [
     { id: 1, gradeNumber: 8 },
@@ -48,7 +68,110 @@ export class ClassroomInformationSection {
     { id: 5, name: 'David Wilson' }
   ];
 
-   constructor(private fb: FormBuilder) {
+  mockTeachers: User[] = [
+    {
+      id: 1, name: 'Alice Mbatha', email: 'a.mbatha@school.edu', department: 'Mathematics',
+      surname: '',
+      phone: '',
+      role: '',
+      address: '',
+      dateOfBirth: null,
+      dateJoined: null,
+      type: ''
+    },
+    {
+      id: 2, name: 'John Smith', email: 'j.smith@school.edu', department: 'English',
+      surname: '',
+      phone: '',
+      role: '',
+      address: '',
+      dateOfBirth: null,
+      dateJoined: null,
+      type: ''
+    },
+    {
+      id: 3, name: 'Priya Patel', email: 'p.patel@school.edu', department: 'Science',
+      surname: '',
+      phone: '',
+      role: '',
+      address: '',
+      dateOfBirth: null,
+      dateJoined: null,
+      type: ''
+    },
+    {
+      id: 4, name: 'Maria Garcia', email: 'm.garcia@school.edu', department: 'Social Studies',
+      surname: '',
+      phone: '',
+      role: '',
+      address: '',
+      dateOfBirth: null,
+      dateJoined: null,
+      type: ''
+    },
+    {
+      id: 5, name: 'David Wilson', email: 'd.wilson@school.edu', department: 'Physical Education',
+      surname: '',
+      phone: '',
+      role: '',
+      address: '',
+      dateOfBirth: null,
+      dateJoined: null,
+      type: ''
+    },
+    {
+      id: 6, name: 'Sarah Johnson', email: 's.johnson@school.edu', department: 'Mathematics',
+      surname: '',
+      phone: '',
+      role: '',
+      address: '',
+      dateOfBirth: null,
+      dateJoined: null,
+      type: ''
+    },
+    {
+      id: 7, name: 'Michael Brown', email: 'm.brown@school.edu', department: 'Science',
+      surname: '',
+      phone: '',
+      role: '',
+      address: '',
+      dateOfBirth: null,
+      dateJoined: null,
+      type: ''
+    },
+    {
+      id: 8, name: 'Linda Davis', email: 'l.davis@school.edu', department: 'English',
+      surname: '',
+      phone: '',
+      role: '',
+      address: '',
+      dateOfBirth: null,
+      dateJoined: null,
+      type: ''
+    },
+    {
+      id: 9, name: 'Robert Taylor', email: 'r.taylor@school.edu', department: 'History',
+      surname: '',
+      phone: '',
+      role: '',
+      address: '',
+      dateOfBirth: null,
+      dateJoined: null,
+      type: ''
+    },
+    {
+      id: 10, name: 'Jennifer Lee', email: 'j.lee@school.edu', department: 'Art',
+      surname: '',
+      phone: '',
+      role: '',
+      address: '',
+      dateOfBirth: null,
+      dateJoined: null,
+      type: ''
+    }
+  ];
+
+   constructor(private fb: FormBuilder, private service: ClassroomService, private teacherService: UsersService) {
     this.overviewForm = this.fb.group({
       grade: ['', Validators.required],
       className: ['', Validators.required],
@@ -60,6 +183,15 @@ export class ClassroomInformationSection {
       capacity: [60, [Validators.required, Validators.min(1), Validators.max(100)]],
       description: ['']
     });
+    effect(()=>{
+      const currenClass = this.service.currentClassroom();
+      let Id = this.classroomId()
+      if(Id){
+        if (currenClass && currenClass.id == parseInt(Id)){
+            this.classroom.set(currenClass);
+          }
+      }
+    })
   }
 
   toggleEditMode(){
@@ -76,7 +208,7 @@ export class ClassroomInformationSection {
         name: formData.className,
         grade: this.grade,
         academicYear: formData.academicYear,
-        classTeacher: "Mrs Mazibuko",
+        classTeacher: this.defaultUser,
         roomNumber: formData.roomNumber,
         capacity: formData.capacity,
         description: formData.description,
@@ -97,6 +229,24 @@ export class ClassroomInformationSection {
       // Mark all fields as touched to show validation errors
       this.overviewForm.markAllAsTouched();
     }
+  }
+
+  // Simulate API call - Replace with actual API service
+   searchTeachers = async (term: string): Promise<SearchItem[]> => {
+    return await firstValueFrom(this.teacherService.searchTeachers(term));
+  }
+
+  // Handle teacher selection
+  onTeacherSelected(teacher: SearchItem) {
+      // this.selectedTeacher = teacher;
+      console.log('Teacher selected:', teacher);
+  }
+
+  // Handle add new teacher
+  onAddNewTeacher(searchTerm: string) {
+      console.log('Add new teacher:', searchTerm);
+      // Open modal to create new teacher
+      // this.openAddTeacherModal(searchTerm);
   }
 
   cancelEdit() {

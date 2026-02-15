@@ -1,4 +1,4 @@
-<app-breadcrumb [titleBreadcrumbs]="breadCrumb"/>
+<app-breadcrumb [titleBreadcrumbs]="breadCrumb()"/>
 
 <div class="class-details-container">
   <!-- Fixed Header -->
@@ -10,11 +10,11 @@
       <div class="class-stats">
         <div class="stat-badge occupancy">
           <span class="stat-icon">👥</span>
-          <span class="stat-text">{{classData?.regsitered_students?.length || 0}}/{{classData?.maximum_occupants}}</span>
+          <span class="stat-text">{{classroom().registeredStudents}}/{{classroom().maximumOccupants}}</span>
         </div>
         <div class="stat-badge subjects">
           <span class="stat-icon">📚</span>
-          <span class="stat-text">{{classData?.subjects_offered?.length || 0}} Subjects</span>
+          <span class="stat-text">{{ 0}} Subjects</span>
         </div>
       </div>
       <button class="btn btn-secondary">
@@ -31,14 +31,14 @@
     <div class="details-content-wrapper">
       <!-- Class Profile Card -->
       <div class="profile-card">
-        <app-details-header [grade]="testGrade()" [displayName]="classData.name" [classTeacher]="classData?.class_teacher"
+        <app-details-header [grade]="testGrade()" [displayName]="classroom().name" [classTeacher]="classTeacher()"
           [occupancy]="getOccupancyPercentage()"  
         />
 
         <!-- Details Sections -->
         <div class="details-sections">
           <!-- Class Overview -->
-          <app-classroom-information-section/>
+          <app-classroom-information-section [classroomId]="classroomId()"/>
           <!-- Students Roster -->
           <section class="details-section">
             <!-- <div class="section-header">
@@ -151,11 +151,11 @@
             <h2 class="section-title">
               <span class="section-icon">📚</span>
               Subjects Offered
-              <span class="section-subtitle">{{classData?.subjects_offered?.length || 0}} subjects</span>
+              <span class="section-subtitle">{{0}} subjects</span>
             </h2>
             
             <div class="subjects-grid">
-              @for(subject of classData?.subjects_offered; track $index){
+              @for(subject of subjects_offered; track $index){
                 <div class="subject-card">
                     <div class="subject-header">
                     <div class="subject-icon">{{getSubjectIcon(subject)}}</div>
@@ -176,11 +176,11 @@
                     <div class="subject-stats">
                     <div class="stat-item">
                         <span class="stat-label">Class Average</span>
-                        <span class="stat-value">{{getRandomScore(70, 90)}}%</span>
+                        <!-- <span class="stat-value">{{getRandomScore(70, 90)}}%</span> -->
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Top Student</span>
-                        <span class="stat-value">{{getRandomStudent()}}</span>
+                        <!-- <span class="stat-value">{{getRandomStudent()}}</span> -->
                     </div>
                     </div>
                     <div class="subject-actions">

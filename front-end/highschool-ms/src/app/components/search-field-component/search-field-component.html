@@ -1,0 +1,119 @@
+<div class="search-field-container" [class.disabled]="disabled">
+  <!-- Label -->
+  @if(label){
+  <label class="search-label">
+    <span class="label-icon">{{icon}}</span>
+    {{label}}
+    @if(required){
+    <span class="required-star">*</span>
+    }
+  </label>
+  }
+
+  <!-- Selected Item Display -->
+  @if(selectedItem && !showResults()){
+  <div class="selected-item">
+    <!-- @if(showAvatars){
+    <div class="item-avatar">
+      @if(selectedItem[avatarField]){
+      <img [src]="selectedItem[avatarField]" [alt]="selectedItem[displayField]">
+      } @else {
+      {{getInitials(selectedItem)}}
+      }
+    </div>
+    } -->
+    <div class="item-info">
+      <span class="item-name">{{selectedItem[displayField] || selectedItem.name}} {{selectedItem['surname']}}</span>
+      <!-- @if(selectedItem[subtitleField]){
+      <span class="item-subtitle">{{selectedItem[subtitleField]}}</span>
+      } -->
+    </div>
+    <button type="button" class="clear-btn" (click)="clearSelection()" [disabled]="disabled">
+      ✕
+    </button>
+  </div>
+  }
+
+  <!-- Search Input -->
+  @if(!selectedItem || showResults()){
+  <div class="search-wrapper">
+    <div class="input-container">
+      <span class="search-icon">{{icon}}</span>
+      <input
+        type="text"
+        class="search-input"
+        [placeholder]="placeholder"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchInput()"
+        (focus)="onFocus()"
+        (blur)="onBlur()"
+        [disabled]="disabled"
+      >
+      @if(searchTerm){
+      <button type="button" class="clear-search" (click)="clearSelection(); $event.stopPropagation()" [disabled]="disabled">
+        ✕
+      </button>
+      }
+    </div>
+
+    <!-- Results Dropdown -->
+    @if(showResults() && hasFocus()){
+    <div class="results-dropdown">
+      <!-- Loading State -->
+      @if(isSearching()){
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <span>{{loadingText}}</span>
+      </div>
+      }
+
+      <!-- Results List -->
+      <!-- @if(!isSearching() && searchResults.length > 0){ -->
+      <div class="results-list">
+        @for(item of searchResults; track item.id){
+        <div class="result-item" (click)="selectItem(item)">
+          @if(showAvatars){
+          <div class="item-avatar">
+            @if(item[avatarField]){
+            <img [src]="item[avatarField]" [alt]="item[displayField]">
+            } @else {
+            {{getInitials(item)}}
+            }
+          </div>
+          }
+          <div class="item-info">
+            <span class="item-name">{{item[displayField] || item.name}} {{item['surname']}}</span>
+            @if(item[subtitleField]){
+            <span class="item-subtitle">{{item[subtitleField]}}</span>
+            }
+          </div>
+        </div>
+        }
+      </div>
+      <!-- } -->
+
+      <!-- No Results -->
+      @if(!isSearching() && searchTerm.length >= minChars && searchResults.length === 0){
+      <div class="no-results">
+        <span class="no-results-icon">🔍</span>
+        <p>{{noResultsText}} "{{searchTerm}}"</p>
+        @if(allowAddNew){
+        <button type="button" class="add-new-btn" (click)="onAddNew()">
+          <span class="btn-icon">➕</span>
+          {{addNewText}}
+        </button>
+        }
+      </div>
+      }
+
+      <!-- Min Characters Hint -->
+      @if(searchTerm.length < minChars && searchTerm.length > 0){
+      <div class="min-chars-hint">
+        Type at least {{minChars}} characters to search
+      </div>
+      }
+    </div>
+    }
+  </div>
+  }
+</div>

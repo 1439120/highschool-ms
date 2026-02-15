@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../models/User';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -100,5 +101,13 @@ export class UsersService {
           console.error('Failed to load user', err);
         }
       });
+  }
+
+  searchTeachers(term: string): Observable<User[]> {
+          const headers = this.authHeaders
+          return this.http.get<User[]>(`${this.apiUrl}/api/users`, {
+              headers,
+              params: { Name: term} // Use 'params' for cleaner URL building
+            });
   }
 }

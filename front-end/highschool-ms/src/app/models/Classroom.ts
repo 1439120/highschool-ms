@@ -1,10 +1,11 @@
 import Grades from "./Grades"
+import { User } from "./User"
 
 export interface Classroom{
     id: number,
     name: string,
     grade: Grades,
-    classTeacher: string,
+    classTeacher: User,
     maximumOccupants: number,
     registeredStudents: number,
     numberOfSubjecteds: number,

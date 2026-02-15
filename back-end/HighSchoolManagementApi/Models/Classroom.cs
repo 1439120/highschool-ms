@@ -17,6 +17,8 @@ namespace HighSchoolManagementApi.Models
         public Users? ClassTeacher { get; set; } = null;// Navigation property
         public int MaximumOccupants { get; set; }
         public int RegisteredStudents { get; set; }
+        public int academicYear { get; set; }
+        public string roomNumber { get; set; } = string.Empty;
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         public List<Users> Learners {get; set;} = new List<Users>();
     }

@@ -113,6 +113,13 @@ namespace HighSchoolManagementApi.Migrations
                     b.Property<int>("RegisteredStudents")
                         .HasColumnType("integer");
 
+                    b.Property<int>("academicYear")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("roomNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClassTeacherId");

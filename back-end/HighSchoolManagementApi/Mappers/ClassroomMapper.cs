@@ -9,8 +9,10 @@ namespace HighSchoolManagementApi.Mappers
 {
     public static class ClassroomMapper
     {
-        public static ClassroomDto ToClassroomDto(this Classroom classromModel)
+        public static ClassroomDto? ToClassroomDto(this Classroom classromModel)
         {
+            if(classromModel == null) return null;
+            
             return new ClassroomDto
             {
                 Id = classromModel.Id,

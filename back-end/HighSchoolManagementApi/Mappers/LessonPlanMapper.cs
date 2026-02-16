@@ -20,8 +20,9 @@ namespace HighSchoolManagementApi.Mappers
             };
         }
 
-        public static LessonPlanDto ToLessonPlanDto(this LessonPlan lessonPlanModel)
+        public static LessonPlanDto? ToLessonPlanDto(this LessonPlan lessonPlanModel)
         {
+            if(lessonPlanModel == null) return null;
             return new LessonPlanDto
             {
                 Id = lessonPlanModel.Id,

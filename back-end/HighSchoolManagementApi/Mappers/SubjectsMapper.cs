@@ -19,8 +19,9 @@ namespace HighSchoolManagementApi.Mappers
             };
         }
 
-        public static SubjectsDto ToSubjectsDTO(this Subjects subjectModel)
+        public static SubjectsDto? ToSubjectsDTO(this Subjects subjectModel)
         {
+            if(subjectModel == null) return null;
             return new SubjectsDto
             {
                 Id = subjectModel.Id,

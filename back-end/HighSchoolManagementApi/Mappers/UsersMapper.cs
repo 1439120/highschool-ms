@@ -11,8 +11,9 @@ namespace HighSchoolManagementApi.Mappers
 {
     public static class UsersMapper
     {
-        public static UsersDto ToUsersDto(this Users usersModel)
+        public static UsersDto? ToUsersDto(this Users usersModel)
         {
+            if(usersModel == null) return null;
             return new UsersDto
             {
                 Id = usersModel.Id,

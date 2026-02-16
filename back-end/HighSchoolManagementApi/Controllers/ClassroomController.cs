@@ -47,5 +47,15 @@ namespace HighSchoolManagementApi.Controllers
             await _classroomRepo.AddAsync(classroomsModel);
             return Ok(classroomsModel.ToClassroomDto());
         }
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateClassroomDto updateDto)
+        {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+            var classroom = await _classroomRepo.Update(id, updateDto);
+            if(classroom == null) return NotFound("User Not Found");
+
+            return Ok(classroom.ToClassroomDto());
+        }
     }
 }

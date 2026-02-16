@@ -19,8 +19,9 @@ namespace HighSchoolManagementApi.Mappers
             };
         }
 
-        public static GradesDto ToGradesDto(this Grades gradesModel)
+        public static GradesDto? ToGradesDto(this Grades gradesModel)
         {
+            if(gradesModel == null) return null;
              return new GradesDto
             {
                 Id = gradesModel.Id,

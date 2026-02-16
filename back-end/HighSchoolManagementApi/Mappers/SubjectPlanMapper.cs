@@ -20,8 +20,9 @@ namespace HighSchoolManagementApi.Mappers
             };
         }
 
-        public static SubjectPlanDto ToSubjectPlanDto(this SubjectPlan subjectPlanModel)
+        public static SubjectPlanDto? ToSubjectPlanDto(this SubjectPlan subjectPlanModel)
         {
+            if(subjectPlanModel == null) return null;
             return new SubjectPlanDto
             {
                 Id = subjectPlanModel.Id,

@@ -6,6 +6,8 @@ using HighSchoolManagementApi.Interfaces;
 using HighSchoolManagementApi.Data;
 using HighSchoolManagementApi.Models;
 using Microsoft.EntityFrameworkCore;
+using HighSchoolManagementApi.Dtos.Classroom;
+using HighSchoolManagementApi.Mappers;
 
 namespace HighSchoolManagementApi.Repository
 {
@@ -35,6 +37,23 @@ namespace HighSchoolManagementApi.Repository
             await _context.Classroom.AddAsync(classroomModel); // tracking
             await _context.SaveChangesAsync(); // now it is sent to the server
             return classroomModel;
+        }
+
+        public async Task<Classroom?> Update(int id, UpdateClassroomDto classroomDto)
+        {
+            var updateClassroom = await _context.Classroom.FirstOrDefaultAsync(i => i.Id == id);
+            if(updateClassroom == null) return null;
+
+            updateClassroom.Name = classroomDto.Name;
+            updateClassroom.GradeId = classroomDto.Grade;
+            updateClassroom.ClassTeacherId = classroomDto.ClassTeacher;
+            updateClassroom.MaximumOccupants = classroomDto.MaximumOccupants;
+            updateClassroom.RegisteredStudents = classroomDto.RegisteredStudents;
+            updateClassroom.academicYear = classroomDto.academicYear;
+            updateClassroom.roomNumber = classroomDto.roomNumber;
+
+            await _context.SaveChangesAsync();
+            return updateClassroom;
         }
     }
 }

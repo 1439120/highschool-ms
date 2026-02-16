@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HighSchoolManagementApi.Models;
+using HighSchoolManagementApi.Dtos.Classroom;
 
 namespace HighSchoolManagementApi.Interfaces
 {
@@ -11,5 +12,6 @@ namespace HighSchoolManagementApi.Interfaces
         Task<List<Classroom>> GetAllAsync();
         Task<Classroom> GetByIdAsync(int id);
         Task<Classroom> AddAsync(Classroom classroomModel);
+        Task<Classroom?> Update(int id, UpdateClassroomDto classroomDto);
     }
 }

@@ -92,21 +92,30 @@ export class ClassroomInformationSection {
   saveOverview() {
     if (this.overviewForm.valid) {
       const formData = this.overviewForm.value;
-      
-      // Update the classroom signal with new data
+      console.log("this is the form data")
+      console.log(formData)
+      let classTeacherId = formData.classTeacher;
+      // If it's an object with id, extract the id
+      console.log(typeof classTeacherId)
+        if (classTeacherId && typeof classTeacherId === 'string') {
+            classTeacherId = this.classroom().classTeacher.id;
+        }
+
       const updatedClassroom: Classroom = {
         ...this.classroom(),
         name: formData.className,
-        grade: this.grade,
+        grade: formData.grade,
         academicYear: formData.academicYear,
-        classTeacher: this.defaultUser,
+        classTeacher: classTeacherId,
         roomNumber: formData.roomNumber,
         capacity: formData.capacity,
         description: formData.description,
         schedule: `${formData.scheduleStart} - ${formData.scheduleEnd}`
       };
       
-      this.classroom.set(updatedClassroom);
+      // this.classroom.set(updatedClassroom);
+      this.service.updateClassroomDetails(updatedClassroom);
+      // this.classroom.set(this.service.currentClassroom());
       
       // Here you would call an API to save the data
       console.log('Saving classroom data:', updatedClassroom);

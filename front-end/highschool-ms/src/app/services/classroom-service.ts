@@ -67,4 +67,19 @@ export class ClassroomService {
         }
       });
   }
+
+  updateClassroomDetails(classroom: Classroom){
+    this.http
+      .put<Classroom>(`${this.apiUrl}/api/classroom/${classroom.id}`,classroom )
+      .subscribe({
+        next: (data) => {
+          console.log(`Classroom updated ${classroom.id}`, data);
+          // this.currentClassroom.set(data);
+          this.getClassroomById(classroom.id.toString());
+        },
+        error: (err) => {
+          console.error('Failed to load user', err);
+        }
+      });
+    }
 }

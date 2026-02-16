@@ -33,8 +33,8 @@ namespace HighSchoolManagementApi.Mappers
             return new Classroom
             {
                 Name = classromModel.Name,
-                GradeId = classromModel.GradeId,
-                ClassTeacherId = classromModel.ClassTeacherId,
+                GradeId = classromModel.Grade,
+                ClassTeacherId = classromModel.ClassTeacher,
                 MaximumOccupants = classromModel.MaximumOccupants,
                 RegisteredStudents = classromModel.RegisteredStudents,
                 roomNumber = classromModel.roomNumber,

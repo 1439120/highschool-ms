@@ -14,6 +14,6 @@ namespace HighSchoolManagementApi.Dtos.Subjects
         [MaxLength(20, ErrorMessage = "Name cannot be over 20 characters")]
         public string Name { get; set; } = string.Empty;
         public int? GradeId { get; set; }
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
     }
 }

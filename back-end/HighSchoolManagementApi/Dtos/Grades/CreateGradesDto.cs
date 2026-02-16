@@ -16,6 +16,6 @@ namespace HighSchoolManagementApi.Dtos.Grades
         [Required]
         [Range(1,12)]
         public int GradeNumber { get; set; }
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
     }
 }

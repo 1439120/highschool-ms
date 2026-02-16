@@ -12,8 +12,8 @@ namespace HighSchoolManagementApi.Dtos.Classroom
         [MinLength(3, ErrorMessage = "Name must be 3 characters")]
         [MaxLength(20, ErrorMessage = "Name cannot be over 20 characters")]
         public string Name { get; set; } = string.Empty;
-        public int? GradeId { get; set; }
-        public int? ClassTeacherId { get; set; }
+        public int? Grade { get; set; }
+        public int? ClassTeacher { get; set; }
         public int MaximumOccupants { get; set; }
         public int RegisteredStudents { get; set; }
         public int academicYear { get; set; }

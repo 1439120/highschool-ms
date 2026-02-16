@@ -45,11 +45,14 @@ export class SearchFieldComponent implements ControlValueAccessor, OnInit, OnDes
   @Input() subtitleField: string = 'email';
   @Input() avatarField: string = 'avatar';
   @Input() showAvatars: boolean = true;
+  @Input() loadAllOnFocus: boolean = true; // New: Load all items when input gets focus
+  @Input() topResults: number = 20; // New: Number of results to show when loading all
 
   @Output() itemSelected = new EventEmitter<SearchItem>();
   @Output() addNew = new EventEmitter<string>();
   @Output() searchStarted = new EventEmitter<string>();
   @Output() searchCompleted = new EventEmitter<SearchItem[]>();
+  @Output() focus = new EventEmitter<void>(); // New: Focus event
 
   // State
   searchTerm: string = '';
@@ -58,6 +61,7 @@ export class SearchFieldComponent implements ControlValueAccessor, OnInit, OnDes
   isSearching = signal<boolean>(false);
   showResults = signal<boolean>(false);
   hasFocus = signal<boolean>(false);
+  allItemsLoaded = signal<boolean>(false); // New: Track if we've loaded all items
 
   // Search debouncing
   private searchSubject = new Subject<string>();
@@ -76,6 +80,7 @@ export class SearchFieldComponent implements ControlValueAccessor, OnInit, OnDes
   }
 
   private setupSearch() {
+    console.log("does it come here??")
     this.searchSubscription = this.searchSubject.pipe(
       debounceTime(this.debounceTime),
       distinctUntilChanged()
@@ -85,30 +90,33 @@ export class SearchFieldComponent implements ControlValueAccessor, OnInit, OnDes
   }
 
   private async performSearch(term: string) {
-    if (!term || term.length < this.minChars) {
-      this.searchResults = [];
-      this.isSearching.set(false);
-      this.searchCompleted.emit([]);
-      return;
-    }
-
     this.isSearching.set(true);
     this.searchStarted.emit(term);
 
     try {
       let results: SearchItem[] = [];
-      
-      if (this.searchFn) {
-        // Use custom search function (API call)
-        results = await this.searchFn(term);
-      } else {
-        // Filter static items
-        results = this.filterStaticItems(term);
+      if(this.searchTerm.length){
+        if (this.searchFn) {
+          // Use custom search function (API call)
+          results = await this.searchFn(term);
+        } else {
+          // Filter static items
+          results = this.filterStaticItems(term);
+        }
+      }else{
+          if(!this.searchFn){
+          results = this.items.slice(0, this.topResults);
+          this.allItemsLoaded.set(true);
+        }else if(this.searchFn){
+            results = await this.searchFn("");
+        }
       }
+
+      
 
       this.searchResults = results;
       this.searchCompleted.emit(results);
-      this.isSearching.set(false);
+      // this.isSearching.set(false);
     } catch (error) {
       console.error('Search error:', error);
       this.searchResults = [];
@@ -141,10 +149,24 @@ export class SearchFieldComponent implements ControlValueAccessor, OnInit, OnDes
     }
   }
 
-  onFocus() {
+  async onFocus() {
     this.hasFocus.set(true);
+    this.focus.emit();
     if (this.searchTerm.length >= this.minChars) {
       this.showResults.set(true);
+    }
+    // Load initial results on focus if we haven't loaded them yet
+    if (this.loadAllOnFocus && !this.allItemsLoaded() && !this.selectedItem) {
+      this.isSearching.set(true);
+      this.showResults.set(true);
+      await this.performSearch(this.searchTerm);
+    } else if (!this.selectedItem) {
+      // Show existing results or empty state
+      this.showResults.set(true);
+      if (this.searchResults.length === 0 && !this.isSearching()) {
+        // If no results and not searching, try to load initial data
+        await this.performSearch(this.searchTerm);
+      }
     }
   }
 
@@ -177,6 +199,7 @@ export class SearchFieldComponent implements ControlValueAccessor, OnInit, OnDes
   clearSelection() {
     this.selectedItem = null;
     this.searchTerm = '';
+    this.allItemsLoaded.set(false); // Reset so we load again on focus
     this.onChange(null);
   }
 

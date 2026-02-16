@@ -104,10 +104,15 @@ export class UsersService {
   }
 
   searchTeachers(term: string): Observable<User[]> {
-          const headers = this.authHeaders
-          return this.http.get<User[]>(`${this.apiUrl}/api/users`, {
-              headers,
-              params: { Name: term} // Use 'params' for cleaner URL building
-            });
+    
+    const headers = this.authHeaders;
+    if(term.length > 0)
+      return this.http.get<User[]>(`${this.apiUrl}/api/users`, {
+          headers,
+          params: { Name: term} // Use 'params' for cleaner URL building
+        });
+    return this.http.get<User[]>(`${this.apiUrl}/api/users`, {
+          headers,
+        });  
   }
 }

@@ -111,11 +111,12 @@
                         [label]="'Class Teacher'"
                         [placeholder]="'Search for a teacher...'"
                         [icon]="'👨‍🏫'"
-                        [items]="teachers"
                         [searchFn]="searchTeachers"
-                        [minChars]="2"
+                        [loadAllOnFocus]="true"
+                        [topResults]="20"
+                        [minChars]="0"
                         [debounceTime]="400"
-                        [allowAddNew]="true"
+                        [allowAddNew]="false"
                         [required]="true"
                         [showAvatars]="true"
                         [displayField]="'name'"
@@ -266,15 +267,17 @@
         </div>
 
         <!-- Form Actions -->
-        <div class="edit-form-actions">
-            <button type="button" class="btn-cancel" (click)="cancelEdit()">
-                Cancel
-            </button>
-            <button type="submit" class="btn-save" [disabled]="overviewForm.invalid">
-                <span class="btn-icon">💾</span>
-                Save Changes
-            </button>
-        </div>
+         @if(onEditMode()){
+            <div class="edit-form-actions">
+                <button type="button" class="btn-cancel" (click)="cancelEdit()">
+                    Cancel
+                </button>
+                <button type="submit" class="btn-save" [disabled]="overviewForm.invalid">
+                    <span class="btn-icon">💾</span>
+                    Save Changes
+                </button>
+            </div>
+         }
     </form>
     <!-- } -->
 </section>

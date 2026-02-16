@@ -59,117 +59,6 @@ export class ClassroomInformationSection {
     { id: 4, gradeNumber: 11 },
     { id: 5, gradeNumber: 12 }
   ];
-  
-  teachers = [
-    { id: 1, name: 'Alice Mbatha' },
-    { id: 2, name: 'John Smith' },
-    { id: 3, name: 'Priya Patel' },
-    { id: 4, name: 'Maria Garcia' },
-    { id: 5, name: 'David Wilson' }
-  ];
-
-  mockTeachers: User[] = [
-    {
-      id: 1, name: 'Alice Mbatha', email: 'a.mbatha@school.edu', department: 'Mathematics',
-      surname: '',
-      phone: '',
-      role: '',
-      address: '',
-      dateOfBirth: null,
-      dateJoined: null,
-      type: ''
-    },
-    {
-      id: 2, name: 'John Smith', email: 'j.smith@school.edu', department: 'English',
-      surname: '',
-      phone: '',
-      role: '',
-      address: '',
-      dateOfBirth: null,
-      dateJoined: null,
-      type: ''
-    },
-    {
-      id: 3, name: 'Priya Patel', email: 'p.patel@school.edu', department: 'Science',
-      surname: '',
-      phone: '',
-      role: '',
-      address: '',
-      dateOfBirth: null,
-      dateJoined: null,
-      type: ''
-    },
-    {
-      id: 4, name: 'Maria Garcia', email: 'm.garcia@school.edu', department: 'Social Studies',
-      surname: '',
-      phone: '',
-      role: '',
-      address: '',
-      dateOfBirth: null,
-      dateJoined: null,
-      type: ''
-    },
-    {
-      id: 5, name: 'David Wilson', email: 'd.wilson@school.edu', department: 'Physical Education',
-      surname: '',
-      phone: '',
-      role: '',
-      address: '',
-      dateOfBirth: null,
-      dateJoined: null,
-      type: ''
-    },
-    {
-      id: 6, name: 'Sarah Johnson', email: 's.johnson@school.edu', department: 'Mathematics',
-      surname: '',
-      phone: '',
-      role: '',
-      address: '',
-      dateOfBirth: null,
-      dateJoined: null,
-      type: ''
-    },
-    {
-      id: 7, name: 'Michael Brown', email: 'm.brown@school.edu', department: 'Science',
-      surname: '',
-      phone: '',
-      role: '',
-      address: '',
-      dateOfBirth: null,
-      dateJoined: null,
-      type: ''
-    },
-    {
-      id: 8, name: 'Linda Davis', email: 'l.davis@school.edu', department: 'English',
-      surname: '',
-      phone: '',
-      role: '',
-      address: '',
-      dateOfBirth: null,
-      dateJoined: null,
-      type: ''
-    },
-    {
-      id: 9, name: 'Robert Taylor', email: 'r.taylor@school.edu', department: 'History',
-      surname: '',
-      phone: '',
-      role: '',
-      address: '',
-      dateOfBirth: null,
-      dateJoined: null,
-      type: ''
-    },
-    {
-      id: 10, name: 'Jennifer Lee', email: 'j.lee@school.edu', department: 'Art',
-      surname: '',
-      phone: '',
-      role: '',
-      address: '',
-      dateOfBirth: null,
-      dateJoined: null,
-      type: ''
-    }
-  ];
 
    constructor(private fb: FormBuilder, private service: ClassroomService, private teacherService: UsersService) {
     this.overviewForm = this.fb.group({
@@ -189,12 +78,14 @@ export class ClassroomInformationSection {
       if(Id){
         if (currenClass && currenClass.id == parseInt(Id)){
             this.classroom.set(currenClass);
+            // this.cancelEdit()
           }
       }
     })
   }
 
   toggleEditMode(){
+    this.updateInputFormOverview()
     this.onEditMode.set(!this.onEditMode())
   }
 
@@ -251,16 +142,19 @@ export class ClassroomInformationSection {
 
   cancelEdit() {
     // Reset form to original values
-    this.overviewForm.patchValue({
-      grade: this.classroom()?.grade?.id,
-      className: this.classroom()?.name,
-      academicYear: this.classroom()?.academicYear,
-      classTeacher: this.classroom()?.classTeacher,
-      roomNumber: this.classroom()?.roomNumber,
-      capacity: this.classroom()?.maximumOccupants,
-      // description: this.classroom()?.description
-    });
-    
+    this.updateInputFormOverview()
     this.toggleEditMode();
+  }
+
+  updateInputFormOverview(){
+    let classroom = this.classroom()
+    this.overviewForm.patchValue({
+      grade: classroom?.grade?.id,
+      className: classroom?.name,
+      academicYear: classroom?.academicYear,
+      classTeacher: classroom?.classTeacher?.name + ' ' + classroom?.classTeacher?.name,
+      roomNumber: classroom?.roomNumber,
+      capacity: classroom?.maximumOccupants
+    });
   }
 }

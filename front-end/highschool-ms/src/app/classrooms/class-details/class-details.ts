@@ -7,8 +7,9 @@ import BreadcrumbModel from '../../models/BreadcrumbModel';
 import { DetailsHeader } from '../../components/details-header/details-header';
 import Grades from '../../models/Grades';
 import { ClassroomInformationSection } from '../../components/classroom-information-section/classroom-information-section';
-import { Classroom } from '../../models/Classroom';
 import { ClassroomService } from '../../services/classroom-service';
+import { Classroom } from '../../models/Classroom';
+import { User } from '../../models/User';
 
 /**
  * ** Over the ovierview boards
@@ -44,13 +45,42 @@ export class ClassDetails {
     name: 'Grade 8',
     gradeNumber: 8
   });
+  testUser = signal<User>({
+    id: 0,
+    name: '',
+    surname: '',
+    phone: '',
+    email: '',
+    role: '',
+    address: '',
+    dateOfBirth: null,
+    dateJoined: null,
+    type: ''
+  })
+
   classroomId = signal<string>("")
   classroom = computed(()=>{
-    return this.service.currentClassroom()
+    let data = this.service.currentClassroom()
+    let defaultClass: Classroom = {
+      id: 0,
+      name: '',
+      grade: this.testGrade(),
+      classTeacher: this.testUser(),
+      maximumOccupants: 0,
+      registeredStudents: 0,
+      numberOfSubjecteds: 0,
+      academicYear: 0,
+      roomNumber: ''
+    }
+    return data != null && data.id.toString() == this.classroomId() ? data : defaultClass;
   })
   classTeacher = computed(()=>{
-    let classTeacher = this.classroom().classTeacher;
-    return classTeacher.name + ' ' + classTeacher.surname;
+    let classr = this.classroom()
+    if(classr){
+      let classTeacher = this.classroom().classTeacher;
+      return classTeacher.name + ' ' + classTeacher.surname;
+    }
+    return ""
   })
   
   constructor(private route: ActivatedRoute, private service: ClassroomService) {
@@ -68,38 +98,6 @@ export class ClassDetails {
     })
     
   }
-
-  // loadClassData(classId: string) {
-  //   // In real app, you would fetch from API
-  //   this.classData = {
-  //     id: 1,
-  //     name: 'Grade 8A',
-  //     grade: 8,
-  //     class_teacher: 'Alice Mbatha',
-  //     maximum_occupants: 60,
-  //     regsitered_students: [
-  //       'Bheki Cele',
-  //       'Musa Maziya',
-  //       'Freddie Khumalo',
-  //       'Thembi Ntimba',
-  //       'Silva Mlambo',
-  //       'Lindiwe Zulu',
-  //       'Thabo Mbeki',
-  //       'Nelson Mandela',
-  //       'Winnie Madikizela',
-  //       'Desmond Tutu'
-  //     ],
-  //     subjects_offered: [
-  //       'english',
-  //       'maths',
-  //       'natural sciences',
-  //       'social sciences',
-  //       'life orientation'
-  //     ]
-  //   };
-    
-  //   this.filteredStudents = [...this.classData.regsitered_students];
-  // }
 
   getOccupancyPercentage(): number {
     if (!this.classroom().maximumOccupants || !this.classroom().registeredStudents) return 0;

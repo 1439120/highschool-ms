@@ -82,4 +82,20 @@ export class ClassroomService {
         }
       });
     }
+
+  addClassroom(classroom: Classroom){
+    console.log(`This the data being posted ${classroom}`)
+    this.http
+      .post<Classroom>(`${this.apiUrl}/api/classroom/`,classroom )
+      .subscribe({
+        next: (data) => {
+          console.log(`Classroom updated`, data);
+          // this.currentClassroom.set(data);
+          this.getClassroomById(data.id.toString());
+        },
+        error: (err) => {
+          console.error('Failed to load user', err);
+        }
+      });
+    }
 }

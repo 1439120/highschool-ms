@@ -89,7 +89,7 @@
                     <span class="input-read-only">{{classroom().name}}</span>
                 }
                 
-                @if(overviewForm.get('className')?.invalid && overviewForm.get('className')?.touched){
+                @if(overviewForm.get('className')?.invalid && overviewForm.get('className')?.touched && onEditMode()){
                 <span class="error-message">Class name is required</span>
                 }
             </div>
@@ -133,7 +133,7 @@
                     </label>
                     <span class="input-read-only">{{classTeacher()}}</span>
                 }
-                @if(overviewForm.get('classTeacher')?.invalid && overviewForm.get('classTeacher')?.touched){
+                @if(overviewForm.get('classTeacher')?.invalid && overviewForm.get('classTeacher')?.touched && onEditMode()){
                 <span class="error-message">Class teacher is required</span>
                 }
             </div>
@@ -155,7 +155,7 @@
                 @else {
                     <span class="input-read-only">{{classroom().grade.name}}</span>
                 }
-                @if(overviewForm.get('grade')?.invalid && overviewForm.get('grade')?.touched){
+                @if(overviewForm.get('grade')?.invalid && overviewForm.get('grade')?.touched && onEditMode()){
                 <span class="error-message">Grade is required</span>
                 }
             </div>
@@ -199,7 +199,7 @@
                 @else {
                     <span class="input-read-only">{{classroom().roomNumber}}</span>
                 }
-                @if(overviewForm.get('roomNumber')?.invalid && overviewForm.get('roomNumber')?.touched){
+                @if(overviewForm.get('roomNumber')?.invalid && overviewForm.get('roomNumber')?.touched && onEditMode()){
                 <span class="error-message">Room number is required</span>
                 }
             </div>
@@ -246,7 +246,7 @@
                 @else {
                     <span class="input-read-only">{{classroom().maximumOccupants}}</span>
                 }
-                @if(overviewForm.get('capacity')?.invalid && overviewForm.get('capacity')?.touched){
+                @if(overviewForm.get('capacity')?.invalid && overviewForm.get('capacity')?.touched && onEditMode()){
                 <span class="error-message">Enter a valid capacity (1-100)</span>
                 }
             </div>

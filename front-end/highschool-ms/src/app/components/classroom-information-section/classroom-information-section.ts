@@ -1,4 +1,4 @@
-import { Component, computed, effect, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { Classroom } from '../../models/Classroom';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import { ClassroomService } from '../../services/classroom-service';
 import { SearchFieldComponent, SearchItem } from '../search-field-component/search-field-component';
 import { UsersService } from '../../services/users-service';
 import { firstValueFrom } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-classroom-information-section',
@@ -51,7 +52,7 @@ export class ClassroomInformationSection {
     return `${teacher.name} ${teacher.surname}`
   })
   classroomId = input<string>()
-
+  addedClassroom = signal(false);
   grades = [
     { id: 1, gradeNumber: 8 },
     { id: 2, gradeNumber: 9 },
@@ -59,6 +60,9 @@ export class ClassroomInformationSection {
     { id: 4, gradeNumber: 11 },
     { id: 5, gradeNumber: 12 }
   ];
+  route: any;
+  private router = inject(Router)
+  private routes = inject(ActivatedRoute)
 
    constructor(private fb: FormBuilder, private service: ClassroomService, private teacherService: UsersService) {
     this.overviewForm = this.fb.group({
@@ -72,6 +76,9 @@ export class ClassroomInformationSection {
       capacity: [60, [Validators.required, Validators.min(1), Validators.max(100)]],
       description: ['']
     });
+    // if(this.classroomId() == 'new'){
+    //     this.onEditMode.set(true);
+    //   }
     effect(()=>{
       const currenClass = this.service.currentClassroom();
       let Id = this.classroomId()
@@ -79,7 +86,24 @@ export class ClassroomInformationSection {
         if (currenClass && currenClass.id == parseInt(Id)){
             this.classroom.set(currenClass);
             // this.cancelEdit()
+            this.onEditMode.set(false);
+          }else{
+            this.onEditMode.set(true);
           }
+      }
+
+      if(this.addedClassroom()){
+        // const addedClass= this.service.currentClassroom();
+        console.log("do we come here")
+        if(currenClass == null) return;
+        if(currenClass.id == 0) return;
+
+        this.onEditMode.set(false);
+        this.addedClassroom.set(false);
+        this.classroom.set(currenClass);
+        this.router.navigate(['../', currenClass.id], {
+          relativeTo: this.routes,
+        })
       }
     })
   }
@@ -108,13 +132,20 @@ export class ClassroomInformationSection {
         academicYear: formData.academicYear,
         classTeacher: classTeacherId,
         roomNumber: formData.roomNumber,
-        capacity: formData.capacity,
+        maximumOccupants: formData.capacity,
         description: formData.description,
         schedule: `${formData.scheduleStart} - ${formData.scheduleEnd}`
       };
       
       // this.classroom.set(updatedClassroom);
-      this.service.updateClassroomDetails(updatedClassroom);
+      // console.log("The id is")
+      // console.log(this.classroomId())
+      if(this.classroomId() != 'new'){
+        this.service.updateClassroomDetails(updatedClassroom);
+      }else{
+        this.addedClassroom.set(true);
+        this.service.addClassroom(updatedClassroom);
+      }
       // this.classroom.set(this.service.currentClassroom());
       
       // Here you would call an API to save the data

@@ -139,7 +139,6 @@ export class PersonalInformationSection {
   async addNewUser(){
     this.addClicked.set(true);
     this.service.addUser(this.editPersonalInformation(), this.userType() ?? "");
-    
   }
 
 

@@ -1,76 +1,63 @@
 @if(addClass()){
-    <div class="class-card add-card" >
-        <div class="add-icon-container">
-            <span class="add-icon">+</span>
-        </div>
-        <span class="add-label">Add New Class</span>
+<div class="class-card add-card">
+    <div class="add-icon-container">
+        <span class="add-icon">+</span>
     </div>
+    <span class="add-label">Add New Class</span>
+</div>
 }
 @else {
-    <div class="class-card ">
-        <div class="class-card-header">
+<div class="class-card">
+    <div class="class-card-header">
         <span class="class-icon">👩‍🏫</span>
         <span class="class-name">{{classroom()?.name}}</span>
         <button class="class-action" (click)="removeClass(classroom()?.id)" title="Remove Class">
             <span class="action-icon">×</span>
         </button>
-        </div>
-        
-        <div class="assigned-container">
-            <div class="subject-header">
-                <h4 class="subsection-title">Subjects</h4>
-                <button class="btn-add-subject" (click)="addSubjectToClass(classroom()?.id)" title="Add Subject">
+    </div>
+    
+    <div class="assigned-container">
+        <div class="subject-header">
+            <h4 class="subsection-title">Subjects</h4>
+            <button class="btn-add-subject" (click)="addSubjectToClass(classroom()?.id)" title="Add Subject">
                 <span class="add-icon">+</span>
-                </button>
-            </div>
-            
-            <div class="chips-container">
-                @for(subject of assignedSubjects(); track $index) {
-                <span class="subject-chip">
-                    {{subject}}
-                    <button class="chip-remove" (click)="removeSubjectFromClass()" title="Remove Subject">
-                    ×
-                    </button>
-                </span>
-                }
-                <span class="subject-chip">
-                    English
-                    <button class="chip-remove" (click)="removeSubjectFromClass()" title="Remove Subject">
-                    ×
-                    </button>
-                </span>
-                <span class="subject-chip">
-                    Physics
-                    <button class="chip-remove" (click)="removeSubjectFromClass()" title="Remove Subject">
-                    ×
-                    </button>
-                </span>
-            </div>
-        
-            <!-- Add Subject Input (Hidden by default) -->
-                @if(showAddSubjectInput()){
-                <div class="add-subject-input">
-                    <input 
-                    type="text" 
-                    class="subject-input" 
-                    [(ngModel)]="newSubject"
-                    placeholder="Enter subject name..."
-                    (keyup.enter)="confirmAddSubject()"
-                    #subjectInput
-                    (blur)="hideAddSubjectInput()"
-                    >
-                    <button class="btn-confirm" (click)="confirmAddSubject()">✓</button>
-                    <button class="btn-cancel" (click)="hideAddSubjectInput()">×</button>
-                </div>
-            }
-        
+            </button>
         </div>
         
-        <!-- Class Stats -->
-        <div class="class-stats">
+        <div class="chips-container">
+            @for(subject of assignedSubjects(); track $index) {
+            <span class="subject-chip">
+                {{subject}}
+                <button class="chip-remove" (click)="removeSubjectFromClass()" title="Remove Subject">
+                    ×
+                </button>
+            </span>
+            }
+        </div>
+    
+        <!-- Add Subject Input (Hidden by default) -->
+        @if(showAddSubjectInput()){
+        <div class="add-subject-input">
+            <input 
+                type="text" 
+                class="subject-input" 
+                [(ngModel)]="newSubject"
+                placeholder="Enter subject name..."
+                (keyup.enter)="confirmAddSubject()"
+                #subjectInput
+                (blur)="hideAddSubjectInput()"
+            >
+            <button class="btn-confirm" (click)="confirmAddSubject()">✓</button>
+            <button class="btn-cancel" (click)="hideAddSubjectInput()">×</button>
+        </div>
+        }
+    </div>
+    
+    <!-- Class Stats -->
+    <div class="class-stats">
         <div class="stat-item">
             <span class="stat-icon">👥</span>
-            <span class="stat-value">24</span>
+            <span class="stat-value">{{ 0}}</span>
             <span class="stat-label">Students</span>
         </div>
         <div class="stat-item">
@@ -80,10 +67,9 @@
         </div>
         <div class="stat-item">
             <span class="stat-icon">⏰</span>
-            <span class="stat-value">5</span>
+            <span class="stat-value">{{ 5}}</span>
             <span class="stat-label">Periods/Day</span>
         </div>
-        </div>
     </div>
+</div>
 }
-

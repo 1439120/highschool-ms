@@ -56,14 +56,25 @@
             
             <div class="classes-container">
               <!-- Add Class Card (First Card) -->
-              <app-classes-card [addClass]="true"/>
+              <app-classes-card [addClass]="true" (click)="openAddClassModal()"/>
               
               <!-- Existing Class Cards -->
               @for(classItem of assigned_classes(); track $index; let parentIndex = $index) {
-
+                  <!-- <app-classes-card 
+                      [classroom]="classItem"
+                      [addClass]="false"
+                  /> -->
               }
             </div>
           </section>
+
+          <!-- Add Class Modal -->
+            @if(showAddClassModal()){
+            <app-addclass-modal
+                (close)="closeAddClassModal()"
+                (classSelected)="onClassSelected($event)"
+            />
+            }
 
           <!-- Additional Information -->
           <section class="details-section">

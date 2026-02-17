@@ -1,0 +1,103 @@
+<div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>
+                <span class="modal-icon">➕</span>
+                Add New Class
+            </h3>
+            <button class="close-btn" (click)="closeModal()">×</button>
+        </div>
+        
+        <div class="modal-body">
+            <!-- Search Box -->
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    placeholder="Search available classes..."
+                    [(ngModel)]="searchTerm"
+                    (input)="filterClasses()"
+                >
+                @if(searchTerm){
+                <button class="clear-search" (click)="clearSearch()">×</button>
+                }
+            </div>
+            
+            <!-- Available Classes List -->
+            <div class="classes-list">
+                @if(filteredClasses().length > 0){
+                    @for(classItem of filteredClasses(); track classItem.id){
+                    <div class="class-item" (click)="selectClass(classItem)" [class.selected]="selectedClass?.id === classItem.id">
+                        <div class="class-item-icon">{{classItem.grade}}A</div>
+                        <div class="class-item-info">
+                            <span class="class-item-name">{{classItem.name}}</span>
+                            <span class="class-item-details">
+                                <span>Grade {{classItem.grade}}</span>
+                                <span>•</span>
+                                <span>{{classItem.teacher}}</span>
+                            </span>
+                        </div>
+                        <div class="class-item-stats">
+                            <span class="stat-badge">
+                                <span class="stat-icon">👥</span>
+                                {{classItem.studentCount}}
+                            </span>
+                            <span class="stat-badge">
+                                <span class="stat-icon">📚</span>
+                                {{classItem.subjectCount}}
+                            </span>
+                        </div>
+                        @if(selectedClass?.id === classItem.id){
+                        <span class="selected-indicator">✓</span>
+                        }
+                    </div>
+                    }
+                } @else {
+                    <div class="no-results">
+                        <span class="no-results-icon">🔍</span>
+                        <p>No classes found matching "{{searchTerm}}"</p>
+                    </div>
+                }
+            </div>
+            
+            <!-- Selected Class Preview -->
+            @if(selectedClass){
+            <div class="selected-preview">
+                <h4>Selected Class</h4>
+                <div class="preview-card">
+                    <div class="preview-header">
+                        <span class="preview-icon">{{selectedClass.grade}}A</span>
+                        <div class="preview-info">
+                            <span class="preview-name">{{selectedClass.name}}</span>
+                            <span class="preview-teacher">{{selectedClass.teacher}}</span>
+                        </div>
+                    </div>
+                    <div class="preview-details">
+                        <div class="preview-stat">
+                            <span class="stat-label">Students</span>
+                            <span class="stat-value">{{selectedClass.studentCount}}</span>
+                        </div>
+                        <div class="preview-stat">
+                            <span class="stat-label">Subjects</span>
+                            <span class="stat-value">{{selectedClass.subjectCount}}</span>
+                        </div>
+                        <div class="preview-stat">
+                            <span class="stat-label">Room</span>
+                            <span class="stat-value">{{selectedClass.room || 'TBD'}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        
+        <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+            <button class="btn btn-primary" (click)="addSelectedClass()" [disabled]="!selectedClass">
+                <span class="btn-icon">➕</span>
+                Add Selected Class
+            </button>
+        </div>
+    </div>
+</div>

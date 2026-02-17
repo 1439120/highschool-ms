@@ -12,12 +12,13 @@ import { ClassesCard } from '../../components/classes-card/classes-card';
 import { Classroom } from '../../models/Classroom';
 import Grades from '../../models/Grades';
 import { User } from '../../models/User';
+import { AddclassModal, AvailableClass } from '../../components/addclass-modal/addclass-modal';
 
 @Component({
   selector: 'app-teachers-details',
   imports: [
     Breadcrumb, FormsModule, PersonalInformationSection, ClassesCard,
-    DetailsHeader
+    DetailsHeader, AddclassModal
   ],
   templateUrl: './teachers-details.html',
   styleUrl: './teachers-details.scss',
@@ -52,6 +53,8 @@ export class TeachersDetails {
   newSubject: string = '';
   onEditMode = signal(false)
   teacherId = signal<string | null>(null);
+  showAddClassModal = signal(false);
+
   private destroy$ = new Subject<void>();
   classroomGrade: Grades = {
     id: 1,
@@ -98,6 +101,21 @@ export class TeachersDetails {
     this.assigned_classes.set(['Grade 12 A', 'Grade 12 B', 'Grade 10 A'])
     this.assigned_subjects.set(['maths', 'physics', 'life science'])
   }
+
+  openAddClassModal() {
+        this.showAddClassModal.set(true);
+    }
+
+    closeAddClassModal() {
+        this.showAddClassModal.set(false);
+    }
+
+    onClassSelected(selectedClass: AvailableClass) {
+        console.log('Selected class:', selectedClass);
+        // Add the selected class to your list
+        // this.addClassToList(selectedClass);
+        this.closeAddClassModal();
+    }
 
   // addClass() {
   //   const className = prompt('Enter class name (e.g., Grade 12 A):');

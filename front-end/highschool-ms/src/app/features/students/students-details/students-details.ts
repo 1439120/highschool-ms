@@ -2,11 +2,11 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component, computed, effect, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
-import BreadcrumbModel from '../../models/BreadcrumbModel';
-import { PersonalInformationSection } from '../../components/personal-information-section/personal-information-section';
-import { UsersService } from '../../services/users-service';
-import { DetailsHeader } from '../../components/details-header/details-header';
+import { Breadcrumb } from '../../../components/breadcrumb/breadcrumb';
+import BreadcrumbModel from '../../../models/BreadcrumbModel';
+import { PersonalInformationSection } from '../../../components/personal-information-section/personal-information-section';
+import { UsersService } from '../../../services/users-service';
+import { DetailsHeader } from '../../../components/details-header/details-header';
 
 @Component({
   selector: 'app-students-details',

@@ -1,8 +1,8 @@
 import { Component, effect } from '@angular/core';
-import { Datamodel } from '../models/Datamodel';
-import { User } from '../models/User';
-import { Datatable } from '../components/datatable/datatable';
-import { UsersService } from '../services/users-service';
+import { Datamodel } from '../../models/Datamodel';
+import { User } from '../../models/User';
+import { Datatable } from '../../components/datatable/datatable';
+import { UsersService } from '../../services/users-service';
 
 @Component({
   selector: 'app-students',

@@ -1,8 +1,8 @@
 import { Component, effect } from '@angular/core';
-import { Datamodel } from '../models/Datamodel';
-import { Classroom } from '../models/Classroom';
-import { Datatable } from '../components/datatable/datatable';
-import { ClassroomService } from '../services/classroom-service';
+import { Datamodel } from '../../models/Datamodel';
+import { Classroom } from '../../models/Classroom';
+import { Datatable } from '../../components/datatable/datatable';
+import { ClassroomService } from '../../services/classroom-service';
 
 @Component({
   selector: 'app-classrooms',

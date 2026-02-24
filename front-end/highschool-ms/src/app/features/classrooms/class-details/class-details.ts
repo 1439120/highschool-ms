@@ -2,14 +2,14 @@ import { DatePipe } from '@angular/common';
 import { Component, computed, effect, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
-import BreadcrumbModel from '../../models/BreadcrumbModel';
-import { DetailsHeader } from '../../components/details-header/details-header';
-import Grades from '../../models/Grades';
-import { ClassroomInformationSection } from '../../components/classroom-information-section/classroom-information-section';
-import { ClassroomService } from '../../services/classroom-service';
-import { Classroom } from '../../models/Classroom';
-import { User } from '../../models/User';
+import { Breadcrumb } from '../../../components/breadcrumb/breadcrumb';
+import BreadcrumbModel from '../../../models/BreadcrumbModel';
+import { DetailsHeader } from '../../../components/details-header/details-header';
+import Grades from '../../../models/Grades';
+import { ClassroomInformationSection } from '../../../components/classroom-information-section/classroom-information-section';
+import { ClassroomService } from '../../../services/classroom-service';
+import { Classroom } from '../../../models/Classroom';
+import { User } from '../../../models/User';
 
 /**
  * ** Over the ovierview boards

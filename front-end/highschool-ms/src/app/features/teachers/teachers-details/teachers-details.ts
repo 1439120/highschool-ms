@@ -1,18 +1,18 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
-import BreadcrumbModel from '../../models/BreadcrumbModel';
+import { Breadcrumb } from '../../../components/breadcrumb/breadcrumb';
+import BreadcrumbModel from '../../../models/BreadcrumbModel';
 import { FormsModule } from '@angular/forms';
-import { PersonalInformationSection } from '../../components/personal-information-section/personal-information-section';
+import { PersonalInformationSection } from '../../../components/personal-information-section/personal-information-section';
 
 import { Subject } from 'rxjs';
-import { UsersService } from '../../services/users-service';
-import { DetailsHeader } from '../../components/details-header/details-header';
-import { ClassesCard } from '../../components/classes-card/classes-card';
-import { Classroom } from '../../models/Classroom';
-import Grades from '../../models/Grades';
-import { User } from '../../models/User';
-import { AddclassModal, AvailableClass } from '../../components/addclass-modal/addclass-modal';
+import { UsersService } from '../../../services/users-service';
+import { DetailsHeader } from '../../../components/details-header/details-header';
+import { ClassesCard } from '../../../components/classes-card/classes-card';
+import { Classroom } from '../../../models/Classroom';
+import Grades from '../../../models/Grades';
+import { User } from '../../../models/User';
+import { AddclassModal, AvailableClass } from '../../../components/addclass-modal/addclass-modal';
 
 @Component({
   selector: 'app-teachers-details',

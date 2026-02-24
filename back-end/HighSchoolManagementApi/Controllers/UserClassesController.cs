@@ -46,7 +46,7 @@ namespace HighSchoolManagementApi.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveUserFromClass([FromRoute] int classId, [FromRoute] int userId)
         {
-            var userClass = _userClassRepo.RemoveFromClass(classId, userId);
+            var userClass = await _userClassRepo.RemoveFromClass(userId, classId);
             if(userClass == null) return NotFound();
 
             return Ok(userClass);

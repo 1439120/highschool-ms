@@ -1,8 +1,8 @@
 import { Component, effect } from '@angular/core';
-import { Datamodel } from '../models/Datamodel';
-import LessonPlanModel from '../models/LessonPlanModel';
-import { Datatable } from '../components/datatable/datatable';
-import { LessonPlanService } from '../services/lesson-plan-service';
+import { Datamodel } from '../../models/Datamodel';
+import LessonPlanModel from '../../models/LessonPlanModel';
+import { Datatable } from '../../components/datatable/datatable';
+import { LessonPlanService } from '../../services/lesson-plan-service';
 
 @Component({
   selector: 'app-lesson-plan',

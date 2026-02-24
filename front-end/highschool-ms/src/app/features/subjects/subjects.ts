@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Datamodel } from '../models/Datamodel';
-import { SubjectsModel, subjects } from '../models/SubjectsModel';
-import { Datatable } from '../components/datatable/datatable';
+import { Datamodel } from '../../models/Datamodel';
+import { SubjectsModel, subjects } from '../../models/SubjectsModel';
+import { Datatable } from '../../components/datatable/datatable';
 /**
  * Subjects should come from the department should not be editable
  * If the school has grade 8 to 10, only show those subjects

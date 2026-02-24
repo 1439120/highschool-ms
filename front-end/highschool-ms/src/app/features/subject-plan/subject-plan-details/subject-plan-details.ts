@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
-import BreadcrumbModel from '../../models/BreadcrumbModel';
-import SubjectPlanModel from '../../models/SubjectPlanModel';
-import Grades from '../../models/Grades';
-import { SubjectsModel } from '../../models/SubjectsModel';
+import { Breadcrumb } from '../../../components/breadcrumb/breadcrumb';
+import BreadcrumbModel from '../../../models/BreadcrumbModel';
+import SubjectPlanModel from '../../../models/SubjectPlanModel';
+import Grades from '../../../models/Grades';
+import { SubjectsModel } from '../../../models/SubjectsModel';
 
 @Component({
   selector: 'app-subject-plan-details',

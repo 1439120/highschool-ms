@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Breadcrumb } from '../../components/breadcrumb/breadcrumb';
-import BreadcrumbModel from '../../models/BreadcrumbModel';
-import LessonPlanModel from '../../models/LessonPlanModel';
-import { SubjectsModel } from '../../models/SubjectsModel';
-import { User } from '../../models/User';
-import Grades from '../../models/Grades';
+import { Breadcrumb } from '../../../components/breadcrumb/breadcrumb';
+import BreadcrumbModel from '../../../models/BreadcrumbModel';
+import LessonPlanModel from '../../../models/LessonPlanModel';
+import { SubjectsModel } from '../../../models/SubjectsModel';
+import { User } from '../../../models/User';
+import Grades from '../../../models/Grades';
 
 @Component({
   selector: 'app-lesson-plan-details',

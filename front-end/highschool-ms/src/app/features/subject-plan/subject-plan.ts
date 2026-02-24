@@ -1,8 +1,8 @@
 import { Component, effect } from '@angular/core';
-import { Datamodel } from '../models/Datamodel';
-import SubjectPlanModel from '../models/SubjectPlanModel';
-import { Datatable } from "../components/datatable/datatable";
-import { SubjectPlanService } from '../services/subject-plan-service';
+import { Datamodel } from '../../models/Datamodel';
+import SubjectPlanModel from '../../models/SubjectPlanModel';
+import { Datatable } from "../../components/datatable/datatable";
+import { SubjectPlanService } from '../../services/subject-plan-service';
 
 
 @Component({

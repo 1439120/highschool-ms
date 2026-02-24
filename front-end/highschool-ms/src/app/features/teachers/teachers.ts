@@ -1,8 +1,8 @@
 import { Component, computed, effect, inject, OnDestroy } from '@angular/core';
-import { Datatable } from '../components/datatable/datatable';
-import { User } from '../models/User';
-import { Datamodel } from '../models/Datamodel';
-import { UsersService } from '../services/users-service';
+import { Datatable } from '../../components/datatable/datatable';
+import { User } from '../../models/User';
+import { Datamodel } from '../../models/Datamodel';
+import { UsersService } from '../../services/users-service';
 
 @Component({
   selector: 'app-teachers',

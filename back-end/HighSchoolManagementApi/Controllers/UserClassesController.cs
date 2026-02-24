@@ -29,8 +29,9 @@ namespace HighSchoolManagementApi.Controllers
         public async Task<IActionResult> GetUserClasses([FromRoute] int id)
         {
             var userClasses = await _userClassRepo.GetUserClasses(id);
+            var userClassesDto = userClasses.Select(s => s.ToUserClassesDto());
 
-            return Ok(userClasses);
+            return Ok(userClassesDto);
         } 
         [HttpPost]
         [Authorize]

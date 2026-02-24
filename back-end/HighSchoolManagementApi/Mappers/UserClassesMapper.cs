@@ -18,5 +18,15 @@ namespace HighSchoolManagementApi.Mappers
                 ClassId = createDto.ClassId,
             };
         }
+
+        public static UserClassesDto? ToUserClassesDto(this UserClasses userClassModel)
+        {
+            if(userClassModel == null) return null;
+            return new UserClassesDto
+            {
+                UsersId = userClassModel.UsersId,
+                Class = userClassModel.Class.ToClassroomDto(),
+            };
+        }
     }
 }

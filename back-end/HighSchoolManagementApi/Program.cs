@@ -112,6 +112,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserSubjectRepository, UserSubjectRepository>();
 builder.Services.AddScoped<ILessonPlanRepository, LessonPlanRepository>();
 builder.Services.AddScoped<ISubjectPlanRepository, SubjectPlanRepository>();
+builder.Services.AddScoped<IUserClassesRepository, UserClassesRepository>();
 
 var app = builder.Build();
 

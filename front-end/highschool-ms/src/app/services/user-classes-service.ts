@@ -49,4 +49,21 @@ export class UserClassesService {
         }
       });
   }
+  unAssignToClass(userId: string, classroom: Classroom){
+    this.isLoading.set(true);
+
+    this.http
+      .delete(`${this.apiUrl}/${classroom.id}/${userId}`)
+      .subscribe({
+        next: (data) => {
+          console.log('Information deleted:', data);
+          // this.assignedClasses.set(data);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Information failed to load', err);
+          this.isLoading.set(false);
+        }
+      });
+  }
 }

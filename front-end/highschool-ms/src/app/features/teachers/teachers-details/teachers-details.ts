@@ -57,23 +57,7 @@ export class TeachersDetails {
   showAddClassModal = signal(false);
   userClassService = inject(UserClassesService)
   private destroy$ = new Subject<void>();
-  // classroomGrade: Grades = {
-  //   id: 1,
-  //   name: 'Grade 8',
-  //   gradeNumber: 8
-  // }
-  // defaultUser: User = {
-  //   id: 0,
-  //   name: '',
-  //   surname: '',
-  //   phone: '',
-  //   email: '',
-  //   role: '',
-  //   address: '',
-  //   dateOfBirth: null,
-  //   dateJoined: null,
-  //   type: ''
-  // }
+
   constructor(
     private service: UsersService
   ) {
@@ -113,18 +97,14 @@ export class TeachersDetails {
         this.closeAddClassModal();
     }
 
-  // addClass() {
-  //   const className = prompt('Enter class name (e.g., Grade 12 A):');
-  //   if (className && this.assigned_classes().length) {
-  //     this.assigned_classes.update(value => [...value, className]) //.push(className);
-  //   }
-  // }
-
-  // removeClass(index: number) {
-  //   if (confirm('Are you sure you want to remove this class?')) {
-  //     this.assigned_classes?.update(value => value.splice(index, 1));
-  //   }
-  // }
+  removeClass(classroom: Classroom) {
+    if (confirm('Are you sure you want to remove this class?')) {
+      // this.assigned_classes?.update(value => value.splice(index, 1));
+      let Id = this.teacherId()
+      if(Id)
+      this.userClassService.unAssignToClass(Id, classroom)
+    }
+  }
 
   removeSubjectFromClass(classIndex: number, subjectIndex: number) {
     this.assigned_subjects.update(value => value.splice(subjectIndex, 1));
@@ -169,39 +149,6 @@ confirmAddSubject(classIndex: number) {
     this.hideAddSubjectInput();
   }
 }
-
-
-// Copy to clipboard
-// copyToClipboard(text: string) {
-//   if (!text) return;
-  
-//   navigator.clipboard.writeText(text).then(() => {
-//     // Show feedback
-//     const toast = document.createElement('div');
-//     toast.textContent = 'Address copied to clipboard!';
-//     toast.style.cssText = `
-//       position: fixed;
-//       bottom: 20px;
-//       right: 20px;
-//       background: #10b981;
-//       color: white;
-//       padding: 12px 20px;
-//       border-radius: 8px;
-//       font-weight: 500;
-//       z-index: 1000;
-//       animation: slideIn 0.3s ease;
-//     `;
-//     document.body.appendChild(toast);
-    
-//     setTimeout(() => {
-//       toast.style.animation = 'slideOut 0.3s ease';
-//       setTimeout(() => document.body.removeChild(toast), 300);
-//     }, 2000);
-//   }).catch(err => {
-//     console.error('Failed to copy:', err);
-//     alert('Failed to copy address. Please try again.');
-//   });
-// }
 
   hideAddSubjectInput() {
     this.showAddSubjectInput = null;

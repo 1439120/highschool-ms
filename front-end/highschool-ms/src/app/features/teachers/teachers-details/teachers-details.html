@@ -64,6 +64,7 @@
                     <app-classes-card 
                         [classroom]="classItem.class"
                         [addClass]="false"
+                        (unassignThisClass)="removeClass($event)"
                     />
                 }
                }

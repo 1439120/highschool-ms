@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, EventEmitter, input, Output, signal } from '@angular/core';
 import { Classroom } from '../../models/Classroom';
 import { FormsModule } from '@angular/forms';
 
@@ -14,15 +14,16 @@ export class ClassesCard {
   assignedSubjects = signal([])
   showAddSubjectInput = signal(false)
   newSubject: string = '';
+  @Output() unassignThisClass = new EventEmitter<Classroom>();
 
-  removeClass(index: number | undefined){
-
+  removeClass(){
+    this.unassignThisClass.emit(this.classroom());
   }
   addSubjectToClass(index: number | undefined){
     this.showAddSubjectInput.set(true);
   }
   removeSubjectFromClass(){
-
+    
   }
   confirmAddSubject(){
 

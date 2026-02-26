@@ -1,0 +1,31 @@
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { UserClassesModel } from '../models/Classroom';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserClassesService {
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:5068/api/user-classes';
+
+  readonly isLoading = signal<boolean>(false);
+  assignedClasses = signal<UserClassesModel[]>([])
+
+  loadUserClasses(userId: string){
+    this.isLoading.set(true);
+    this.http
+      .get<UserClassesModel[]>(`${this.apiUrl}/${userId}`)
+      .subscribe({
+        next: (data) => {
+          console.log('Information added:', data);
+          this.assignedClasses.set(data);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Information failed to load', err);
+          this.isLoading.set(false);
+        }
+      });
+  }
+}

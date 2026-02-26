@@ -16,6 +16,7 @@ export class UsersService {
   teachers = signal<User[]>([]);
   students = signal<User[]>([]);
   currentUser = signal<User | null>(null);
+  readonly isLoading = signal<boolean>(false);
 
   private get authHeaders() {
     return new HttpHeaders({
@@ -24,31 +25,36 @@ export class UsersService {
   }
 
   loadTeachers(): void {
+    this.isLoading.set(true);
     this.http
       .get<User[]>(`${this.apiUrl}/api/users?Type=staff`)
       .subscribe({
         next: (data) => {
           console.log('Teachers loaded:', data);
           this.teachers.set(data);
+          this.isLoading.set(false);
         },
         error: (err) => {
           console.error('Failed to load teachers', err);
+          this.isLoading.set(false);
         }
       });
   }
 
   loadStudents(): void {
     const headers = this.authHeaders
-
+    this.isLoading.set(true);
     this.http
       .get<User[]>(`${this.apiUrl}/api/users?Type=student`, { headers })
       .subscribe({
         next: (data) => {
           console.log('Students loaded:', data);
           this.students.set(data);
+          this.isLoading.set(false);
         },
         error: (err) => {
           console.error('Failed to load teachers', err);
+          this.isLoading.set(false);
         }
       });
   }
@@ -57,15 +63,18 @@ export class UsersService {
     const headers = this.authHeaders
     const { id, ...payloadWithoutId } = teacher;
     const payload = { ...payloadWithoutId, type: userType };
+    this.isLoading.set(true);
     console.log("the teacher being added: ", payload)
     this.http.post<User>(`${this.apiUrl}/api/users`, payload, { headers })
       .subscribe({
         next: (data) => {
           console.log(`Teacher added `, data);
           this.currentUser.set(data);
+          this.isLoading.set(false);
         },
         error: (err) => {
           console.error('Failed to load teachers', err);
+          this.isLoading.set(false);
         }
       });
   }
@@ -73,15 +82,18 @@ export class UsersService {
   getUser(id: string){
     if(isNaN(parseInt(id))) return;
     const headers = this.authHeaders
+    this.isLoading.set(true);
     this.http
       .get<User>(`${this.apiUrl}/api/users/${id}`, { headers })
       .subscribe({
         next: (data) => {
           console.log(`User loaded ${id}`, data);
           this.currentUser.set(data);
+          this.isLoading.set(false);
         },
         error: (err) => {
           console.error('Failed to load user', err);
+          this.isLoading.set(false);
         }
       });
   }
@@ -90,15 +102,18 @@ export class UsersService {
     if(isNaN(parseInt(id))) return;
     const payload = { ...teacher, type: userType };
     const headers = this.authHeaders
+    this.isLoading.set(true);
     this.http
       .put<User>(`${this.apiUrl}/api/users/${id}`,payload , { headers })
       .subscribe({
         next: (data) => {
           console.log(`Teacher updated ${id}`, data);
           this.currentUser.set(data);
+          this.isLoading.set(false);
         },
         error: (err) => {
           console.error('Failed to load user', err);
+          this.isLoading.set(false);
         }
       });
   }

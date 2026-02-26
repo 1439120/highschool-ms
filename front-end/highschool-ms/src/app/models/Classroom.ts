@@ -13,3 +13,8 @@ export interface Classroom{
     roomNumber: string
     [key: string]: any
 }
+
+export interface UserClassesModel{
+    usersId: number,
+    class: Classroom
+}

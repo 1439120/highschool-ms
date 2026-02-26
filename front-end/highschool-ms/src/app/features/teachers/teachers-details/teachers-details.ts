@@ -9,10 +9,11 @@ import { Subject } from 'rxjs';
 import { UsersService } from '../../../services/users-service';
 import { DetailsHeader } from '../../../components/details-header/details-header';
 import { ClassesCard } from '../../../components/classes-card/classes-card';
-import { Classroom } from '../../../models/Classroom';
+import { Classroom, UserClassesModel } from '../../../models/Classroom';
 import Grades from '../../../models/Grades';
 import { User } from '../../../models/User';
 import { AddclassModal } from '../../../components/addclass-modal/addclass-modal';
+import { UserClassesService } from '../../../services/user-classes-service';
 
 @Component({
   selector: 'app-teachers-details',
@@ -46,7 +47,7 @@ export class TeachersDetails {
       }
     }
   })
-  assigned_classes = signal<string[]>([])
+  // assigned_classes = signal<UserClassesModel[]>([])
   assigned_subjects = signal<string[]>([])
   editTeacher: any = {};
   showAddSubjectInput: number | null = null;
@@ -54,7 +55,7 @@ export class TeachersDetails {
   onEditMode = signal(false)
   teacherId = signal<string | null>(null);
   showAddClassModal = signal(false);
-
+  userClassService = inject(UserClassesService)
   private destroy$ = new Subject<void>();
   classroomGrade: Grades = {
     id: 1,
@@ -73,34 +74,26 @@ export class TeachersDetails {
     dateJoined: null,
     type: ''
   }
-  testClassroom = signal<Classroom>({
-    id: 1,
-    name: 'Grade 8A',
-    grade: this.classroomGrade,
-    classTeacher: this.defaultUser,
-    maximumOccupants: 0,
-    registeredStudents: 0,
-    numberOfSubjecteds: 0,
-    academicYear: 0,
-    roomNumber: ''
-  })
-
   constructor(
     private service: UsersService
   ) {
     this.route.paramMap.subscribe(params => {
-      this.teacherId.set(params.get('id'));
+      let Id = params.get('id')
+      this.teacherId.set(Id);
+      if(Id && parseInt(Id))
+      this.userClassService.loadUserClasses(Id);
     });
-    this.loadTeacherData();
+    // this.loadTeacherData();
+    
     effect(()=>{
       this.breadCrumb  = [{name: 'Teachers', url:'/teachers'},{name: `${this.teacher().name} ${this.teacher().surname}`, url:''}]
     })
   }
 
-  loadTeacherData() {
-    this.assigned_classes.set(['Grade 12 A', 'Grade 12 B', 'Grade 10 A'])
-    this.assigned_subjects.set(['maths', 'physics', 'life science'])
-  }
+  // loadTeacherData() {
+  //   this.assigned_classes.set(['Grade 12 A', 'Grade 12 B', 'Grade 10 A'])
+  //   this.assigned_subjects.set(['maths', 'physics', 'life science'])
+  // }
 
   openAddClassModal() {
         this.showAddClassModal.set(true);
@@ -124,11 +117,11 @@ export class TeachersDetails {
   //   }
   // }
 
-  removeClass(index: number) {
-    if (confirm('Are you sure you want to remove this class?')) {
-      this.assigned_classes?.update(value => value.splice(index, 1));
-    }
-  }
+  // removeClass(index: number) {
+  //   if (confirm('Are you sure you want to remove this class?')) {
+  //     this.assigned_classes?.update(value => value.splice(index, 1));
+  //   }
+  // }
 
   removeSubjectFromClass(classIndex: number, subjectIndex: number) {
     this.assigned_subjects.update(value => value.splice(subjectIndex, 1));

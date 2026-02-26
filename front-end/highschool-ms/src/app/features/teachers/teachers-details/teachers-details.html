@@ -59,12 +59,15 @@
               <app-classes-card [addClass]="true" (click)="openAddClassModal()"/>
               
               <!-- Existing Class Cards -->
-              @for(classItem of assigned_classes(); track $index; let parentIndex = $index) {
-                  <!-- <app-classes-card 
-                      [classroom]="classItem"
-                      [addClass]="false"
-                  /> -->
-              }
+               @if(!userClassService.isLoading()){
+                @for(classItem of userClassService.assignedClasses(); track $index; let parentIndex = $index) {
+                    <app-classes-card 
+                        [classroom]="classItem.class"
+                        [addClass]="false"
+                    />
+                }
+               }
+              
             </div>
           </section>
 

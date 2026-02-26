@@ -12,7 +12,7 @@ import { ClassesCard } from '../../../components/classes-card/classes-card';
 import { Classroom } from '../../../models/Classroom';
 import Grades from '../../../models/Grades';
 import { User } from '../../../models/User';
-import { AddclassModal, AvailableClass } from '../../../components/addclass-modal/addclass-modal';
+import { AddclassModal } from '../../../components/addclass-modal/addclass-modal';
 
 @Component({
   selector: 'app-teachers-details',
@@ -110,7 +110,7 @@ export class TeachersDetails {
         this.showAddClassModal.set(false);
     }
 
-    onClassSelected(selectedClass: AvailableClass) {
+    onClassSelected(selectedClass: Classroom) {
         console.log('Selected class:', selectedClass);
         // Add the selected class to your list
         // this.addClassToList(selectedClass);

@@ -29,23 +29,23 @@
                 @if(filteredClasses().length > 0){
                     @for(classItem of filteredClasses(); track classItem.id){
                     <div class="class-item" (click)="selectClass(classItem)" [class.selected]="selectedClass?.id === classItem.id">
-                        <div class="class-item-icon">{{classItem.grade}}A</div>
+                        <div class="class-item-icon">{{classItem.name.split(" ")[1]}}</div>
                         <div class="class-item-info">
                             <span class="class-item-name">{{classItem.name}}</span>
                             <span class="class-item-details">
-                                <span>Grade {{classItem.grade}}</span>
+                                <span>{{classItem.grade.name}}</span>
                                 <span>•</span>
-                                <span>{{classItem.teacher}}</span>
+                                <span>{{classItem.classTeacher.name + ' ' + classItem.classTeacher.surname}}</span>
                             </span>
                         </div>
                         <div class="class-item-stats">
                             <span class="stat-badge">
                                 <span class="stat-icon">👥</span>
-                                {{classItem.studentCount}}
+                                {{classItem.registeredStudents}}
                             </span>
                             <span class="stat-badge">
                                 <span class="stat-icon">📚</span>
-                                {{classItem.subjectCount}}
+                                {{classItem.maximumOccupants}}
                             </span>
                         </div>
                         @if(selectedClass?.id === classItem.id){
@@ -67,24 +67,24 @@
                 <h4>Selected Class</h4>
                 <div class="preview-card">
                     <div class="preview-header">
-                        <span class="preview-icon">{{selectedClass.grade}}A</span>
+                        <span class="preview-icon">{{selectedClass.name.split(" ")[1]}}</span>
                         <div class="preview-info">
                             <span class="preview-name">{{selectedClass.name}}</span>
-                            <span class="preview-teacher">{{selectedClass.teacher}}</span>
+                            <span class="preview-teacher">{{selectedClass.classTeacher.name + ' ' + selectedClass.classTeacher.surname}}</span>
                         </div>
                     </div>
                     <div class="preview-details">
                         <div class="preview-stat">
                             <span class="stat-label">Students</span>
-                            <span class="stat-value">{{selectedClass.studentCount}}</span>
+                            <span class="stat-value">{{selectedClass.registeredStudents}}</span>
                         </div>
                         <div class="preview-stat">
-                            <span class="stat-label">Subjects</span>
-                            <span class="stat-value">{{selectedClass.subjectCount}}</span>
+                            <span class="stat-label">Maximum Occupance</span>
+                            <span class="stat-value">{{selectedClass.maximumOccupants}}</span>
                         </div>
                         <div class="preview-stat">
                             <span class="stat-label">Room</span>
-                            <span class="stat-value">{{selectedClass.room || 'TBD'}}</span>
+                            <span class="stat-value">{{selectedClass.roomNumber || 'TBD'}}</span>
                         </div>
                     </div>
                 </div>

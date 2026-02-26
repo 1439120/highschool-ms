@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { UserClassesModel } from '../models/Classroom';
+import { Classroom, UserClassesModel } from '../models/Classroom';
 
 @Injectable({
   providedIn: 'root',
@@ -20,6 +20,27 @@ export class UserClassesService {
         next: (data) => {
           console.log('Information added:', data);
           this.assignedClasses.set(data);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Information failed to load', err);
+          this.isLoading.set(false);
+        }
+      });
+  }
+
+  assignToClass(userId: string, classroom: Classroom){
+    this.isLoading.set(true);
+    const payload = {
+      usersId: userId,
+      classId: classroom.id
+    }
+    this.http
+      .post(`${this.apiUrl}`, payload)
+      .subscribe({
+        next: (data) => {
+          console.log('Information added:', data);
+          // this.assignedClasses.set(data);
           this.isLoading.set(false);
         },
         error: (err) => {

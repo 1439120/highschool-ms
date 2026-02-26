@@ -21,20 +21,6 @@ export class AddclassModal {
     constructor(private service: ClassroomService){
         this.service.loadClassrooms();
     }
-    
-    // Mock available classes - replace with actual data from service
-    // private availableClasses: AvailableClass[] = [
-    //     { id: 1, name: 'Grade 8A', grade: 8, teacher: 'Alice Mbatha', studentCount: 28, subjectCount: 8, room: '201' },
-    //     { id: 2, name: 'Grade 8B', grade: 8, teacher: 'John Smith', studentCount: 26, subjectCount: 8, room: '202' },
-    //     { id: 3, name: 'Grade 9A', grade: 9, teacher: 'Priya Patel', studentCount: 30, subjectCount: 9, room: '105' },
-    //     { id: 4, name: 'Grade 9B', grade: 9, teacher: 'Maria Garcia', studentCount: 27, subjectCount: 9, room: '106' },
-    //     { id: 5, name: 'Grade 10A', grade: 10, teacher: 'David Wilson', studentCount: 25, subjectCount: 10, room: '301' },
-    //     { id: 6, name: 'Grade 10B', grade: 10, teacher: 'Sarah Johnson', studentCount: 29, subjectCount: 10, room: '302' },
-    //     { id: 7, name: 'Grade 11A', grade: 11, teacher: 'Michael Brown', studentCount: 24, subjectCount: 11, room: '401' },
-    //     { id: 8, name: 'Grade 11B', grade: 11, teacher: 'Linda Davis', studentCount: 23, subjectCount: 11, room: '402' },
-    //     { id: 9, name: 'Grade 12A', grade: 12, teacher: 'Robert Taylor', studentCount: 22, subjectCount: 12, room: '501' },
-    //     { id: 10, name: 'Grade 12B', grade: 12, teacher: 'Jennifer Lee', studentCount: 21, subjectCount: 12, room: '502' },
-    // ];
 
     // Filtered classes based on search
     filteredClasses = computed(() => {

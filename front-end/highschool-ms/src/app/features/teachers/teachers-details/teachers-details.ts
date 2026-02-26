@@ -57,23 +57,23 @@ export class TeachersDetails {
   showAddClassModal = signal(false);
   userClassService = inject(UserClassesService)
   private destroy$ = new Subject<void>();
-  classroomGrade: Grades = {
-    id: 1,
-    name: 'Grade 8',
-    gradeNumber: 8
-  }
-  defaultUser: User = {
-    id: 0,
-    name: '',
-    surname: '',
-    phone: '',
-    email: '',
-    role: '',
-    address: '',
-    dateOfBirth: null,
-    dateJoined: null,
-    type: ''
-  }
+  // classroomGrade: Grades = {
+  //   id: 1,
+  //   name: 'Grade 8',
+  //   gradeNumber: 8
+  // }
+  // defaultUser: User = {
+  //   id: 0,
+  //   name: '',
+  //   surname: '',
+  //   phone: '',
+  //   email: '',
+  //   role: '',
+  //   address: '',
+  //   dateOfBirth: null,
+  //   dateJoined: null,
+  //   type: ''
+  // }
   constructor(
     private service: UsersService
   ) {
@@ -106,7 +106,10 @@ export class TeachersDetails {
     onClassSelected(selectedClass: Classroom) {
         console.log('Selected class:', selectedClass);
         // Add the selected class to your list
-        // this.addClassToList(selectedClass);
+        var teacherId = this.teacherId()
+        if(teacherId){
+          this.userClassService.assignToClass(teacherId, selectedClass);
+        }
         this.closeAddClassModal();
     }
 

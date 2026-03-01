@@ -1,0 +1,123 @@
+// Variables
+$primary-color: #4361ee;
+$secondary-color: #3a0ca3;
+$success-color: #2ecc71;
+$warning-color: #f39c12;
+$danger-color: #e74c3c;
+$info-color: #3498db;
+$light-color: #f8f9fa;
+$dark-color: #2d3748;
+$border-color: #e2e8f0;
+$shadow-color: rgba(0, 0, 0, 0.08);
+@use "sass:color";
+
+.subject-card {
+  background: white;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .subject-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    
+    .subject-icon {
+      font-size: 32px;
+      opacity: 0.8;
+    }
+    
+    .subject-details {
+      flex: 1;
+      
+      .subject-name {
+        margin: 0 0 8px 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: $dark-color;
+      }
+      
+      .subject-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        
+        .meta-item {
+          font-size: 13px;
+          color: #718096;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          
+          .meta-icon {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+  
+  .subject-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: $light-color;
+    border-radius: 8px;
+    
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      
+      .stat-label {
+        font-size: 12px;
+        color: #718096;
+      }
+      
+      .stat-value {
+        font-size: 14px;
+        font-weight: 600;
+        color: $dark-color;
+      }
+    }
+  }
+  
+  .subject-actions {
+    display: flex;
+    gap: 12px;
+  }
+}
+
+// Buttons
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &-outline {
+    background: transparent;
+    color: $dark-color;
+    border: 1px solid $border-color;
+    
+    &:hover {
+      background: $light-color;
+      border-color: color.adjust($border-color, $lightness: -10%);
+    }
+  }
+}

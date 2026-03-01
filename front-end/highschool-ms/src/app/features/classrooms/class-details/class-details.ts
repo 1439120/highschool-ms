@@ -10,6 +10,7 @@ import { ClassroomInformationSection } from '../../../components/classroom-infor
 import { ClassroomService } from '../../../services/classroom-service';
 import { Classroom } from '../../../models/Classroom';
 import { User } from '../../../models/User';
+import { SubjectCard } from '../../../components/subject-card/subject-card';
 
 /**
  * ** Over the ovierview boards
@@ -22,7 +23,10 @@ import { User } from '../../../models/User';
 
 @Component({
   selector: 'app-class-details',
-  imports: [FormsModule, Breadcrumb, DetailsHeader, ClassroomInformationSection],
+  imports: [
+    FormsModule, Breadcrumb, DetailsHeader, ClassroomInformationSection,
+    SubjectCard
+  ],
   templateUrl: './class-details.html',
   styleUrl: './class-details.scss',
   providers: [DatePipe]
@@ -165,23 +169,9 @@ export class ClassDetails {
     return 'poor';
   }
 
-  getSubjectIcon(subject: string): string {
-    const icons: {[key: string]: string} = {
-      'english': '📝',
-      'maths': '🧮',
-      'natural sciences': '🔬',
-      'social sciences': '🌍',
-      'life orientation': '🧠'
-    };
-    return icons[subject.toLowerCase()] || '📘';
-  }
+  
 
-  formatSubjectName(subject: string): string {
-    return subject
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  }
+  
 
   getTeacherForSubject(subject: string): string {
     const teachers: {[key: string]: string} = {

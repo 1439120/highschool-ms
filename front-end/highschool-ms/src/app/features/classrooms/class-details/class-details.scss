@@ -503,92 +503,6 @@ $shadow-color: rgba(0, 0, 0, 0.08);
   gap: 20px;
 }
 
-.subject-card {
-  background: white;
-  border: 1px solid $border-color;
-  border-radius: 12px;
-  padding: 24px;
-  transition: all 0.3s;
-  
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  }
-  
-  .subject-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
-    
-    .subject-icon {
-      font-size: 32px;
-      opacity: 0.8;
-    }
-    
-    .subject-details {
-      flex: 1;
-      
-      .subject-name {
-        margin: 0 0 8px 0;
-        font-size: 18px;
-        font-weight: 600;
-        color: $dark-color;
-      }
-      
-      .subject-meta {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        
-        .meta-item {
-          font-size: 13px;
-          color: #718096;
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          
-          .meta-icon {
-            font-size: 14px;
-          }
-        }
-      }
-    }
-  }
-  
-  .subject-stats {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    margin-bottom: 20px;
-    padding: 16px;
-    background: $light-color;
-    border-radius: 8px;
-    
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      
-      .stat-label {
-        font-size: 12px;
-        color: #718096;
-      }
-      
-      .stat-value {
-        font-size: 14px;
-        font-weight: 600;
-        color: $dark-color;
-      }
-    }
-  }
-  
-  .subject-actions {
-    display: flex;
-    gap: 12px;
-  }
-}
-
 // Schedule
 .schedule-container {
   background: white;
@@ -991,16 +905,6 @@ $shadow-color: rgba(0, 0, 0, 0.08);
     }
   }
   
-  &-outline {
-    background: transparent;
-    color: $dark-color;
-    border: 1px solid $border-color;
-    
-    &:hover {
-      background: $light-color;
-      border-color: color.adjust($border-color, $lightness: -10%);
-    }
-  }
 }
 
 // Responsive Design

@@ -1,0 +1,38 @@
+<div class="subject-card">
+    <div class="subject-header">
+    <div class="subject-icon">{{getSubjectIcon(subjectName())}}</div>
+    <div class="subject-details">
+        <h3 class="subject-name">{{formatSubjectName(subjectName())}}</h3>
+        <div class="subject-meta">
+        <span class="meta-item">
+            <span class="meta-icon">👨‍🏫</span>
+            {{getTeacherForSubject(subjectName())}}
+        </span>
+        <span class="meta-item">
+            <span class="meta-icon">⏰</span>
+            5 periods/week
+        </span>
+        </div>
+    </div>
+    </div>
+    <div class="subject-stats">
+    <div class="stat-item">
+        <span class="stat-label">Class Average</span>
+        <!-- <span class="stat-value">{{getRandomScore(70, 90)}}%</span> -->
+    </div>
+    <div class="stat-item">
+        <span class="stat-label">Top Student</span>
+        <!-- <span class="stat-value">{{getRandomStudent()}}</span> -->
+    </div>
+    </div>
+    <div class="subject-actions">
+    <button class="btn btn-outline">
+        <span class="btn-icon">📊</span>
+        View Results
+    </button>
+    <button class="btn btn-outline">
+        <span class="btn-icon">📝</span>
+        Assignments
+    </button>
+    </div>
+</div>

@@ -156,7 +156,7 @@
             
             <div class="subjects-grid">
               @for(subject of subjects_offered; track $index){
-                <div class="subject-card">
+                <!-- <div class="subject-card">
                     <div class="subject-header">
                     <div class="subject-icon">{{getSubjectIcon(subject)}}</div>
                     <div class="subject-details">
@@ -176,11 +176,11 @@
                     <div class="subject-stats">
                     <div class="stat-item">
                         <span class="stat-label">Class Average</span>
-                        <!-- <span class="stat-value">{{getRandomScore(70, 90)}}%</span> -->
+                        <span class="stat-value">{{getRandomScore(70, 90)}}%</span>
                     </div>
                     <div class="stat-item">
                         <span class="stat-label">Top Student</span>
-                        <!-- <span class="stat-value">{{getRandomStudent()}}</span> -->
+                        <span class="stat-value">{{getRandomStudent()}}</span>
                     </div>
                     </div>
                     <div class="subject-actions">
@@ -193,7 +193,8 @@
                         Assignments
                     </button>
                     </div>
-                </div>
+                </div> -->
+                <app-subject-card [subjectName]="subject"/>
               }
             </div>
           </section>

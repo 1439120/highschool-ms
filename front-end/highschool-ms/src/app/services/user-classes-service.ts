@@ -41,6 +41,12 @@ export class UserClassesService {
         next: (data) => {
           console.log('Information added:', data);
           // this.assignedClasses.set(data);
+          // this.loadUserClasses(userId);
+          const addedClass:UserClassesModel  = {
+            usersId: parseInt(userId),
+            class: classroom
+          }
+          this.assignedClasses.update(classes => [...classes, addedClass]);
           this.isLoading.set(false);
         },
         error: (err) => {
@@ -58,6 +64,10 @@ export class UserClassesService {
         next: (data) => {
           console.log('Information deleted:', data);
           // this.assignedClasses.set(data);
+          // this.loadUserClasses(userId);
+          this.assignedClasses.update(classes => 
+            classes.filter(c => c.class.id !== classroom.id)
+          );
           this.isLoading.set(false);
         },
         error: (err) => {

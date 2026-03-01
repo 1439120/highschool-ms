@@ -155,6 +155,7 @@
             </h2>
             
             <div class="subjects-grid">
+              <app-subject-card [addSubject]="true"/>
               @for(subject of subjects_offered; track $index){
                 <!-- <div class="subject-card">
                     <div class="subject-header">

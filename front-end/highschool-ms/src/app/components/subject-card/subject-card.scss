@@ -1,14 +1,9 @@
 // Variables
-$primary-color: #4361ee;
-$secondary-color: #3a0ca3;
-$success-color: #2ecc71;
-$warning-color: #f39c12;
-$danger-color: #e74c3c;
-$info-color: #3498db;
 $light-color: #f8f9fa;
 $dark-color: #2d3748;
 $border-color: #e2e8f0;
-$shadow-color: rgba(0, 0, 0, 0.08);
+$add-color: #10b981;
+$remove-color: #ef4444;
 @use "sass:color";
 
 .subject-card {
@@ -94,6 +89,80 @@ $shadow-color: rgba(0, 0, 0, 0.08);
   .subject-actions {
     display: flex;
     gap: 12px;
+  }
+
+  .class-action {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    background: rgba($remove-color, 0.1);
+    color: $remove-color;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    flex-shrink: 0;
+    float: right;
+    
+    &:hover {
+      background: $remove-color;
+      color: white;
+      transform: scale(1.1);
+    }
+    
+    .action-icon {
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 1;
+    }
+  }
+
+  &.add-card {
+    background: linear-gradient(135deg, rgba($add-color, 0.05), rgba($add-color, 0.02));
+    border: 2px dashed rgba($add-color, 0.4);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    height: 100%;
+    
+    &:hover {
+      background: linear-gradient(135deg, rgba($add-color, 0.1), rgba($add-color, 0.05));
+      border-color: $add-color;
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 8px 30px rgba($add-color, 0.15);
+    }
+    
+    .add-icon-container {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, $add-color, color.adjust($add-color, $lightness: 15%)); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+    
+    .add-icon {
+      font-size: 40px;
+      color: white;
+      font-weight: 300;
+    }
+    
+    .add-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: $add-color;
+    }
+    
+    &:hover .add-icon-container {
+      transform: rotate(90deg) scale(1.1);
+    }
   }
 }
 

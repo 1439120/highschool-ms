@@ -8,6 +8,7 @@ import { Component, input } from '@angular/core';
 })
 export class SubjectCard {
   subjectName = input<string>()
+  addSubject = input<boolean>(false)
 
   getSubjectIcon(subject: string | undefined): string {
     const icons: {[key: string]: string} = {
@@ -36,5 +37,9 @@ export class SubjectCard {
       'life orientation': 'Mr. Davis'
     };
     return teachers[subject?.toLowerCase() || 0] || 'Teacher TBD';
+  }
+
+  removeSubject(){
+    
   }
 }

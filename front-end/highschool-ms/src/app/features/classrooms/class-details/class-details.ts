@@ -11,6 +11,9 @@ import { ClassroomService } from '../../../services/classroom-service';
 import { Classroom } from '../../../models/Classroom';
 import { User } from '../../../models/User';
 import { SubjectCard } from '../../../components/subject-card/subject-card';
+import { GenericSelectModal } from '../../../components/generic-select-modal/generic-select-modal';
+import { SubjectsService } from '../../../services/subjects-service';
+import { SubjectsModel } from '../../../models/SubjectsModel';
 
 /**
  * ** Over the ovierview boards
@@ -25,7 +28,7 @@ import { SubjectCard } from '../../../components/subject-card/subject-card';
   selector: 'app-class-details',
   imports: [
     FormsModule, Breadcrumb, DetailsHeader, ClassroomInformationSection,
-    SubjectCard
+    SubjectCard, GenericSelectModal
   ],
   templateUrl: './class-details.html',
   styleUrl: './class-details.scss',
@@ -61,6 +64,7 @@ export class ClassDetails {
     dateJoined: null,
     type: ''
   })
+  showModal = signal<boolean>(false)
 
   classroomId = signal<string>("")
   classroom = computed(()=>{
@@ -87,7 +91,7 @@ export class ClassDetails {
     return ""
   })
   
-  constructor(private route: ActivatedRoute, private service: ClassroomService) {
+  constructor(private route: ActivatedRoute, private service: ClassroomService, private subjectService: SubjectsService) {
     this.route.params.subscribe(params => {
       const classId = params['id'];
       this.classroomId.set(classId);
@@ -169,7 +173,14 @@ export class ClassDetails {
     return 'poor';
   }
 
-  
+  async loadSubjects(): Promise<SubjectsModel[]>{
+    return await this.subjectService.loadSubjects().toPromise() ?? [];
+  }
+
+  onSubjectedSelected(classroom: SubjectsModel) {
+        console.log('Selected classroom:', classroom);
+        this.showModal.set(false);
+    }
 
   
 

@@ -27,44 +27,19 @@ export class SubjectPlanDetails {
   // Mock data for dropdowns
   subjects: SubjectsModel[] = [
     {
-      id: 1, name: 'Mathematics', code: 'MATH', department: 'STEM',
-      grade: 0,
-      chapters: 0,
-      tests: 0,
-      assignments: 0,
-      exams: 0
+      id: 1, name: 'Mathematics',
     },
     {
-      id: 2, name: 'English', code: 'ENG', department: 'Languages',
-      grade: 0,
-      chapters: 0,
-      tests: 0,
-      assignments: 0,
-      exams: 0
+      id: 2, name: 'English', 
     },
     {
-      id: 3, name: 'Natural Sciences', code: 'SCI', department: 'STEM',
-      grade: 0,
-      chapters: 0,
-      tests: 0,
-      assignments: 0,
-      exams: 0
+      id: 3, name: 'Natural Sciences',
     },
     {
-      id: 4, name: 'Social Sciences', code: 'SOC', department: 'Humanities',
-      grade: 0,
-      chapters: 0,
-      tests: 0,
-      assignments: 0,
-      exams: 0
+      id: 4, name: 'Social Sciences', 
     },
     {
-      id: 5, name: 'Life Orientation', code: 'LO', department: 'Life Skills',
-      grade: 0,
-      chapters: 0,
-      tests: 0,
-      assignments: 0,
-      exams: 0
+      id: 5, name: 'Life Orientation', 
     }
   ];
   

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { SubjectsModel } from '../models/SubjectsModel';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,15 +12,18 @@ export class SubjectsService {
   isLoading = signal<boolean>(false)
   subjects = signal<SubjectsModel[]>([])
 
-  loadSubjects(){
-    this.isLoading.set(true);
+  // loadSubjects(){
+  //   this.isLoading.set(true);
        
-        this.http.get<SubjectsModel[]>(this.apiUrl).subscribe({
-            next: (data) => {
-                this.subjects.set(data);
-                this.isLoading.set(false);
-            },
-            error: () => this.isLoading.set(false)
-        });
-  }
+  //       this.http.get<SubjectsModel[]>(this.apiUrl).subscribe({
+  //           next: (data) => {
+  //               this.subjects.set(data);
+  //               this.isLoading.set(false);
+  //           },
+  //           error: () => this.isLoading.set(false)
+  //       });
+  // }
+  loadSubjects(): Observable<SubjectsModel[]> {
+      return this.http.get<SubjectsModel[]>(`${this.apiUrl}`);
+    }
 }

@@ -1,0 +1,106 @@
+<div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>
+                <span class="modal-icon">{{icon}}</span>
+                {{title}}
+            </h3>
+            <button class="close-btn" (click)="closeModal()">×</button>
+        </div>
+        
+        <div class="modal-body">
+            <!-- Loading State -->
+            @if(isLoading()) {
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <span>Loading...</span>
+                </div>
+            }
+            
+            <!-- Error State -->
+            @if(error() && !isLoading()) {
+                <div class="error-state">
+                    <span class="error-icon">⚠️</span>
+                    <p>{{error()}}</p>
+                    <button class="btn-retry" (click)="retryLoading()">
+                        <span class="btn-icon">↻</span>
+                        Retry
+                    </button>
+                </div>
+            }
+            
+            <!-- Content -->
+            @if(!isLoading() && !error()) {
+                <!-- Search Box -->
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        [placeholder]="searchPlaceholder"
+                        [(ngModel)]="searchTerm"
+                        (input)="filterItems()"
+                    >
+                    @if(searchTerm){
+                    <button class="clear-search" (click)="clearSearch()">×</button>
+                    }
+                </div>
+                
+                <!-- Items List -->
+                @if(filteredItems().length > 0){
+                    <div class="items-list">
+                        @for(item of filteredItems(); track item.id){
+                        <div class="item-row" (click)="selectItem(item)" [class.selected]="selectedItem?.id === item.id">
+                            <div class="item-icon">{{getItemIconValue(item)}}</div>
+                            <div class="item-info">
+                                <span class="item-name">{{getItemDisplayValue(item)}}</span>
+                                @if(getItemSubtitleValue(item)){
+                                <span class="item-subtitle">{{getItemSubtitleValue(item)}}</span>
+                                }
+                            </div>
+                            @if(selectedItem?.id === item.id){
+                            <span class="selected-indicator">✓</span>
+                            }
+                        </div>
+                        }
+                    </div>
+                } @else {
+                    <div class="no-results">
+                        <span class="no-results-icon">🔍</span>
+                        @if(searchTerm){
+                            <p>{{noResultsMessage}} "{{searchTerm}}"</p>
+                        } @else {
+                            <p>{{emptyStateMessage}}</p>
+                        }
+                    </div>
+                }
+            }
+            
+            <!-- Selected Item Preview -->
+            @if(selectedItem && !isLoading() && !error()){
+            <div class="selected-preview">
+                <h4>Selected</h4>
+                <div class="preview-card">
+                    <div class="preview-header">
+                        <span class="preview-icon">{{getItemIconValue(selectedItem)}}</span>
+                        <div class="preview-info">
+                            <span class="preview-name">{{getItemDisplayValue(selectedItem)}}</span>
+                            @if(getItemSubtitleValue(selectedItem)){
+                            <span class="preview-subtitle">{{getItemSubtitleValue(selectedItem)}}</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        
+        <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+            <button class="btn btn-primary" (click)="addSelectedItem()" [disabled]="!selectedItem">
+                <span class="btn-icon">✓</span>
+                Select
+            </button>
+        </div>
+    </div>
+</div>

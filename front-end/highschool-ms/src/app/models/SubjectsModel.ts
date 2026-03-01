@@ -1,129 +1,131 @@
+import Grades from "./Grades"
+
 export interface SubjectsModel{
     id: number,
     name: string,
-    code: string,
-    grade: number,
-    chapters: number,
-    tests: number,
-    assignments: number,
-    exams: number;
-    department: string;
+    grade?: Grades
+    // code: string,
+    // grade: number,
+    // chapters: number,
+    // tests: number,
+    // assignments: number,
+    // exams: number;
+    // department: string;
 }
 
 export const subjects: SubjectsModel[] = [
     {
-        name: 'English', grade: 8, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'English',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Maths', grade: 8, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Maths',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Natural Sciences', grade: 8, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Natural Sciences',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Social Sciences', grade: 8, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Social Sciences',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'English', grade: 9, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'English',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Maths', grade: 9, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Maths',
+        id: 0
     },
     {
-        name: 'Natural Sciences', grade: 9, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Natural Sciences',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Social Sciences', grade: 9, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Social Sciences',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'English', grade: 10, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'English',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Maths', grade: 10, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Maths',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Physics', grade: 10, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Physics',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Life Sciences', grade: 10, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Life Sciences',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Geograpgy', grade: 10, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Geograpgy',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'English', grade: 11, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'English',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Maths', grade: 11, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Maths',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Physics', grade: 11, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Physics',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Life Sciences', grade: 11, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Life Sciences',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Geograpgy', grade: 11, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Geograpgy',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'English', grade: 12, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'English',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Maths', grade: 12, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Maths',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Physics', grade: 12, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Physics',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Life Sciences', grade: 12, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Life Sciences',
+        id: 0,
+        grade: undefined
     },
     {
-        name: 'Geograpgy', grade: 12, chapters: 4, tests: 4, assignments: 2, exams: 2,
-        id: 0, code: "",
-        department: ""
+        name: 'Geograpgy',
+        id: 0,
+        grade: undefined
     },
 ]

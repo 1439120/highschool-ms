@@ -44,10 +44,10 @@ export class Subjects extends Datamodel<SubjectsModel> {
     }])
     this.searchByItems_.set(['name'])
     this.filterBy_.set('grade')
-    const uniqueGrades: string[] = [
-      ...new Set(subjects.map(c => c.grade.toString()))
-    ];
-    this.filterByItems_.set(uniqueGrades);
+    // const uniqueGrades: string[] = [
+    //   ...new Set(subjects.map(c => c.grade?.toString()))
+    // ];
+    // this.filterByItems_.set(uniqueGrades);
   }
 
 }

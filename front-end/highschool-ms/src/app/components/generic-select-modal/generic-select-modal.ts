@@ -31,7 +31,8 @@ export class GenericSelectModal<T extends SelectableItem> implements OnInit {
     @Input() getItemSubtitle?: (item: T) => string; // Optional function to get subtitle
     @Input() filterFunction?: (item: T, term: string) => boolean; // Custom filter function
 
-    searchTerm: string = '';
+    // searchTerm: string = '';
+    searchTerm = signal<string>('');
     selectedItem: T | null = null;
     items = signal<T[]>([]);
     isLoading = signal<boolean>(false);
@@ -40,11 +41,12 @@ export class GenericSelectModal<T extends SelectableItem> implements OnInit {
     // Filtered items based on search
     filteredItems = computed(() => {
         const items = this.items();
-        if (!this.searchTerm.trim()) {
+        // console.log("search term: ", this.searchTerm())
+        if (!this.searchTerm().trim()) {
             return items;
         }
         
-        const term = this.searchTerm.toLowerCase();
+        const term = this.searchTerm().toLowerCase();
         
         // Use custom filter if provided
         if (this.filterFunction) {
@@ -94,10 +96,12 @@ export class GenericSelectModal<T extends SelectableItem> implements OnInit {
 
     filterItems() {
         // Computed property automatically updates
+        // console.log("what to do", this.searchTerm())
+        // this.filteredItems()
     }
 
     clearSearch() {
-        this.searchTerm = '';
+        this.searchTerm.set('');
     }
 
     selectItem(item: T) {

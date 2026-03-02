@@ -41,7 +41,7 @@
                         [(ngModel)]="searchTerm"
                         (input)="filterItems()"
                     >
-                    @if(searchTerm){
+                    @if(searchTerm()){
                     <button class="clear-search" (click)="clearSearch()">×</button>
                     }
                 </div>
@@ -67,8 +67,8 @@
                 } @else {
                     <div class="no-results">
                         <span class="no-results-icon">🔍</span>
-                        @if(searchTerm){
-                            <p>{{noResultsMessage}} "{{searchTerm}}"</p>
+                        @if(searchTerm()){
+                            <p>{{noResultsMessage}} "{{searchTerm()}}"</p>
                         } @else {
                             <p>{{emptyStateMessage}}</p>
                         }

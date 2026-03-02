@@ -107,6 +107,10 @@ export class ClassDetails {
     
   }
 
+  getSubjectSubtitle(subject: SubjectsModel){
+    return subject.grade?.name || '';
+  }
+
   getOccupancyPercentage(): number {
     if (!this.classroom().maximumOccupants || !this.classroom().registeredStudents) return 0;
     return Math.round((this.classroom().registeredStudents / this.classroom().maximumOccupants) * 100);
@@ -174,7 +178,13 @@ export class ClassDetails {
   }
 
   async loadSubjects(): Promise<SubjectsModel[]>{
-    return await this.subjectService.loadSubjects().toPromise() ?? [];
+    console.log("grade", this.classroom().grade.id)
+    return await this.subjectService.loadSubjects(this.classroom().grade.id).toPromise() ?? [];
+  }
+  searchSubjects(subject: SubjectsModel, searchTerm: string): boolean{
+    // console.log(`${subject.name} - ${searchTerm}`)
+    if(subject.name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())) return true;
+    return false;
   }
 
   onSubjectedSelected(classroom: SubjectsModel) {

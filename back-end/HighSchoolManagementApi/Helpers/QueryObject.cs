@@ -14,5 +14,6 @@ namespace HighSchoolManagementApi.Helpers
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 20;
         public string? Type { get; set; }
+        public int Grade { get; set; } = 0;
     }
 }

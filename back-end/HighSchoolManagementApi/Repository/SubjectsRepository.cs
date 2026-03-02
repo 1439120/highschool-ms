@@ -7,6 +7,7 @@ using HighSchoolManagementApi.Models;
 using HighSchoolManagementApi.Dtos.Subjects;
 using Microsoft.EntityFrameworkCore;
 using HighSchoolManagementApi.Interfaces;
+using HighSchoolManagementApi.Helpers;
 
 namespace HighSchoolManagementApi.Repository
 {
@@ -17,10 +18,13 @@ namespace HighSchoolManagementApi.Repository
         {
             _context = context;
         }
-        public async Task<List<Subjects>> GetAllAsync()
+        public async Task<List<Subjects>> GetAllAsync(QueryObject query)
         {
-            var subjects = await _context.Subjects.Include(c => c.Grade).ToListAsync();
-            return subjects;
+            var subjects = _context.Subjects.AsQueryable();
+            if(query.Grade != 0) subjects = subjects.Where(s => s.GradeId == query.Grade);
+            if(!string.IsNullOrWhiteSpace(query.Name)) subjects = subjects.Where(s => s.Name.ToLower().Contains(query.Name.ToLower()));
+            // var subjects = await _context.subjects.Include(c => c.Grade).ToListAsync();
+            return await subjects.Include(c => c.Grade).ToListAsync();
         }
         public async Task<Subjects?> GetByIdAsync(int id)
         {

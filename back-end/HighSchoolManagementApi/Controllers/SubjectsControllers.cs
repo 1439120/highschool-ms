@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using HighSchoolManagementApi.Dtos.Subjects;
 using HighSchoolManagementApi.Mappers;
 using HighSchoolManagementApi.Interfaces;
+using HighSchoolManagementApi.Helpers;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -23,9 +24,9 @@ namespace HighSchoolManagementApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSubjects(){
+        public async Task<IActionResult> GetSubjects([FromQuery] QueryObject query){
             if(!ModelState.IsValid) return BadRequest(ModelState);
-            var subjects = await _subjectRepo.GetAllAsync();
+            var subjects = await _subjectRepo.GetAllAsync(query);
             if(subjects == null) return NotFound();
 
             var subjectsDto = subjects.Select(x => x.ToSubjectsDTO());

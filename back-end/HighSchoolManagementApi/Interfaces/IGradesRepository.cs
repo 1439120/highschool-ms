@@ -10,7 +10,7 @@ namespace HighSchoolManagementApi.Interfaces
     public interface IGradesRepository
     {
         Task<List<Grades>> GetAllAsync();
-        Task<Grades?> GetByIdAsync(int id); // If user not found it can be null
+        Task<Grades?> GetByIdAsync(int id);
         Task<Grades> CreateAsync(Grades gradesModel);
         Task<Grades?> UpdateAsync(int id, UpdateGradesDto gradesDto);
         Task<Grades?> DeleteAsync(int id);

@@ -26,7 +26,7 @@ namespace HighSchoolManagementApi.Mappers
             {
                 Id = subjectModel.Id,
                 Name = subjectModel.Name,
-                GradeId = subjectModel.GradeId,
+                Grade = subjectModel.Grade.ToGradesDto(),
             };
         }
     }

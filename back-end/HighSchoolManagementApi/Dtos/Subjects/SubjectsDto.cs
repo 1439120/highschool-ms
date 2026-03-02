@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HighSchoolManagementApi.Models;
+using HighSchoolManagementApi.Dtos.Grades;
 
 namespace HighSchoolManagementApi.Dtos.Subjects
 {
@@ -10,6 +11,6 @@ namespace HighSchoolManagementApi.Dtos.Subjects
     {
          public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public int? GradeId { get; set; }
+        public GradesDto? Grade { get; set; }
     }
 }

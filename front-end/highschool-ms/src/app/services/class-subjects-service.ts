@@ -29,4 +29,43 @@ export class ClassSubjectsService {
         }
       });
   }
+
+  assignSubject(classId: string, subject: SubjectsModel){
+    this.isLoading.set(true);
+    const payload = {
+      classId: parseInt(classId),
+      subjectId: subject.id
+    }
+    console.log("Payload: ", payload)
+    this.http
+      .post<SubjectsModel[]>(`${this.apiUrl}`, payload)
+      .subscribe({
+        next: (data) => {
+          console.log('class subjects has been added:', data);
+          this.classSubjects.update(subjects => [...subjects, subject]);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('There was an error', err);
+          this.isLoading.set(false);
+        }
+      });
+  }
+
+  unAssignSubject(classId: string, subjectID: number){
+    this.isLoading.set(true);
+    this.http
+      .delete<SubjectsModel[]>(`${this.apiUrl}/${classId}/${subjectID}`)
+      .subscribe({
+        next: (data) => {
+          console.log('class subjects has been added:', data);
+          this.loadClassSubjects(classId);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('There was an error', err);
+          this.isLoading.set(false);
+        }
+      });
+  }
 }

@@ -19,10 +19,6 @@ import { ClassSubjectsService } from '../../../services/class-subjects-service';
 /**
  * ** Over the ovierview boards
  * Add capacity - should be editable by admin
- * Add current period
- * ** subjects offered
- * make them scrollable from
- * must have an add button to add a new subject
  */
 
 @Component({
@@ -185,11 +181,17 @@ export class ClassDetails {
     return false;
   }
 
-  onSubjectedSelected(classroom: SubjectsModel) {
-        console.log('Selected classroom:', classroom);
+  onSubjectedSelected(subject: SubjectsModel) {
+        console.log('Selected Subject:', subject);
+        this.classSubjectsService.assignSubject(this.classroomId(), subject)
         this.showModal.set(false);
     }
-
+  
+  unAssignSubject(subjectId: number){
+    if(subjectId > 0){
+      this.classSubjectsService.unAssignSubject(this.classroomId(), subjectId)
+    }
+  }
   
 
   getTeacherForSubject(subject: string): string {

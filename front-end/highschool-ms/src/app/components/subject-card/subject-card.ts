@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, EventEmitter, input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-subject-card',
@@ -7,8 +7,11 @@ import { Component, input } from '@angular/core';
   styleUrl: './subject-card.scss',
 })
 export class SubjectCard {
+  @Output() removeCard = new EventEmitter<number>();
+
   subjectName = input<string>()
   addSubject = input<boolean>(false)
+  subjectId = input<number>()
 
   getSubjectIcon(subject: string | undefined): string {
     const icons: {[key: string]: string} = {
@@ -40,6 +43,6 @@ export class SubjectCard {
   }
 
   removeSubject(){
-    
+    this.removeCard.emit(this.subjectId())
   }
 }

@@ -158,10 +158,9 @@
               <app-subject-card [addSubject]="true" (click)="showModal.set(true)"/>
               @if(!classSubjectsService.isLoading()){
                 @for(subject of classSubjectsService.classSubjects(); track $index){
-                  <app-subject-card [subjectName]="subject.name"/>
+                  <app-subject-card [subjectName]="subject.name" [subjectId]="subject.id" (removeCard)="unAssignSubject($event)"/>
                 }
               }
-                
             </div>
           </section>
 

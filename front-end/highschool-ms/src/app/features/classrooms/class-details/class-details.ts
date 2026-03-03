@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, effect, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../../components/breadcrumb/breadcrumb';
@@ -14,6 +14,7 @@ import { SubjectCard } from '../../../components/subject-card/subject-card';
 import { GenericSelectModal } from '../../../components/generic-select-modal/generic-select-modal';
 import { SubjectsService } from '../../../services/subjects-service';
 import { SubjectsModel } from '../../../models/SubjectsModel';
+import { ClassSubjectsService } from '../../../services/class-subjects-service';
 
 /**
  * ** Over the ovierview boards
@@ -37,15 +38,6 @@ import { SubjectsModel } from '../../../models/SubjectsModel';
 export class ClassDetails {
  studentSearchQuery: string = '';
   filteredStudents: string[] = [];
-  // classData: any = null;
-  subjects_offered = [
-        'english',
-        'maths',
-        'natural sciences',
-        'social sciences',
-        'life orientation'
-      ]
-  // breadCrumb!: BreadcrumbModel[];
   breadCrumb = signal<BreadcrumbModel[]>([]);
   testGrade = signal<Grades>({
     id: 2,
@@ -90,13 +82,19 @@ export class ClassDetails {
     }
     return ""
   })
-  
-  constructor(private route: ActivatedRoute, private service: ClassroomService, private subjectService: SubjectsService) {
+  classSubjectsService = inject(ClassSubjectsService)
+  constructor(
+    private route: ActivatedRoute, 
+    private service: ClassroomService,
+    private subjectService: SubjectsService,
+    // classSubjectsService: ClassSubjectsService,
+  ) {
     this.route.params.subscribe(params => {
       const classId = params['id'];
       this.classroomId.set(classId);
       if(classId){
         this.service.getClassroomById(classId);
+        this.classSubjectsService.loadClassSubjects(classId);
         // this.breadCrumb.set([{name: 'Classes', url:'/classes'},{name: `${this.classroom().name}`, url:''}])
       }
     });

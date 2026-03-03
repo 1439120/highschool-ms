@@ -156,47 +156,12 @@
             
             <div class="subjects-grid">
               <app-subject-card [addSubject]="true" (click)="showModal.set(true)"/>
-              @for(subject of subjects_offered; track $index){
-                <!-- <div class="subject-card">
-                    <div class="subject-header">
-                    <div class="subject-icon">{{getSubjectIcon(subject)}}</div>
-                    <div class="subject-details">
-                        <h3 class="subject-name">{{formatSubjectName(subject)}}</h3>
-                        <div class="subject-meta">
-                        <span class="meta-item">
-                            <span class="meta-icon">👨‍🏫</span>
-                            {{getTeacherForSubject(subject)}}
-                        </span>
-                        <span class="meta-item">
-                            <span class="meta-icon">⏰</span>
-                            5 periods/week
-                        </span>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="subject-stats">
-                    <div class="stat-item">
-                        <span class="stat-label">Class Average</span>
-                        <span class="stat-value">{{getRandomScore(70, 90)}}%</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Top Student</span>
-                        <span class="stat-value">{{getRandomStudent()}}</span>
-                    </div>
-                    </div>
-                    <div class="subject-actions">
-                    <button class="btn btn-outline">
-                        <span class="btn-icon">📊</span>
-                        View Results
-                    </button>
-                    <button class="btn btn-outline">
-                        <span class="btn-icon">📝</span>
-                        Assignments
-                    </button>
-                    </div>
-                </div> -->
-                <app-subject-card [subjectName]="subject"/>
+              @if(!classSubjectsService.isLoading()){
+                @for(subject of classSubjectsService.classSubjects(); track $index){
+                  <app-subject-card [subjectName]="subject.name"/>
+                }
               }
+                
             </div>
           </section>
 

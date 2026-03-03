@@ -46,8 +46,12 @@ namespace HighSchoolManagementApi.Data
                 .HasForeignKey(u => u.LearnerClassroomId)     // ← IMPORTANT: you need this FK on Users!
                 .OnDelete(DeleteBehavior.Restrict);     // or Cascade / SetNull depending on business rule
 
+            // Composite keys for my many 2 many relations
             modelBuilder.Entity<UserClasses>()
                 .HasKey(uc => new { uc.UsersId, uc.ClassId });
+
+            modelBuilder.Entity<ClassSubjects>()
+                .HasKey(uc => new { uc.ClassId, uc.SubjectId });
 
             List<IdentityRole > roles = new List<IdentityRole >
             {
@@ -75,5 +79,6 @@ namespace HighSchoolManagementApi.Data
         public DbSet<LessonPlan> LessonPlan { get; set; }
         public DbSet<SubjectPlan> SubjectPlan { get; set; }
         public DbSet<UserClasses> UserClasses { get; set; }
+        public DbSet<ClassSubjects> ClassSubjects { get; set; }
     }
 }

@@ -86,6 +86,21 @@ namespace HighSchoolManagementApi.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("HighSchoolManagementApi.Models.ClassSubjects", b =>
+                {
+                    b.Property<int>("ClassId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ClassId", "SubjectId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("ClassSubjects");
+                });
+
             modelBuilder.Entity("HighSchoolManagementApi.Models.Classroom", b =>
                 {
                     b.Property<int>("Id")
@@ -498,6 +513,25 @@ namespace HighSchoolManagementApi.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("HighSchoolManagementApi.Models.ClassSubjects", b =>
+                {
+                    b.HasOne("HighSchoolManagementApi.Models.Classroom", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HighSchoolManagementApi.Models.Subjects", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("HighSchoolManagementApi.Models.Classroom", b =>

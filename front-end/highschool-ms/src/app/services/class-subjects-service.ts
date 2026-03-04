@@ -59,7 +59,9 @@ export class ClassSubjectsService {
       .subscribe({
         next: (data) => {
           console.log('class subjects has been added:', data);
-          this.loadClassSubjects(classId);
+          this.classSubjects.update(subject => 
+            subject.filter(c => c.id !== subjectID)
+          );
           this.isLoading.set(false);
         },
         error: (err) => {

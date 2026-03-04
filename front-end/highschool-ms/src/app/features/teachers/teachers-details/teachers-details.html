@@ -59,7 +59,7 @@
               <app-classes-card [addClass]="true" (click)="openAddClassModal()"/>
               
               <!-- Existing Class Cards -->
-               @if(!userClassService.isLoading()){
+               <!-- @if(!userClassService.isLoading()){ -->
                 @for(classItem of userClassService.assignedClasses(); track $index; let parentIndex = $index) {
                     <app-classes-card 
                         [classroom]="classItem.class"
@@ -67,7 +67,7 @@
                         (unassignThisClass)="removeClass($event)"
                     />
                 }
-               }
+               <!-- } -->
               
             </div>
           </section>
@@ -90,7 +90,7 @@
               <div class="stat-card">
                 <span class="stat-icon">📅</span>
                 <div class="stat-content">
-                  <span class="stat-value">3 Years</span>
+                  <span class="stat-value">{{calculateExperince(teacher().dateJoined)}} Years</span>
                   <span class="stat-label">Years of Service</span>
                 </div>
               </div>

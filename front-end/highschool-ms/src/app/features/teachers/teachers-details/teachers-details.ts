@@ -4,14 +4,11 @@ import { Breadcrumb } from '../../../components/breadcrumb/breadcrumb';
 import BreadcrumbModel from '../../../models/BreadcrumbModel';
 import { FormsModule } from '@angular/forms';
 import { PersonalInformationSection } from '../../../components/personal-information-section/personal-information-section';
-
 import { Subject } from 'rxjs';
 import { UsersService } from '../../../services/users-service';
 import { DetailsHeader } from '../../../components/details-header/details-header';
 import { ClassesCard } from '../../../components/classes-card/classes-card';
-import { Classroom, UserClassesModel } from '../../../models/Classroom';
-import Grades from '../../../models/Grades';
-import { User } from '../../../models/User';
+import { Classroom } from '../../../models/Classroom';
 import { AddclassModal } from '../../../components/addclass-modal/addclass-modal';
 import { UserClassesService } from '../../../services/user-classes-service';
 
@@ -74,14 +71,27 @@ export class TeachersDetails {
     })
   }
 
+  calculateExperince(dateJoined: Date | null): number {
+      if (!dateJoined) return 0;
+      const today = new Date();
+      const birth = new Date(dateJoined);
+      let experience = today.getFullYear() - birth.getFullYear();
+      const monthDiff = today.getMonth() - birth.getMonth();
+      
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+        experience--;
+      }
+      return experience;
+    }
+
   // loadTeacherData() {
   //   this.assigned_classes.set(['Grade 12 A', 'Grade 12 B', 'Grade 10 A'])
   //   this.assigned_subjects.set(['maths', 'physics', 'life science'])
   // }
 
   openAddClassModal() {
-        this.showAddClassModal.set(true);
-    }
+    this.showAddClassModal.set(true);
+  }
 
     closeAddClassModal() {
         this.showAddClassModal.set(false);
@@ -129,26 +139,26 @@ export class TeachersDetails {
   
 
   addSubjectToClass(classIndex: number) {
-  this.showAddSubjectInput = classIndex;
-  this.newSubject = '';
-  
-  // Focus the input field after view updates
-  setTimeout(() => {
-    const input = document.querySelector('.subject-input') as HTMLInputElement;
-    if (input) input.focus();
-  }, 100);
-}
-
-confirmAddSubject(classIndex: number) {
-  if (this.newSubject.trim()) {
-    if (!this.assigned_subjects()) {
-      this.assigned_subjects.set([]);
-    }
-    this.assigned_subjects.update(value => [...value, this.newSubject.trim()]);
+    this.showAddSubjectInput = classIndex;
     this.newSubject = '';
-    this.hideAddSubjectInput();
+    
+    // Focus the input field after view updates
+    setTimeout(() => {
+      const input = document.querySelector('.subject-input') as HTMLInputElement;
+      if (input) input.focus();
+    }, 100);
   }
-}
+
+  confirmAddSubject(classIndex: number) {
+    if (this.newSubject.trim()) {
+      if (!this.assigned_subjects()) {
+        this.assigned_subjects.set([]);
+      }
+      this.assigned_subjects.update(value => [...value, this.newSubject.trim()]);
+      this.newSubject = '';
+      this.hideAddSubjectInput();
+    }
+  }
 
   hideAddSubjectInput() {
     this.showAddSubjectInput = null;

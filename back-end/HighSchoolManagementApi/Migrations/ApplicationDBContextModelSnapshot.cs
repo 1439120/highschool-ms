@@ -278,6 +278,26 @@ namespace HighSchoolManagementApi.Migrations
                     b.ToTable("Subjects");
                 });
 
+            modelBuilder.Entity("HighSchoolManagementApi.Models.UserAssignedSubjects", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SubjectId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserId", "ClassId", "SubjectId");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("UserAssignedSubjects");
+                });
+
             modelBuilder.Entity("HighSchoolManagementApi.Models.UserClasses", b =>
                 {
                     b.Property<int>("UsersId")
@@ -617,6 +637,33 @@ namespace HighSchoolManagementApi.Migrations
                         .HasForeignKey("GradeId");
 
                     b.Navigation("Grade");
+                });
+
+            modelBuilder.Entity("HighSchoolManagementApi.Models.UserAssignedSubjects", b =>
+                {
+                    b.HasOne("HighSchoolManagementApi.Models.Classroom", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HighSchoolManagementApi.Models.Subjects", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HighSchoolManagementApi.Models.Users", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("Subject");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("HighSchoolManagementApi.Models.UserClasses", b =>

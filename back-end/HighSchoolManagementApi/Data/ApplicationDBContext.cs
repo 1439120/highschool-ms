@@ -52,6 +52,9 @@ namespace HighSchoolManagementApi.Data
 
             modelBuilder.Entity<ClassSubjects>()
                 .HasKey(uc => new { uc.ClassId, uc.SubjectId });
+            
+            modelBuilder.Entity<UserAssignedSubjects>()
+                .HasKey(uc => new { uc.UserId, uc.ClassId, uc.SubjectId });
 
             List<IdentityRole > roles = new List<IdentityRole >
             {
@@ -80,5 +83,6 @@ namespace HighSchoolManagementApi.Data
         public DbSet<SubjectPlan> SubjectPlan { get; set; }
         public DbSet<UserClasses> UserClasses { get; set; }
         public DbSet<ClassSubjects> ClassSubjects { get; set; }
+        public DbSet<UserAssignedSubjects> UserAssignedSubjects { get; set; }
     }
 }

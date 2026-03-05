@@ -5,6 +5,7 @@ export interface User{
     phone: string,
     email: string,
     role: string,
+    title: string,
     address: string,
     dateOfBirth: Date | null;
     dateJoined: Date | null;

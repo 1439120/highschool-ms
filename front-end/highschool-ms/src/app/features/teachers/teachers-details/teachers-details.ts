@@ -40,7 +40,8 @@ export class TeachersDetails {
         address: '',
         dateOfBirth: null,
         dateJoined: null,
-        type: 'teacher'
+        type: 'teacher',
+        title: ''
       }
     }
   })

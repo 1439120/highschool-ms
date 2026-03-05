@@ -134,7 +134,8 @@ export class LessonPlanDetails implements OnInit {
       address: '',
       dateOfBirth: null,
       dateJoined: null,
-      type: ''
+      type: '',
+      title: ''
     },
     {
       id: 2, name: 'John Smith', email: 'j.smith@school.edu', role: 'teacher',
@@ -143,7 +144,8 @@ export class LessonPlanDetails implements OnInit {
       address: '',
       dateOfBirth: null,
       dateJoined: null,
-      type: ''
+      type: '',
+      title: ''
     },
     {
       id: 3, name: 'Priya Patel', email: 'p.patel@school.edu', role: 'teacher',
@@ -152,7 +154,8 @@ export class LessonPlanDetails implements OnInit {
       address: '',
       dateOfBirth: null,
       dateJoined: null,
-      type: ''
+      type: '',
+      title: ''
     },
     {
       id: 4, name: 'Maria Garcia', email: 'm.garcia@school.edu', role: 'teacher',
@@ -161,7 +164,8 @@ export class LessonPlanDetails implements OnInit {
       address: '',
       dateOfBirth: null,
       dateJoined: null,
-      type: ''
+      type: '',
+      title: ''
     }
   ];
 

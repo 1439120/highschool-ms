@@ -26,7 +26,8 @@ export class PersonalInformationSection {
     address: '',
     dateOfBirth: null,
     dateJoined: null,
-    type: ''
+    type: '',
+    title: ''
   });
   private route = inject(ActivatedRoute)
   private router = inject(Router)
@@ -40,7 +41,8 @@ export class PersonalInformationSection {
     address: '',
     dateOfBirth: null,
     dateJoined: null,
-    type: ''
+    type: '',
+    title: ''
   });
 
   // this to check if the addbutton was clicked
@@ -91,7 +93,8 @@ export class PersonalInformationSection {
       address: user?.address || '',
       dateOfBirth: user?.dateOfBirth || null,
       dateJoined: user?.dateJoined || null,
-      type: ''
+      type: '',
+      title: ''
     })
   }
   formatDateForInput(date: Date | string | null): string {

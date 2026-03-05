@@ -50,7 +50,8 @@ export class ClassDetails {
     address: '',
     dateOfBirth: null,
     dateJoined: null,
-    type: ''
+    type: '',
+    title: ''
   })
   showModal = signal<boolean>(false)
 

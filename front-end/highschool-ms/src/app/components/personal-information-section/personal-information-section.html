@@ -15,52 +15,83 @@
 
         <div class="info-grid">
             <!-- Name Fields -->
-            <div class="info-item">
+             <div class="info-item">
+                @if(onEditMode()){
+                    <div class="form-group-grid">
+                        <label for="user_title" class="info-label">Title</label>
+                        <select 
+                            name="user_title" 
+                            id="user_title" 
+                            class="form-input"
+                            [(ngModel)]="editPersonalInformation().title">
+                                <option value="Mr">Mr</option>
+                                <option value="Mrs">Mrs</option>
+                                <option value="Miss">Miss</option>
+                                <option value="Ms">Ms</option>
+                                <option value="Mr">Dr</option>
+                                <option value="Prof">Prof</option>
+                        </select>
+                    </div>
+                }
+                @else {
+                   <span class="info-label">Title</span>
+                    <span class="info-value">{{personalInformation().title}}</span> 
+                }
+             </div>
+            
             @if(onEditMode()){
-                <div class="form-group-grid">
-                <div class="form-group">
-                    <label for="teacher_name" class="form-label">First Name</label>
-                    <input 
-                    class="form-input" 
-                    type="text" 
-                    id="teacher_name" 
-                    [(ngModel)]="editPersonalInformation().name"
-                    placeholder="Enter first name"
-                    >
+                <div class="info-item">
+                    <div class="form-group-grid">
+                        <div class="form-group">
+                            <label for="teacher_name" class="info-label">First Name</label>
+                            <input 
+                            class="form-input" 
+                            type="text" 
+                            id="teacher_name" 
+                            [(ngModel)]="editPersonalInformation().name"
+                            placeholder="Enter first name"
+                            >
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="teacher_surname" class="form-label">Last Name</label>
-                    <input 
-                    class="form-input" 
-                    type="text" 
-                    id="teacher_surname" 
-                    [(ngModel)]="editPersonalInformation().surname"
-                    placeholder="Enter last name"
-                    >
-                </div>
+                <div class="info-item">
+                    <div class="form-group-grid">
+                        <div class="form-group">
+                            <label for="teacher_surname" class="info-label">Last Name</label>
+                            <input 
+                            class="form-input" 
+                            type="text" 
+                            id="teacher_surname" 
+                            [(ngModel)]="editPersonalInformation().surname"
+                            placeholder="Enter last name"
+                            >
+                        </div>
+                    </div>
                 </div>
             }
             @else {
-                <span class="info-label">Full Name</span>
-                <span class="info-value">{{personalInformation().name}} {{personalInformation().surname}}</span>
+                <div class="info-item">
+                    <span class="info-label">Full Name</span>
+                    <span class="info-value">{{personalInformation().name}} {{personalInformation().surname}}</span>
+                </div>
             }
-            </div>
+
             
             <!-- Date of Birth -->
             <div class="info-item">
-            <span class="info-label">Date of Birth</span>
-            @if(onEditMode()){
-                <input 
-                class="form-input" 
-                type="date" 
-                id="dateOfBirth" 
-                [(ngModel)]="editPersonalInformation().dateOfBirth"
-                [value]="(editPersonalInformation().dateOfBirth)"
-                >
-            }
-            @else {
-                <span class="info-value">{{formatDate(personalInformation().dateOfBirth)}}</span>
-            }
+                <span class="info-label">Date of Birth</span>
+                @if(onEditMode()){
+                    <input 
+                    class="form-input" 
+                    type="date" 
+                    id="dateOfBirth" 
+                    [(ngModel)]="editPersonalInformation().dateOfBirth"
+                    [value]="(editPersonalInformation().dateOfBirth)"
+                    >
+                }
+                @else {
+                    <span class="info-value">{{formatDate(personalInformation().dateOfBirth)}}</span>
+                }
             </div>
             
             <!-- Age (Read-only) -->

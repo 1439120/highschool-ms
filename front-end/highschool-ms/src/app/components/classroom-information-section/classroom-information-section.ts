@@ -32,7 +32,8 @@ export class ClassroomInformationSection {
     address: '',
     dateOfBirth: null,
     dateJoined: null,
-    type: ''
+    type: '',
+    title: ''
   }
   classroom = signal<Classroom>({
     id: 0,

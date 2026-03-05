@@ -26,7 +26,8 @@ export class ClassroomService {
     address: '',
     dateOfBirth: null,
     dateJoined: null,
-    type: ''
+    type: '',
+    title: ''
   }
   classrooms = signal<Classroom[]>([])
   currentClassroom = signal<Classroom>({

@@ -245,7 +245,8 @@ export class SubjectPlanDetails {
           address: '',
           dateOfBirth: null,
           dateJoined: null,
-          type: ''
+          type: '',
+          title: ''
         },
         grade: this.grades[0],
         createdOn: new Date(),
@@ -259,14 +260,15 @@ export class SubjectPlanDetails {
         name: 'Grade 8 Mathematics Annual Plan',
         subject: this.subjects[0],
         createdById: {
-          id: 1, name: 'Alice Mbatha', 
+          id: 1, name: 'Alice Mbatha',
           email: 'a.mbatha@school.edu', role: 'teacher',
           surname: '',
           phone: '',
           address: '',
           dateOfBirth: null,
           dateJoined: null,
-          type: ''
+          type: '',
+          title: ''
         },
         grade: this.grades[0],
         createdOn: new Date(2024, 0, 15),

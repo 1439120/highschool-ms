@@ -25,6 +25,7 @@ namespace HighSchoolManagementApi.Mappers
                 DateOfBirth = usersModel.DateOfBirth,
                 DateJoined = usersModel.DateJoined,
                 Role = usersModel.Role,
+                Title = usersModel.Title,
                 Type = usersModel.Type,
                 LearnerClassroomId = usersModel.LearnerClassroomId
             };
@@ -39,6 +40,7 @@ namespace HighSchoolManagementApi.Mappers
                 Phone = createDto.Phone,
                 Email = createDto.Email,
                 Role = createDto.Role,
+                Title = createDto.Title,
                 Address = createDto.Address,
                 DateOfBirth = createDto.DateOfBirth,
                 DateJoined = createDto.DateJoined,

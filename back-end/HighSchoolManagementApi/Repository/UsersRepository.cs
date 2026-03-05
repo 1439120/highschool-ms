@@ -68,6 +68,7 @@ namespace HighSchoolManagementApi.Repository
             usersModel.Phone = usersDto.Phone;
             usersModel.Email = usersDto.Email;
             usersModel.Role = usersDto.Role;
+            usersModel.Title = usersDto.Title;
             usersModel.Address = usersDto.Address;
             usersModel.DateOfBirth = usersDto.DateOfBirth;
             usersModel.DateJoined = usersDto.DateJoined;

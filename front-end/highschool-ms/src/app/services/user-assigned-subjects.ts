@@ -42,4 +42,23 @@ export class UserAssignedSubjects {
       });
   }
 
+  unAssignUserSubjects(userId: string, classId: string, subjectId: string){
+
+    this.isLoading.set(true);
+    this.http
+      .delete<SubjectsModel[]>(`${this.apiUrl}/${userId}/${classId}/${subjectId}`)
+      .subscribe({
+        next: (data) => {
+          console.log('user subjects added:', data);
+          // this.subjects.set(data);
+          this.reloadSubjects.update(v => v + 1);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Information failed to load', err);
+          this.isLoading.set(false);
+        }
+      });
+  }
+
 }

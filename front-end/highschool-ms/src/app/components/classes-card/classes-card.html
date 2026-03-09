@@ -28,7 +28,7 @@
             @for(subject of assignedSubjects(); track $index) {
             <span class="subject-chip">
                 {{subject.name}}
-                <button class="chip-remove" (click)="removeSubjectFromClass()" title="Remove Subject">
+                <button class="chip-remove" (click)="removeSubjectFromClass(subject.id)" title="Remove Subject">
                     ×
                 </button>
             </span>

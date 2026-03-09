@@ -22,10 +22,6 @@ export class ClassesCard {
   // showSubjectsModal = signal<boolean>(false);
 
   constructor(private subjectService: UserAssignedSubjects){
-    // // effect(()=>{
-    //   subjectService.getUserClassSubjects(this.recordId(), this.classroom()?.id.toString() || '')
-    //   this.assignedSubjects.set(subjectService.subjects())
-    // // })
     effect(() => {
       this.subjectService.reloadSubjects();
       const teacherId = this.recordId();
@@ -49,8 +45,11 @@ export class ClassesCard {
     console.log(this.classroom())
     this.onClickSelect.emit(this.classroom());
   }
-  removeSubjectFromClass(){
-    
+  removeSubjectFromClass(subjectId: number){
+    this.subjectService.unAssignUserSubjects(
+      this.recordId(),
+      this.classroom()?.id.toString() || '', 
+      subjectId.toString())
   }
   confirmAddSubject(){
 

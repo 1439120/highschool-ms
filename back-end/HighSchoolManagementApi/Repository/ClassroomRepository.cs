@@ -14,9 +14,11 @@ namespace HighSchoolManagementApi.Repository
     public class ClassroomRepository: IClassroomRepository
     {
         private readonly ApplicationDBContext _context;
-        public ClassroomRepository(ApplicationDBContext context)
+        private readonly IUserClassesRepository _userClassRepo;
+        public ClassroomRepository(ApplicationDBContext context, IUserClassesRepository userClassRepo)
         {
             _context = context;
+            _userClassRepo = userClassRepo;
         }
         public async Task<List<Classroom>> GetAllAsync()
         {
@@ -24,6 +26,18 @@ namespace HighSchoolManagementApi.Repository
                 .Include(c => c.Grade)
                 .Include(c => c.ClassTeacher)
                 .ToListAsync();
+        }
+        public async Task<List<Classroom>> GetAvaialbleForTeacherAsync(int teacherId)
+        {
+            var userClasses = await _userClassRepo.GetUserClasses(teacherId);
+            var assignedClassIds = userClasses
+                .Select(x => x.Class.Id)
+                .ToList();
+
+            var classes = _context.Classroom.AsQueryable();
+            classes = classes.Where(s => !assignedClassIds.Contains(s.Id));
+            
+            return await classes.ToListAsync();
         }
         public async Task<Classroom> GetByIdAsync(int id)
         {

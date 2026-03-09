@@ -30,6 +30,16 @@ namespace HighSchoolManagementApi.Controllers
 
             return Ok(classroomDto);
         }
+        [HttpGet("/available/teacher/{teacherId:int}")]
+        public async Task<IActionResult> GetAvailableClassForTeacher([FromRoute] int teacherId)
+        {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+            var classrooms = await _classroomRepo.GetAvaialbleForTeacherAsync(teacherId);
+
+            var classroomDto = classrooms.Select(s => s.ToClassroomDto());
+
+            return Ok(classroomDto);
+        }
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetBydId([FromRoute] int id)
         {

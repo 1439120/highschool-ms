@@ -18,7 +18,7 @@ export class UserClassesService {
       .get<UserClassesModel[]>(`${this.apiUrl}/${userId}`)
       .subscribe({
         next: (data) => {
-          console.log('Information added:', data);
+          console.log('user classes added:', data);
           this.assignedClasses.set(data);
           this.isLoading.set(false);
         },

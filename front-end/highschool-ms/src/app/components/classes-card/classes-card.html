@@ -27,30 +27,13 @@
         <div class="chips-container">
             @for(subject of assignedSubjects(); track $index) {
             <span class="subject-chip">
-                {{subject}}
+                {{subject.name}}
                 <button class="chip-remove" (click)="removeSubjectFromClass()" title="Remove Subject">
                     ×
                 </button>
             </span>
             }
         </div>
-    
-        <!-- Add Subject Input (Hidden by default) -->
-        @if(showAddSubjectInput()){
-        <div class="add-subject-input">
-            <input 
-                type="text" 
-                class="subject-input" 
-                [(ngModel)]="newSubject"
-                placeholder="Enter subject name..."
-                (keyup.enter)="confirmAddSubject()"
-                #subjectInput
-                (blur)="hideAddSubjectInput()"
-            >
-            <button class="btn-confirm" (click)="confirmAddSubject()">✓</button>
-            <button class="btn-cancel" (click)="hideAddSubjectInput()">×</button>
-        </div>
-        }
     </div>
     
     <!-- Class Stats -->

@@ -11,12 +11,16 @@ import { ClassesCard } from '../../../components/classes-card/classes-card';
 import { Classroom } from '../../../models/Classroom';
 import { AddclassModal } from '../../../components/addclass-modal/addclass-modal';
 import { UserClassesService } from '../../../services/user-classes-service';
+import { GenericSelectModal } from '../../../components/generic-select-modal/generic-select-modal';
+import { SubjectsModel } from '../../../models/SubjectsModel';
+import { SubjectsService } from '../../../services/subjects-service';
+import { UserAssignedSubjects } from '../../../services/user-assigned-subjects';
 
 @Component({
   selector: 'app-teachers-details',
   imports: [
     Breadcrumb, FormsModule, PersonalInformationSection, ClassesCard,
-    DetailsHeader, AddclassModal
+    DetailsHeader, AddclassModal, GenericSelectModal
   ],
   templateUrl: './teachers-details.html',
   styleUrl: './teachers-details.scss',
@@ -55,9 +59,13 @@ export class TeachersDetails {
   showAddClassModal = signal(false);
   userClassService = inject(UserClassesService)
   private destroy$ = new Subject<void>();
+  addSubjectModal = signal<boolean>(false);
+  selectedClassroom:Classroom | null = null;
 
   constructor(
-    private service: UsersService
+    private service: UsersService,
+    private subjectService: SubjectsService,
+    private assingSubjectService: UserAssignedSubjects,
   ) {
     this.route.paramMap.subscribe(params => {
       let Id = params.get('id')
@@ -85,28 +93,37 @@ export class TeachersDetails {
       return experience;
     }
 
-  // loadTeacherData() {
-  //   this.assigned_classes.set(['Grade 12 A', 'Grade 12 B', 'Grade 10 A'])
-  //   this.assigned_subjects.set(['maths', 'physics', 'life science'])
-  // }
+  openSubjectsModal(classroom: Classroom){
+    this.selectedClassroom = classroom;
+    this.addSubjectModal.set(true);
+  }
+  async loadSubjects(): Promise<SubjectsModel[]>{
+    return await this.subjectService.loadSubjects(this.selectedClassroom?.grade.id || 0).toPromise() ?? [];
+  }
+  assignSubjectToClass(subject: SubjectsModel){
+    this.assingSubjectService.assignUserSubjects(
+      this.teacherId() || '', 
+      this.selectedClassroom?.id.toString() || '', 
+      subject.id.toString())
+  }
 
   openAddClassModal() {
     this.showAddClassModal.set(true);
   }
 
-    closeAddClassModal() {
-        this.showAddClassModal.set(false);
-    }
+  closeAddClassModal() {
+      this.showAddClassModal.set(false);
+  }
 
-    onClassSelected(selectedClass: Classroom) {
-        console.log('Selected class:', selectedClass);
-        // Add the selected class to your list
-        var teacherId = this.teacherId()
-        if(teacherId){
-          this.userClassService.assignToClass(teacherId, selectedClass);
-        }
-        this.closeAddClassModal();
-    }
+  onClassSelected(selectedClass: Classroom) {
+      console.log('Selected class:', selectedClass);
+      // Add the selected class to your list
+      var teacherId = this.teacherId()
+      if(teacherId){
+        this.userClassService.assignToClass(teacherId, selectedClass);
+      }
+      this.closeAddClassModal();
+  }
 
   removeClass(classroom: Classroom) {
     if (confirm('Are you sure you want to remove this class?')) {

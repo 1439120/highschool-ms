@@ -18,8 +18,11 @@ namespace HighSchoolManagementApi.Repository
         }
         public async Task<List<UserClasses>> GetUserClasses(int userId)
         {
-            var userClasses = _context.UserClasses
-            .Include(c => c.Class).AsQueryable();
+            var userClasses = _context
+                .UserClasses
+                .Include(c => c.Class)
+                .Include(c => c.Class.Grade)
+                .AsQueryable();
             userClasses = userClasses.Where(s => s.UsersId == userId);
             return await userClasses.ToListAsync();
         }

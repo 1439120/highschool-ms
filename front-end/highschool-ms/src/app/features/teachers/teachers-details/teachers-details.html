@@ -64,7 +64,9 @@
                     <app-classes-card 
                         [classroom]="classItem.class"
                         [addClass]="false"
+                        [recordId]="teacher().id.toString()"
                         (unassignThisClass)="removeClass($event)"
+                        (onClickSelect)="openSubjectsModal($event)"
                     />
                 }
                <!-- } -->
@@ -78,6 +80,20 @@
                 (close)="closeAddClassModal()"
                 (classSelected)="onClassSelected($event)"
                 [teacherId]="teacherId()"
+            />
+          }
+          @if(addSubjectModal()){
+             <app-generic-select-modal
+                [title]="'Select Subject'"
+                [icon]="'🏫'"
+                [searchPlaceholder]="'Search subjects...'"
+                [noResultsMessage]="'No subject found'"
+                [emptyStateMessage]="'No subjects available'"
+                [displayField]="'name'"
+                [secondaryFields]="['grade', 'grade.name']"
+                (close)="addSubjectModal.set(false)"
+                [loadItems]="loadSubjects.bind(this)"
+                (itemSelected)="assignSubjectToClass($event)"
             />
           }
 

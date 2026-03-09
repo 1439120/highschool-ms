@@ -30,7 +30,7 @@ namespace HighSchoolManagementApi.Controllers
 
             return Ok(classroomDto);
         }
-        [HttpGet("/available/teacher/{teacherId:int}")]
+        [HttpGet("available/teacher/{teacherId:int}")]
         public async Task<IActionResult> GetAvailableClassForTeacher([FromRoute] int teacherId)
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);

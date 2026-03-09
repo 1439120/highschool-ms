@@ -73,12 +73,13 @@
           </section>
 
           <!-- Add Class Modal -->
-            @if(showAddClassModal()){
+          @if(showAddClassModal()){
             <app-addclass-modal
                 (close)="closeAddClassModal()"
                 (classSelected)="onClassSelected($event)"
+                [teacherId]="teacherId()"
             />
-            }
+          }
 
           <!-- Additional Information -->
           <section class="details-section">

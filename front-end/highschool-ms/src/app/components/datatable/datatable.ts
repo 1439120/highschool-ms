@@ -36,7 +36,7 @@ export class Datatable<T> implements OnInit {
   currentSort = signal('');
 
   getFieldValue(item: T, key: string): any {
-    console.log(`key: ${JSON.stringify(item)} - value: ${key}`);
+    // console.log(`key: ${JSON.stringify(item)} - value: ${key}`);
 
     if (['lastUpdatedOn','createdOn'].includes(key)) {
       const date = new Date((item as any)[key]);

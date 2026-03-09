@@ -55,6 +55,19 @@ export class ClassroomService {
         }
       });
   }
+  loadUserClassrooms(teacherId: string){
+    this.http
+      .get<Classroom[]>(`${this.apiUrl}/api/classroom/available/teacher/${teacherId}`)
+      .subscribe({
+        next: (data) => {
+          console.log('Classrooms loaded:', data);
+          this.classrooms.set(data);
+        },
+        error: (err) => {
+          console.error('Failed to load Classrooms', err);
+        }
+      });
+  }
   getClassroomById(Id: string){
     this.http
       .get<Classroom>(`${this.apiUrl}/api/classroom/${Id}`)

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, signal, computed, effect } from '@angular/core';
+import { Component, EventEmitter, Output, signal, computed, effect, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ClassroomService } from '../../services/classroom-service';
@@ -14,21 +14,29 @@ import { Classroom } from '../../models/Classroom';
 export class AddclassModal {
     @Output() close = new EventEmitter<void>();
     @Output() classSelected = new EventEmitter<Classroom>();
-
-    searchTerm: string = '';
+    teacherId = input<string | null>()
+    
+    searchTerm = signal<string>("");
     selectedClass: Classroom | null = null;
 
     constructor(private service: ClassroomService){
-        this.service.loadClassrooms();
+         effect(() => {
+            const id = this.teacherId();
+            if (id) {
+            this.service.loadUserClassrooms(id);
+            } else {
+            this.service.loadClassrooms();
+            }
+        });
     }
 
     // Filtered classes based on search
     filteredClasses = computed(() => {
-        if (!this.searchTerm.trim()) {
+        if (!this.searchTerm().trim()) {
             return this.service.classrooms();
         }
         
-        const term = this.searchTerm.toLowerCase();
+        const term = this.searchTerm().toLowerCase();
         return this.service.classrooms().filter(c => 
             c.name.toLowerCase().includes(term) ||
             c.classTeacher.name.toLowerCase().includes(term) ||
@@ -42,7 +50,7 @@ export class AddclassModal {
     }
 
     clearSearch() {
-        this.searchTerm = '';
+        this.searchTerm.set("");
     }
 
     selectClass(classItem: Classroom) {

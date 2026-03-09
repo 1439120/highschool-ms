@@ -21,7 +21,7 @@ export class Teachers extends Datamodel<User>{
     // react to signal changes
     effect(()=>{
       this.records_.set(this.teacherService.teachers());
-      console.log(this.records_());
+      // console.log(this.records_());
       const uniqueRoles: string[] = [
         ...new Set(this.records_().map(c => c.role))
       ];

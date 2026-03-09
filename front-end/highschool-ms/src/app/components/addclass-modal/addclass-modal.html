@@ -19,7 +19,7 @@
                     [(ngModel)]="searchTerm"
                     (input)="filterClasses()"
                 >
-                @if(searchTerm){
+                @if(searchTerm()){
                 <button class="clear-search" (click)="clearSearch()">×</button>
                 }
             </div>
@@ -56,7 +56,7 @@
                 } @else {
                     <div class="no-results">
                         <span class="no-results-icon">🔍</span>
-                        <p>No classes found matching "{{searchTerm}}"</p>
+                        <p>No classes found matching "{{searchTerm()}}"</p>
                     </div>
                 }
             </div>

@@ -35,7 +35,10 @@ namespace HighSchoolManagementApi.Repository
                 .ToList();
 
             var classes = _context.Classroom.AsQueryable();
-            classes = classes.Where(s => !assignedClassIds.Contains(s.Id));
+            classes = classes
+                .Where(s => !assignedClassIds.Contains(s.Id))
+                .Include(c => c.Grade)
+                .Include(c => c.ClassTeacher);
             
             return await classes.ToListAsync();
         }

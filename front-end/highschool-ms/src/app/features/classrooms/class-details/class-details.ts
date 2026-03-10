@@ -15,6 +15,7 @@ import { ClassSubjectsService } from '../../../services/class-subjects-service';
 import { StudentsRoster } from '../../../components/students-roster/students-roster';
 import { UsersService } from '../../../services/users-service';
 import { User } from '../../../models/User';
+import { ContentResourceCard } from '../../../components/content-resource-card/content-resource-card';
 
 /**
  * I need the learner results table to be displayed on the roster
@@ -24,7 +25,7 @@ import { User } from '../../../models/User';
   selector: 'app-class-details',
   imports: [
     FormsModule, Breadcrumb, DetailsHeader, ClassroomInformationSection,
-    SubjectCard, GenericSelectModal, StudentsRoster
+    SubjectCard, GenericSelectModal, StudentsRoster, ContentResourceCard
   ],
   templateUrl: './class-details.html',
   styleUrl: './class-details.scss',

@@ -801,73 +801,6 @@ $shadow-color: rgba(0, 0, 0, 0.08);
   }
 }
 
-// Resources Grid
-.resources-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-}
-
-.resource-card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 20px;
-  background: white;
-  border: 1px solid $border-color;
-  border-radius: 12px;
-  transition: all 0.3s;
-  
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  }
-  
-  .resource-icon {
-    font-size: 32px;
-    opacity: 0.8;
-  }
-  
-  .resource-content {
-    flex: 1;
-    
-    .resource-title {
-      margin: 0 0 4px 0;
-      font-size: 14px;
-      font-weight: 600;
-      color: $dark-color;
-    }
-    
-    .resource-count {
-      font-size: 12px;
-      color: #718096;
-    }
-  }
-  
-  .resource-action {
-    width: 36px;
-    height: 36px;
-    border: none;
-    border-radius: 8px;
-    background: $light-color;
-    color: $dark-color;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-    
-    .btn-icon {
-      font-size: 16px;
-    }
-    
-    &:hover {
-      background: $primary-color;
-      color: white;
-    }
-  }
-}
-
 // Buttons
 .btn {
   display: inline-flex;
@@ -1005,8 +938,7 @@ $shadow-color: rgba(0, 0, 0, 0.08);
   .contact-cards,
   .subjects-grid,
   .stats-grid,
-  .info-cards,
-  .resources-grid {
+  .info-cards {
     grid-template-columns: 1fr;
   }
   
@@ -1069,7 +1001,6 @@ $shadow-color: rgba(0, 0, 0, 0.08);
 .students-table-container,
 .subjects-grid,
 .schedule-container,
-.performance-stats,
-.resources-grid {
+.performance-stats {
   max-width: 100%;
 }

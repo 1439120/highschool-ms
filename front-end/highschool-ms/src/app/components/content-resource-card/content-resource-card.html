@@ -1,0 +1,17 @@
+<div class="resources-grid">
+    @for(resource of resources; track $index){
+        <div class="resource-card">
+            <div class="resource-icon">{{resource.icon}}</div>
+            <div class="resource-content">
+                <h4 class="resource-title">{{resource.name}}</h4>
+                <span class="resource-count">{{resource.total}} {{resource.status}}</span>
+            </div>
+            <button class="resource-action">
+                <span class="btn-icon">⏏️</span>
+            </button>
+            <button class="resource-action">
+                <span class="btn-icon">💾</span>
+            </button>
+        </div>
+    }
+</div>

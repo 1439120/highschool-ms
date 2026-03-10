@@ -11,6 +11,7 @@ export interface Classroom{
     numberOfSubjecteds: number,
     academicYear: number,
     roomNumber: string
+    learners: User[],
     [key: string]: any
 }
 

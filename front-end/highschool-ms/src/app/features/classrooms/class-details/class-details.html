@@ -10,7 +10,7 @@
       <div class="class-stats">
         <div class="stat-badge occupancy">
           <span class="stat-icon">👥</span>
-          <span class="stat-text">{{classroom().registeredStudents}}/{{classroom().maximumOccupants}}</span>
+          <span class="stat-text">{{classroom().learners.length}}/{{classroom().maximumOccupants}}</span>
         </div>
         <div class="stat-badge subjects">
           <span class="stat-icon">📚</span>
@@ -20,7 +20,7 @@
       <button class="btn btn-secondary">
         <span class="btn-icon">📊</span> Class Report
       </button>
-      <button class="btn btn-primary">
+      <button class="btn btn-primary" (click)="showStudentsModal.set(true)">
         <span class="btn-icon">➕</span> Add Student
       </button>
     </div>
@@ -40,7 +40,7 @@
           <!-- Class Overview -->
           <app-classroom-information-section [classroomId]="classroomId()"/>
           <!-- Students Roster -->
-          <app-students-roster/>
+          <app-students-roster [learners]="classroom().learners"/>
           
           <!-- Subjects Offered -->
           <section class="details-section">
@@ -73,7 +73,22 @@
                 (itemSelected)="onSubjectedSelected($event)"
                 (close)="showModal.set(false)"
             />
-        }
+          }
+          @if(showStudentsModal()) {
+            <app-generic-select-modal
+                [title]="'Select Student'"
+                [icon]="'👨‍🎓'"
+                [searchPlaceholder]="'Search students...'"
+                [noResultsMessage]="'No student found'"
+                [emptyStateMessage]="'Not available'"
+                [displayField]="'surname'"
+                [subtitleField]="'name'"
+                [filterFunction]="filterStudents"
+                [loadItems]="loadStudents.bind(this)"
+                (itemSelected)="onLearnerSelected($event)"
+                (close)="showStudentsModal.set(false)"
+            />
+          }
 
 
           <!-- Class Schedule -->

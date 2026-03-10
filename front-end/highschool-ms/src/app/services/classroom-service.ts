@@ -39,7 +39,8 @@ export class ClassroomService {
     registeredStudents: 0,
     numberOfSubjecteds: 0,
     academicYear: 0,
-    roomNumber: ''
+    roomNumber: '',
+    learners: []
   })
 
   loadClassrooms(){

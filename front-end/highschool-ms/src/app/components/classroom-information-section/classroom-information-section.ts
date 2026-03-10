@@ -44,7 +44,8 @@ export class ClassroomInformationSection {
     registeredStudents: 0,
     numberOfSubjecteds: 0,
     academicYear: 2025,
-    roomNumber: ''
+    roomNumber: '',
+    learners: []
   })
   onEditMode = signal(false);
   overviewForm: FormGroup;

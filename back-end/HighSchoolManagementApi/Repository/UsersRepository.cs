@@ -83,7 +83,7 @@ namespace HighSchoolManagementApi.Repository
         {
             var usersModel = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             if(usersModel == null) return null;
-            usersModel.LearnerClassroomId = usersDto.LearnerClassroomId;
+            usersModel.LearnerClassroomId = classId;
             await _context.SaveChangesAsync();
             return usersModel;
         }

@@ -5,18 +5,20 @@ import { ActivatedRoute } from '@angular/router';
 import { Breadcrumb } from '../../../components/breadcrumb/breadcrumb';
 import BreadcrumbModel from '../../../models/BreadcrumbModel';
 import { DetailsHeader } from '../../../components/details-header/details-header';
-import Grades from '../../../models/Grades';
 import { ClassroomInformationSection } from '../../../components/classroom-information-section/classroom-information-section';
 import { ClassroomService } from '../../../services/classroom-service';
-import { Classroom } from '../../../models/Classroom';
-import { User } from '../../../models/User';
 import { SubjectCard } from '../../../components/subject-card/subject-card';
 import { GenericSelectModal } from '../../../components/generic-select-modal/generic-select-modal';
 import { SubjectsService } from '../../../services/subjects-service';
 import { SubjectsModel } from '../../../models/SubjectsModel';
 import { ClassSubjectsService } from '../../../services/class-subjects-service';
 import { StudentsRoster } from '../../../components/students-roster/students-roster';
+import { UsersService } from '../../../services/users-service';
+import { User } from '../../../models/User';
 
+/**
+ * I need the learner results table to be displayed on the roster
+ */
 
 @Component({
   selector: 'app-class-details',
@@ -29,10 +31,11 @@ import { StudentsRoster } from '../../../components/students-roster/students-ros
   providers: [DatePipe]
 })
 export class ClassDetails {
- studentSearchQuery: string = '';
+  studentSearchQuery: string = '';
   filteredStudents: string[] = [];
   breadCrumb = signal<BreadcrumbModel[]>([]);
   showModal = signal<boolean>(false)
+  showStudentsModal = signal<boolean>(false)
 
   classroomId = signal<string>("")
   classroom = computed(()=>{
@@ -47,10 +50,12 @@ export class ClassDetails {
     return ""
   })
   classSubjectsService = inject(ClassSubjectsService)
+
   constructor(
     private route: ActivatedRoute, 
     private service: ClassroomService,
     private subjectService: SubjectsService,
+    private studentService: UsersService
   ) {
     this.route.params.subscribe(params => {
       const classId = params['id'];
@@ -79,18 +84,6 @@ export class ClassDetails {
   getAcademicYear(): string {
     const currentYear = new Date().getFullYear();
     return `${currentYear}`;
-  }
-
-  filterStudents() {
-    // if (!this.studentSearchQuery.trim()) {
-    //   this.filteredStudents = [...this.classData.regsitered_students];
-    //   return;
-    // }
-    
-    // const query = this.studentSearchQuery.toLowerCase();
-    // this.filteredStudents = this.classData.regsitered_students.filter((student: string) =>
-    //   student.toLowerCase().includes(query)
-    // );
   }
 
   sortStudents(field: string) {
@@ -158,7 +151,24 @@ export class ClassDetails {
       this.classSubjectsService.unAssignSubject(this.classroomId(), subjectId)
     }
   }
+  // students modal select functions
+  async loadStudents(): Promise<User[]>{
+    return await this.studentService.loadStudentsAsync().toPromise() || [];
+  }
   
+  filterStudents(student: User, searchTerm: string): boolean{
+    // console.log(`${student.name} ${student.surname} - ${searchTerm}`)
+    if(
+      student.name.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase()) ||
+      student.surname.toLocaleLowerCase().includes(searchTerm.toLocaleLowerCase())
+    ) return true;
+    return false;
+  }
+
+  onLearnerSelected(leaner: User){
+    this.studentService.assignUserToClass(leaner, this.classroomId())
+    this.showStudentsModal.set(false);
+  }
 
   getTeacherForSubject(subject: string): string {
     const teachers: {[key: string]: string} = {

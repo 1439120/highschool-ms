@@ -61,7 +61,7 @@ namespace HighSchoolManagementApi.Controllers
             return Ok(usersModel.ToUsersDto());
         }
         [HttpPut]
-        [Route("{id:int}")]
+        [Route("{id:int}/{classId:int}")]
         public async Task<IActionResult> AssignToClass([FromRoute] int id, [FromRoute] int classId)
         {
             if(!ModelState.IsValid) return BadRequest(ModelState);

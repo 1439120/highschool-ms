@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { Datatable } from '../datatable/datatable';
 import Tableheader from '../../models/Tableheader';
+import { User } from '../../models/User';
 
 @Component({
   selector: 'app-students-roster',
@@ -25,4 +26,5 @@ export class StudentsRoster {
       {
         'col': 'address', 'groupBy': true, displaName: 'Address'
       }])
+  learners = input<User[]>([])
 }

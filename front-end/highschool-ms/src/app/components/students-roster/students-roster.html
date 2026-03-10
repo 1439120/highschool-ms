@@ -7,11 +7,14 @@
         <span class="student-count">({{ 0}} students)</span>
         </h2>
     </div>
-
     <app-datatable 
         [title]="'Students'" 
         [showHeader]="false"
         [showFilterBar]="false"
         [columns]="headers()"
+        [originalUsers]="learners()"
+        [showActions]="false"
+        [searchByItems]="['name','surname']"
         />
+
 </section>

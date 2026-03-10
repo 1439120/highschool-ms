@@ -41,7 +41,7 @@ export class UsersService {
       });
   }
 
-  loadStudents(): void {
+  loadStudents(): User[] {
     const headers = this.authHeaders
     this.isLoading.set(true);
     this.http
@@ -51,13 +51,21 @@ export class UsersService {
           console.log('Students loaded:', data);
           this.students.set(data);
           this.isLoading.set(false);
+          return data
         },
         error: (err) => {
           console.error('Failed to load teachers', err);
           this.isLoading.set(false);
+          return []
         }
       });
+      return this.students()
   }
+  loadStudentsAsync(): Observable<User[]> {
+      return this.http.get<User[]>(`${this.apiUrl}/api/users`,{
+        params: {Type: 'student'}
+      });
+    }
 
   addUser(teacher: User, userType: string){
     const headers = this.authHeaders
@@ -70,6 +78,21 @@ export class UsersService {
         next: (data) => {
           console.log(`Teacher added `, data);
           this.currentUser.set(data);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Failed to load teachers', err);
+          this.isLoading.set(false);
+        }
+      });
+  }
+
+  assignUserToClass(user: User, classId: string){
+    const headers = this.authHeaders
+    this.isLoading.set(true);
+    this.http.put<User>(`${this.apiUrl}/api/users/${user.id}/${classId}`, { headers })
+      .subscribe({
+        next: (data) => {
           this.isLoading.set(false);
         },
         error: (err) => {

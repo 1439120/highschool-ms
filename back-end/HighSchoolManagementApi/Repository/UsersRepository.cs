@@ -78,5 +78,14 @@ namespace HighSchoolManagementApi.Repository
             await _context.SaveChangesAsync();
             return usersModel;
         }
+
+        public async Task<Users?> AssignToClass(int id, int classId)
+        {
+            var usersModel = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if(usersModel == null) return null;
+            usersModel.LearnerClassroomId = usersDto.LearnerClassroomId;
+            await _context.SaveChangesAsync();
+            return usersModel;
+        }
     }
 }

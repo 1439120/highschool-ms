@@ -40,7 +40,7 @@ namespace HighSchoolManagementApi.Repository
             lessonPlanModel.Name = lessonPlan.Name;
             lessonPlanModel.GradesId = lessonPlan.GradesId;
             lessonPlanModel.ResponsibleId = lessonPlan.ResponsibleId;
-            lessonPlanModel.LastUpdatedOn = lessonPlan.LastUpdatedOn;
+            lessonPlanModel.LastUpdatedOn = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
             return lessonPlanModel;

@@ -60,6 +60,16 @@ namespace HighSchoolManagementApi.Controllers
 
             return Ok(usersModel.ToUsersDto());
         }
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<IActionResult> AssignToClass([FromRoute] int id, [FromRoute] int classId)
+        {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+            var usersModel = await _usersRepo.AssignToClass(id, classId);
+            if(usersModel == null) return NotFound("User Not Found");
+
+            return Ok(usersModel.ToUsersDto());
+        }
 
         [HttpDelete]
         [Route("{id:int}")]

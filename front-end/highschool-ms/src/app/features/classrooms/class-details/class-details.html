@@ -14,7 +14,7 @@
         </div>
         <div class="stat-badge subjects">
           <span class="stat-icon">📚</span>
-          <span class="stat-text">{{ 0}} Subjects</span>
+          <span class="stat-text">{{ classSubjectsService.classSubjects().length}} Subjects</span>
         </div>
       </div>
       <button class="btn btn-secondary">
@@ -31,7 +31,7 @@
     <div class="details-content-wrapper">
       <!-- Class Profile Card -->
       <div class="profile-card">
-        <app-details-header [grade]="testGrade()" [displayName]="classroom().name" [classTeacher]="classTeacher()"
+        <app-details-header [grade]="classroom().grade" [displayName]="classroom().name" [classTeacher]="classTeacher()"
           [occupancy]="getOccupancyPercentage()"  
         />
 
@@ -40,112 +40,8 @@
           <!-- Class Overview -->
           <app-classroom-information-section [classroomId]="classroomId()"/>
           <!-- Students Roster -->
-          <section class="details-section">
-            <!-- <div class="section-header">
-              <h2 class="section-title">
-                <span class="section-icon">👥</span>
-                Students Roster
-                <span class="student-count">({{classData?.regsitered_students?.length || 0}} students)</span>
-              </h2>
-              <div class="section-actions">
-                <div class="search-box">
-                  <span class="search-icon">🔍</span>
-                  <input 
-                    type="text" 
-                    class="search-input" 
-                    placeholder="Search students..."
-                    [(ngModel)]="studentSearchQuery"
-                    (input)="filterStudents()"
-                  >
-                </div>
-              </div>
-            </div> -->
-            
-            <!-- Students Table -->
-            <!-- <div class="students-table-container">
-              <table class="students-table">
-                <thead>
-                  <tr>
-                    <th class="name-col">
-                      <div class="th-content">
-                        Student Name
-                        <span class="sort-indicator" (click)="sortStudents('name')">▼</span>
-                      </div>
-                    </th>
-                    <th class="id-col">Student ID</th>
-                    <th class="performance-col">Average Score</th>
-                    <th class="attendance-col">Attendance</th>
-                    <th class="actions-col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    @for(student of filteredStudents; track $index){
-                        <tr>
-                            <td class="name-col">
-                            <div class="student-info">
-                                <div class="student-avatar">
-                                {{getStudentInitials(student)}}
-                                </div>
-                                <div class="student-details">
-                                <span class="student-name">{{student}}</span>
-                                <span class="student-email">{{generateStudentEmail(student)}}</span>
-                                </div>
-                            </div>
-                            </td>
-                            <td class="id-col">
-                            <span class="student-id">{{generateStudentId(student)}}</span>
-                            </td>
-                            <td class="performance-col">
-                            <div class="performance-indicator">
-                                <div class="score-bar" [style.width]="getRandomScore() + '%'">
-                                <span class="score-value">{{getRandomScore()}}%</span>
-                                </div>
-                            </div>
-                            </td>
-                            <td class="attendance-col">
-                            <div class="attendance-badge" [class]="getAttendanceClass()">
-                                {{getRandomAttendance()}}%
-                            </div>
-                            </td>
-                            <td class="actions-col">
-                            <div class="action-buttons">
-                                <button class="action-btn view-btn" title="View Profile">
-                                <span class="btn-icon">👁️</span>
-                                </button>
-                                <button class="action-btn edit-btn" title="Edit">
-                                <span class="btn-icon">✏️</span>
-                                </button>
-                            </div>
-                            </td>
-                        </tr>
-                    }
-                  
-                </tbody>
-              </table>
-              
-              @if(!filteredStudents.length){
-                <div class="no-students">
-                    <div class="no-students-content">
-                    <span class="no-students-icon">😕</span>
-                    <h3>No students found</h3>
-                    
-                    @if(studentSearchQuery){
-                        <p>
-                            No students match your search "{{studentSearchQuery}}"
-                        </p>
-                    }
-                    @if(!studentSearchQuery &&  (!classData?.regsitered_students || classData.regsitered_students.length === 0)){
-                        <p>
-                            This class has no students yet. Click "Add Student" to enroll students.
-                        </p>
-                    }
-                    </div>
-                </div>
-              }
-
-            </div> -->
-          </section>
-
+          <app-students-roster/>
+          
           <!-- Subjects Offered -->
           <section class="details-section">
             <h2 class="section-title">

@@ -24,6 +24,8 @@ export class Datatable<T> implements OnInit {
   filterByItems = input<string[]>([])
   showActions = input(true)
   addButton = input(false)
+  showHeader = input(true)
+  showFilterBar = input(true)
 
 
   // Filter and search properties

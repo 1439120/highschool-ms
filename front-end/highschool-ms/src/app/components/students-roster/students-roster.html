@@ -1,0 +1,17 @@
+<!-- Students Roster -->
+<section class="details-section">
+    <div class="section-header">
+        <h2 class="section-title">
+        <span class="section-icon">👥</span>
+        Students Roster
+        <span class="student-count">({{ 0}} students)</span>
+        </h2>
+    </div>
+
+    <app-datatable 
+        [title]="'Students'" 
+        [showHeader]="false"
+        [showFilterBar]="false"
+        [columns]="headers()"
+        />
+</section>

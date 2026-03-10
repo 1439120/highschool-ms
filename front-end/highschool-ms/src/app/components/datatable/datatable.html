@@ -1,6 +1,8 @@
 <div class="datatable-container">
   <!-- Header with title and actions -->
-  <app-breadcrumb [titleBreadcrumbs]="breadcrumbTitle()" [addButton]="addButton()"/>
+   @if(showHeader()){
+    <app-breadcrumb [titleBreadcrumbs]="breadcrumbTitle()" [addButton]="addButton()"/>
+   }
 
   <!-- Search and Filter Controls -->
   <div class="table-controls">
@@ -10,11 +12,13 @@
     />
 
     <!-- Filter Bar -->
-    <app-filterbar [selectedRole]="selectedRole()" (filterChange)="onFilterChange($event)"
-      [sortBy]="sortBy()" (orderByChange)="getSortByFromChild($event)" 
-      [showingUsers]="paginatedUsers().length" [totalUsers]="originalUsers().length"
-      [filterBy]="filterBy()" [filterByItems]="filterByItems()"
-      />
+     @if(showFilterBar()){
+      <app-filterbar [selectedRole]="selectedRole()" (filterChange)="onFilterChange($event)"
+        [sortBy]="sortBy()" (orderByChange)="getSortByFromChild($event)" 
+        [showingUsers]="paginatedUsers().length" [totalUsers]="originalUsers().length"
+        [filterBy]="filterBy()" [filterByItems]="filterByItems()"
+        />
+     }
 
   <!-- Table Wrapper -->
   <div class="table-wrapper">

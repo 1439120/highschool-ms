@@ -15,17 +15,14 @@ import { GenericSelectModal } from '../../../components/generic-select-modal/gen
 import { SubjectsService } from '../../../services/subjects-service';
 import { SubjectsModel } from '../../../models/SubjectsModel';
 import { ClassSubjectsService } from '../../../services/class-subjects-service';
+import { StudentsRoster } from '../../../components/students-roster/students-roster';
 
-/**
- * ** Over the ovierview boards
- * Add capacity - should be editable by admin
- */
 
 @Component({
   selector: 'app-class-details',
   imports: [
     FormsModule, Breadcrumb, DetailsHeader, ClassroomInformationSection,
-    SubjectCard, GenericSelectModal
+    SubjectCard, GenericSelectModal, StudentsRoster
   ],
   templateUrl: './class-details.html',
   styleUrl: './class-details.scss',
@@ -35,46 +32,16 @@ export class ClassDetails {
  studentSearchQuery: string = '';
   filteredStudents: string[] = [];
   breadCrumb = signal<BreadcrumbModel[]>([]);
-  testGrade = signal<Grades>({
-    id: 2,
-    name: 'Grade 8',
-    gradeNumber: 8
-  });
-  testUser = signal<User>({
-    id: 0,
-    name: '',
-    surname: '',
-    phone: '',
-    email: '',
-    role: '',
-    address: '',
-    dateOfBirth: null,
-    dateJoined: null,
-    type: '',
-    title: ''
-  })
   showModal = signal<boolean>(false)
 
   classroomId = signal<string>("")
   classroom = computed(()=>{
-    let data = this.service.currentClassroom()
-    let defaultClass: Classroom = {
-      id: 0,
-      name: '',
-      grade: this.testGrade(),
-      classTeacher: this.testUser(),
-      maximumOccupants: 0,
-      registeredStudents: 0,
-      numberOfSubjecteds: 0,
-      academicYear: 0,
-      roomNumber: ''
-    }
-    return data != null && data.id.toString() == this.classroomId() ? data : defaultClass;
+    return this.service.currentClassroom();
   })
   classTeacher = computed(()=>{
     let classr = this.classroom()
     if(classr){
-      let classTeacher = this.classroom().classTeacher;
+      let classTeacher = classr.classTeacher;
       return classTeacher.name + ' ' + classTeacher.surname;
     }
     return ""
@@ -84,7 +51,6 @@ export class ClassDetails {
     private route: ActivatedRoute, 
     private service: ClassroomService,
     private subjectService: SubjectsService,
-    // classSubjectsService: ClassSubjectsService,
   ) {
     this.route.params.subscribe(params => {
       const classId = params['id'];
@@ -92,7 +58,6 @@ export class ClassDetails {
       if(classId){
         this.service.getClassroomById(classId);
         this.classSubjectsService.loadClassSubjects(classId);
-        // this.breadCrumb.set([{name: 'Classes', url:'/classes'},{name: `${this.classroom().name}`, url:''}])
       }
     });
     effect(()=>{

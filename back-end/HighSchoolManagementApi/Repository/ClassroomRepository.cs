@@ -66,8 +66,8 @@ namespace HighSchoolManagementApi.Repository
             updateClassroom.ClassTeacherId = classroomDto.ClassTeacher;
             updateClassroom.MaximumOccupants = classroomDto.MaximumOccupants;
             updateClassroom.RegisteredStudents = classroomDto.RegisteredStudents;
-            updateClassroom.academicYear = classroomDto.academicYear;
-            updateClassroom.roomNumber = classroomDto.roomNumber;
+            updateClassroom.AcademicYear = classroomDto.AcademicYear;
+            updateClassroom.RoomNumber = classroomDto.RoomNumber;
 
             await _context.SaveChangesAsync();
             return updateClassroom;

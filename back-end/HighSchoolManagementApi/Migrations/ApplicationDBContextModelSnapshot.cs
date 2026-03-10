@@ -109,6 +109,9 @@ namespace HighSchoolManagementApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AcademicYear")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("ClassTeacherId")
                         .HasColumnType("integer");
 
@@ -128,10 +131,7 @@ namespace HighSchoolManagementApi.Migrations
                     b.Property<int>("RegisteredStudents")
                         .HasColumnType("integer");
 
-                    b.Property<int>("academicYear")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("roomNumber")
+                    b.Property<string>("RoomNumber")
                         .IsRequired()
                         .HasColumnType("text");
 

@@ -16,7 +16,7 @@ namespace HighSchoolManagementApi.Dtos.Classroom
         public int? ClassTeacher { get; set; }
         public int MaximumOccupants { get; set; }
         public int RegisteredStudents { get; set; }
-        public int academicYear { get; set; }
-        public string roomNumber { get; set; } = string.Empty;
+        public int AcademicYear { get; set; }
+        public string RoomNumber { get; set; } = string.Empty;
     }
 }

@@ -23,8 +23,8 @@ namespace HighSchoolManagementApi.Mappers
                 RegisteredStudents = classromModel.RegisteredStudents,
                 CreatedOn = classromModel.CreatedOn,
                 Learners = classromModel.Learners.Select(c => c.ToUsersDto()).ToList(),
-                roomNumber = classromModel.roomNumber,
-                academicYear = classromModel.academicYear,
+                RoomNumber = classromModel.RoomNumber,
+                AcademicYear = classromModel.AcademicYear,
             };
         }
 
@@ -37,8 +37,8 @@ namespace HighSchoolManagementApi.Mappers
                 ClassTeacherId = classromModel.ClassTeacher,
                 MaximumOccupants = classromModel.MaximumOccupants,
                 RegisteredStudents = classromModel.RegisteredStudents,
-                roomNumber = classromModel.roomNumber,
-                academicYear = classromModel.academicYear,
+                RoomNumber = classromModel.RoomNumber,
+                AcademicYear = classromModel.AcademicYear,
             };
         }
     }

@@ -1,0 +1,265 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="header-title">
+        <span class="header-icon">📎</span>
+        <h2>{{title}}</h2>
+        @if(uploadedFiles().length > 0){
+          <span class="file-count-badge">{{uploadedFiles().length}} files</span>
+        }
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" (click)="closeModal()" title="Close">
+          <span class="close-icon">✕</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Upload Area -->
+    <div class="upload-area"
+         [class.dragging]="isDragging()"
+         [class.disabled]="!canAddMore()"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)">
+      
+      <input type="file" 
+             #fileInput
+             class="file-input"
+             [accept]="acceptedFileTypes.join(',')"
+             [multiple]="allowMultiple"
+             (change)="onFileSelected($event)"
+             [disabled]="!canAddMore()">
+      
+      <div class="upload-content">
+        @if(isDragging()){
+          <div class="drop-zone">
+            <span class="drop-icon">📥</span>
+            <span class="drop-text">Drop files here to upload</span>
+          </div>
+        } @else {
+          <span class="upload-icon">{{canAddMore() ? '📤' : '✓'}}</span>
+          <span class="upload-title">
+            {{canAddMore() ? 'Drag & drop files here' : 'Maximum files reached'}}
+          </span>
+          <span class="upload-subtitle">
+            @if(canAddMore()){
+              Supports: {{acceptedFileTypes.join(', ')}} (Max {{maxFileSize}}MB each)
+            } @else {
+              You've reached the maximum of {{maxFiles}} files
+            }
+          </span>
+          @if(canAddMore()){
+            <button class="btn-browse" (click)="fileInput.click()">
+              <span class="btn-icon">🔍</span>
+              Browse Files
+            </button>
+          }
+        }
+      </div>
+    </div>
+
+    <!-- Error Message -->
+    @if(error()){
+      <div class="error-message">
+        <span class="error-icon">⚠️</span>
+        <span>{{error()}}</span>
+        <button class="close-error" (click)="error.set(null)">✕</button>
+      </div>
+    }
+
+    <!-- Files Section -->
+    @if(uploadedFiles().length > 0){
+      <div class="files-section">
+        
+        <!-- Files Toolbar -->
+        <div class="files-toolbar">
+          <div class="toolbar-left">
+            <div class="file-stats">
+              <span class="stat-item">
+                <span class="stat-icon">📊</span>
+                Total: {{formattedTotalSize()}}
+              </span>
+              <span class="stat-item success">
+                <span class="stat-icon">✅</span>
+                {{completedCount()}} completed
+              </span>
+              @if(failedCount() > 0){
+                <span class="stat-item error">
+                  <span class="stat-icon">❌</span>
+                  {{failedCount()}} failed
+                </span>
+              }
+            </div>
+          </div>
+          
+          <div class="toolbar-right">
+            <!-- Search -->
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" 
+                     class="search-input" 
+                     placeholder="Search files..."
+                     [ngModel]="searchTerm()"
+                     (ngModelChange)="searchTerm.set($event)">
+              @if(searchTerm()){
+                <button class="clear-search" (click)="clearSearch()">✕</button>
+              }
+            </div>
+            
+            <!-- Tabs -->
+            <div class="view-tabs">
+              <button class="tab-btn" 
+                      [class.active]="selectedTab() === 'all'"
+                      (click)="setTab('all')">
+                All
+              </button>
+              <button class="tab-btn" 
+                      [class.active]="selectedTab() === 'uploading'"
+                      (click)="setTab('uploading')">
+                Uploading
+                @if(uploadingCount() > 0){
+                  <span class="tab-badge">{{uploadingCount()}}</span>
+                }
+              </button>
+              <button class="tab-btn" 
+                      [class.active]="selectedTab() === 'completed'"
+                      (click)="setTab('completed')">
+                Completed
+              </button>
+            </div>
+            
+            <!-- Clear all button -->
+            @if(uploadedFiles().length > 0 && !isUploading()){
+              <button class="btn-clear-all" (click)="clearAll()" title="Remove all files">
+                <span class="btn-icon">🗑️</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Files List -->
+        <div class="files-list">
+          @for(file of filteredFiles(); track file.id; let i = $index){
+            <div class="file-item" [class]="file.status">
+              
+              <!-- File Icon -->
+              <div class="file-icon" [class]="getFileColorClass(file.type)">
+                {{getFileIcon(file.type)}}
+              </div>
+              
+              <!-- File Info -->
+              <div class="file-info">
+                <div class="file-header">
+                  <span class="file-name">{{file.name}}</span>
+                  <span class="file-size">{{formatFileSize(file.size)}}</span>
+                </div>
+                
+                <div class="file-meta">
+                  <span class="file-type">{{file.type || 'Unknown'}}</span>
+                  @if(file.lastModified){
+                    <span class="file-date">{{formatDate(file.lastModified)}}</span>
+                  }
+                </div>
+                
+                <!-- Progress Bar -->
+                @if(file.status === 'uploading'){
+                  <div class="progress-container">
+                    <div class="progress-bar" [style.width.%]="file.progress">
+                      <span class="progress-text">{{file.progress}}%</span>
+                    </div>
+                  </div>
+                }
+                
+                <!-- Error Message -->
+                @if(file.errorMessage){
+                  <div class="file-error">
+                    <span class="error-icon">⚠️</span>
+                    {{file.errorMessage}}
+                  </div>
+                }
+              </div>
+              
+              <!-- File Actions -->
+              <div class="file-actions">
+                @if(file.status === 'pending' && !isUploading()){
+                  <button class="action-btn upload" (click)="uploadFiles([file])" title="Upload">
+                    <span class="btn-icon">📤</span>
+                  </button>
+                }
+                @if(file.status === 'error'){
+                  <button class="action-btn retry" (click)="retryFile(file)" title="Retry">
+                    <span class="btn-icon">↻</span>
+                  </button>
+                }
+                @if(file.status === 'success'){
+                  <a [href]="file.url" class="action-btn download" target="_blank" title="Download">
+                    <span class="btn-icon">📥</span>
+                  </a>
+                }
+                <button class="action-btn delete" (click)="removeFile(i)" title="Remove">
+                  <span class="btn-icon">🗑️</span>
+                </button>
+              </div>
+            </div>
+          } @empty {
+            <!-- Empty State -->
+            <div class="empty-files">
+              <span class="empty-icon">📄</span>
+              <h3>No files to display</h3>
+              <p>Drop files or click browse to get started</p>
+            </div>
+          }
+        </div>
+
+        <!-- Upload Progress Bar (Overall) -->
+        @if(isUploading()){
+          <div class="overall-progress">
+            <div class="progress-header">
+              <span class="progress-title">Uploading...</span>
+              <span class="progress-percent">{{uploadProgress() | number:'1.0-0'}}%</span>
+            </div>
+            <div class="progress-container large">
+              <div class="progress-bar" [style.width.%]="uploadProgress()"></div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <div class="footer-left">
+        @if(uploadedFiles().length > 0){
+          <span class="footer-hint">
+            {{completedCount()}} of {{uploadedFiles().length}} files uploaded
+          </span>
+        }
+      </div>
+      
+      <div class="footer-actions">
+        <button class="btn btn-secondary" (click)="closeModal()">
+          Cancel
+        </button>
+        
+        @if(!autoUpload && pendingFilesCount() > 0){
+          <button class="btn btn-primary" 
+                  (click)="startUpload()" 
+                  [disabled]="isUploading()">
+            <span class="btn-icon">📤</span>
+            Upload {{pendingFilesCount()}} files
+          </button>
+        }
+        
+        <button class="btn btn-success" 
+                (click)="confirmUpload()"
+                [disabled]="completedCount() === 0 || isUploading()">
+          <span class="btn-icon">✓</span>
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,7 +6,7 @@
                 <h4 class="resource-title">{{resource.name}}</h4>
                 <span class="resource-count">{{resource.total}} {{resource.status}}</span>
             </div>
-            <button class="resource-action">
+            <button class="resource-action" (click)="UploadFiles(resource.name)">
                 <span class="btn-icon">⏏️</span>
             </button>
             <button class="resource-action">

@@ -16,6 +16,8 @@ import { StudentsRoster } from '../../../components/students-roster/students-ros
 import { UsersService } from '../../../services/users-service';
 import { User } from '../../../models/User';
 import { ContentResourceCard } from '../../../components/content-resource-card/content-resource-card';
+import { DocumentUploadModal } from "../../../components/document-upload-modal/document-upload-modal";
+import { UploadedFile } from '../../../models/UploadFile';
 
 /**
  * I need the learner results table to be displayed on the roster
@@ -25,8 +27,9 @@ import { ContentResourceCard } from '../../../components/content-resource-card/c
   selector: 'app-class-details',
   imports: [
     FormsModule, Breadcrumb, DetailsHeader, ClassroomInformationSection,
-    SubjectCard, GenericSelectModal, StudentsRoster, ContentResourceCard
-  ],
+    SubjectCard, GenericSelectModal, StudentsRoster, ContentResourceCard,
+    DocumentUploadModal
+],
   templateUrl: './class-details.html',
   styleUrl: './class-details.scss',
   providers: [DatePipe]
@@ -37,8 +40,9 @@ export class ClassDetails {
   breadCrumb = signal<BreadcrumbModel[]>([]);
   showModal = signal<boolean>(false)
   showStudentsModal = signal<boolean>(false)
-
   classroomId = signal<string>("")
+  showUploadModal = signal<boolean>(false);
+  
   classroom = computed(()=>{
     return this.service.currentClassroom();
   })
@@ -169,6 +173,16 @@ export class ClassDetails {
   onLearnerSelected(leaner: User){
     this.studentService.assignUserToClass(leaner, this.classroomId())
     this.showStudentsModal.set(false);
+  }
+
+  onFilesUploaded(files: UploadedFile[]) {
+    console.log('Uploaded files:', files);
+    // Handle the uploaded files
+    this.showUploadModal.set(false);
+  }
+
+  onClickFilesUpload(type: string){
+    this.showUploadModal.set(true);
   }
 
   getTeacherForSubject(subject: string): string {

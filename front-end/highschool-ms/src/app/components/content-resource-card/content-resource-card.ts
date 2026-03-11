@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import ContentResourceModel from '../../models/ContentResourceModel';
 
 @Component({
@@ -8,6 +8,7 @@ import ContentResourceModel from '../../models/ContentResourceModel';
   styleUrl: './content-resource-card.scss',
 })
 export class ContentResourceCard {
+  @Output() onClickupload = new EventEmitter<string>()
   resources:ContentResourceModel[] = [
     {
       icon: '📖',
@@ -34,4 +35,8 @@ export class ContentResourceCard {
       status: 'plans'
     }
   ]
+  
+  UploadFiles(type: string){
+    this.onClickupload.emit(type);
+  }
 }

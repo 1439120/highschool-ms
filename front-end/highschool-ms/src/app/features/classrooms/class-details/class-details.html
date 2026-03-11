@@ -89,6 +89,17 @@
                 (close)="showStudentsModal.set(false)"
             />
           }
+          @if(showUploadModal()){
+              <app-document-upload-modal
+              [title]="'Upload Class Documents'"
+              [maxFileSize]="5"
+              [maxFiles]="20"
+              [acceptedFileTypes]="['.pdf', '.doc', '.docx', '.jpg', '.png']"
+              [autoUpload]="false"
+              (filesUploaded)="onFilesUploaded($event)"
+              (close)="showUploadModal.set(false)"
+              />
+          }
 
 
           <!-- Class Schedule -->
@@ -129,7 +140,7 @@
               Class Resources
             </h2>
             
-            <app-content-resource-card/>
+            <app-content-resource-card (onClickupload)="onClickFilesUpload($event)"/>
           </section>
           
           <!-- Class Performance -->

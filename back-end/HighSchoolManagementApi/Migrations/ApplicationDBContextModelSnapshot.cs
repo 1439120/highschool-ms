@@ -152,6 +152,13 @@ namespace HighSchoolManagementApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<byte[]>("Data")
                         .IsRequired()
                         .HasColumnType("bytea");
@@ -169,6 +176,8 @@ namespace HighSchoolManagementApi.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
 
                     b.ToTable("Documents");
                 });
@@ -600,6 +609,17 @@ namespace HighSchoolManagementApi.Migrations
                     b.Navigation("ClassTeacher");
 
                     b.Navigation("Grade");
+                });
+
+            modelBuilder.Entity("HighSchoolManagementApi.Models.Documents", b =>
+                {
+                    b.HasOne("HighSchoolManagementApi.Models.AuthUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("HighSchoolManagementApi.Models.LessonPlan", b =>

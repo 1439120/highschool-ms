@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HighSchoolManagementApi.Models;
 using HighSchoolManagementApi.Interfaces;
+using HighSchoolManagementApi.Dtos.Documents;
+using HighSchoolManagementApi.Mappers;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -30,9 +32,9 @@ namespace HighSchoolManagementApi.Controllers
             return Ok(documents);
         }
         [HttpPost]
-        public async Task<IActionResult> UploadDocument([FromBody] Documents document)
+        public async Task<IActionResult> UploadDocument([FromBody] CreateDocumentDto document)
         {
-            await _docRepo.UploadDocumentDAsync(document);
+            await _docRepo.UploadDocumentDAsync(document.FromCreateToDocumentModel());
             return Ok(document);
         }
         [HttpDelete("{id:int}")]

@@ -144,6 +144,35 @@ namespace HighSchoolManagementApi.Migrations
                     b.ToTable("Classrooms");
                 });
 
+            modelBuilder.Entity("HighSchoolManagementApi.Models.Documents", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("Data")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("Fieldname")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Filename")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Table")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Documents");
+                });
+
             modelBuilder.Entity("HighSchoolManagementApi.Models.Grades", b =>
                 {
                     b.Property<int>("Id")

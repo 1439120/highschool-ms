@@ -9,6 +9,7 @@ import ContentResourceModel from '../../models/ContentResourceModel';
 })
 export class ContentResourceCard {
   @Output() onClickupload = new EventEmitter<string>()
+  @Output() onClickPreview = new EventEmitter<string>()
   resources:ContentResourceModel[] = [
     {
       icon: '📖',
@@ -38,5 +39,8 @@ export class ContentResourceCard {
   
   UploadFiles(type: string){
     this.onClickupload.emit(type);
+  }
+  PreviewFiles(type: string){
+    this.onClickPreview.emit(type);
   }
 }

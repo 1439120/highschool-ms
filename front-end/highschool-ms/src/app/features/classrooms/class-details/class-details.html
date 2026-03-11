@@ -100,6 +100,21 @@
               (close)="showUploadModal.set(false)"
               />
           }
+          @if(showDocumentsViewModal()){
+            <app-documents-viewer-modal
+              [title]="'Documents'"
+              [documents]="documents"
+              [allowDownload]="true"
+              [allowDelete]="true"
+              [allowShare]="true"
+              [allowStar]="true"
+              (downloadDocument)="onDownloadDocument($event)"
+              (deleteDocument)="onDeleteDocument($event)"
+              (shareDocument)="onShareDocument($event)"
+              (starDocument)="onStarDocument($event)"
+              (close)="showDocumentsViewModal.set(false)"
+            />
+          }
 
 
           <!-- Class Schedule -->
@@ -140,7 +155,9 @@
               Class Resources
             </h2>
             
-            <app-content-resource-card (onClickupload)="onClickFilesUpload($event)"/>
+            <app-content-resource-card 
+              (onClickupload)="onClickFilesUpload($event)"
+              (onClickPreview)="openDocumentsViewerModal($event)"/>
           </section>
           
           <!-- Class Performance -->

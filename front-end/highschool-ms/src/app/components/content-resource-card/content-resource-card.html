@@ -1,17 +1,17 @@
 <div class="resources-grid">
     @for(resource of resources; track $index){
-        <div class="resource-card">
+        <div class="resource-card" (click)="PreviewFiles(resource.name)">
             <div class="resource-icon">{{resource.icon}}</div>
             <div class="resource-content">
                 <h4 class="resource-title">{{resource.name}}</h4>
                 <span class="resource-count">{{resource.total}} {{resource.status}}</span>
             </div>
-            <button class="resource-action" (click)="UploadFiles(resource.name)">
-                <span class="btn-icon">⏏️</span>
+            <button class="resource-action" (click)="UploadFiles(resource.name); $event.stopPropagation()">
+                <span class="btn-icon">📥</span>
             </button>
-            <button class="resource-action">
+            <!-- <button class="resource-action">
                 <span class="btn-icon">💾</span>
-            </button>
+            </button> -->
         </div>
     }
 </div>

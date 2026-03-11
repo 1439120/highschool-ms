@@ -1,0 +1,494 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="header-left">
+        <span class="header-icon">📚</span>
+        <div class="header-title">
+          <h2>{{title}}</h2>
+          <span class="document-count">{{totalDocuments()}} documents • {{formatFileSize(totalSize())}}</span>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button class="btn-icon" (click)="toggleViewMode()" [title]="viewMode() === 'grid' ? 'List view' : 'Grid view'">
+          <span class="view-icon">{{viewMode() === 'grid' ? '☰' : '⬚'}}</span>
+        </button>
+        <button class="btn-icon close" (click)="closeModal()" title="Close">
+          <span class="close-icon">✕</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="quick-stats">
+      <div class="stat-card">
+        <span class="stat-icon">📊</span>
+        <div class="stat-info">
+          <span class="stat-value">{{totalDocuments()}}</span>
+          <span class="stat-label">Total Files</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">📏</span>
+        <div class="stat-info">
+          <span class="stat-value">{{formatFileSize(totalSize())}}</span>
+          <span class="stat-label">Total Size</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">⏰</span>
+        <div class="stat-info">
+          <span class="stat-value">{{recentUploads()}}</span>
+          <span class="stat-label">Recent (7d)</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">⭐</span>
+        <div class="stat-info">
+          <span class="stat-value">{{starredCount()}}</span>
+          <span class="stat-label">Starred</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Section -->
+    @if(showFilters){
+      <div class="filters-section">
+        <!-- Search Bar -->
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" 
+                 class="search-input" 
+                 placeholder="Search by name, uploader, tags..." 
+                 [ngModel]="searchTerm()"
+                 (ngModelChange)="searchTerm.set($event)">
+          @if(searchTerm()){
+            <button class="clear-search" (click)="searchTerm.set('')">✕</button>
+          }
+        </div>
+
+        <!-- Filter Chips -->
+        <div class="filter-chips">
+          <!-- Category Filter -->
+          <div class="filter-group">
+            <span class="filter-label">Category:</span>
+            <div class="chip-list">
+              @for(cat of categories(); track cat){
+                <button class="chip" 
+                        [class.active]="selectedCategory() === cat"
+                        (click)="selectedCategory.set(cat)">
+                  @if(cat !== 'all'){
+                    <span class="chip-count">({{categoryCounts()[cat] || 0}})</span>
+                  }
+                  {{cat === 'all' ? 'All' : cat}}
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Tags Filter -->
+          @if(allTags().length > 0){
+            <div class="filter-group">
+              <span class="filter-label">Tags:</span>
+              <div class="chip-list">
+                @for(tag of allTags(); track tag){
+                  <button class="chip" 
+                          [class.active]="selectedTags().includes(tag)"
+                          (click)="toggleTag(tag)">
+                    #{{tag}}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Clear Filters -->
+          @if(searchTerm() || selectedCategory() !== 'all' || selectedTags().length > 0){
+            <button class="clear-filters" (click)="clearFilters()">
+              <span class="btn-icon">✕</span>
+              Clear Filters
+            </button>
+          }
+        </div>
+
+        <!-- Sort Bar -->
+        <div class="sort-bar">
+          <span class="sort-label">Sort by:</span>
+          <button class="sort-option" 
+                  [class.active]="sortBy() === 'date'"
+                  (click)="toggleSort('date')">
+            Date
+            @if(sortBy() === 'date'){
+              <span class="sort-arrow">{{sortOrder() === 'desc' ? '↓' : '↑'}}</span>
+            }
+          </button>
+          <button class="sort-option" 
+                  [class.active]="sortBy() === 'name'"
+                  (click)="toggleSort('name')">
+            Name
+            @if(sortBy() === 'name'){
+              <span class="sort-arrow">{{sortOrder() === 'desc' ? '↓' : '↑'}}</span>
+            }
+          </button>
+          <button class="sort-option" 
+                  [class.active]="sortBy() === 'size'"
+                  (click)="toggleSort('size')">
+            Size
+            @if(sortBy() === 'size'){
+              <span class="sort-arrow">{{sortOrder() === 'desc' ? '↓' : '↑'}}</span>
+            }
+          </button>
+          <button class="sort-option" 
+                  [class.active]="sortBy() === 'uploader'"
+                  (click)="toggleSort('uploader')">
+            Uploader
+            @if(sortBy() === 'uploader'){
+              <span class="sort-arrow">{{sortOrder() === 'desc' ? '↓' : '↑'}}</span>
+            }
+          </button>
+        </div>
+      </div>
+    }
+
+    <!-- Documents Grid/List -->
+    <div class="documents-container" [class.grid-view]="viewMode() === 'grid'" [class.list-view]="viewMode() === 'list'">
+      
+      <!-- Grid View -->
+      @if(viewMode() === 'grid'){
+        @for(doc of filteredDocuments(); track doc.id){
+          <div class="document-card" (click)="showDocumentPreview(doc)" [class.selectable]="allowSelection" (dblclick)="selectDocument(doc)">
+            <!-- Card Header -->
+            <div class="card-header">
+              <div class="file-icon" [class]="getFileColorClass(doc.type)">
+                {{getFileIcon(doc.type)}}
+              </div>
+              @if(allowStar){
+                <button class="star-btn" [class.starred]="doc.starred" (click)="onStar(doc, $event)">
+                  <span class="star-icon">{{doc.starred ? '⭐' : '☆'}}</span>
+                </button>
+              }
+            </div>
+
+            <!-- Card Body -->
+            <div class="card-body">
+              <h4 class="document-title" [title]="doc.name">{{doc.name}}</h4>
+              
+              @if(doc.description){
+                <p class="document-description">{{doc.description}}</p>
+              }
+
+              <!-- Tags -->
+              @if(doc.tags && doc.tags.length > 0){
+                <div class="document-tags">
+                  @for(tag of doc.tags.slice(0, 2); track tag){
+                    <span class="tag">#{{tag}}</span>
+                  }
+                  @if(doc.tags.length > 2){
+                    <span class="tag-more">+{{doc.tags.length - 2}}</span>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Card Footer -->
+            <div class="card-footer">
+              <div class="uploader-info">
+                <div class="uploader-avatar">{{getInitials(doc.uploadedBy.name)}}</div>
+                <div class="uploader-details">
+                  <span class="uploader-name">{{doc.uploadedBy.name}}</span>
+                  <span class="upload-date">{{formatDate(doc.uploadDate)}}</span>
+                </div>
+              </div>
+
+              <div class="file-meta">
+                <span class="file-size">{{formatFileSize(doc.size)}}</span>
+                @if(allowDownload){
+                  <button class="action-btn download" (click)="onDownload(doc, $event)" title="Download">
+                    <span class="btn-icon">📥</span>
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      }
+
+      <!-- List View -->
+      @if(viewMode() === 'list'){
+        <div class="list-header">
+          <div class="list-cell name">Name</div>
+          <div class="list-cell uploader">Uploaded By</div>
+          <div class="list-cell date">Upload Date</div>
+          <div class="list-cell size">Size</div>
+          <div class="list-cell category">Category</div>
+          <div class="list-cell actions">Actions</div>
+        </div>
+
+        @for(doc of filteredDocuments(); track doc.id){
+          <div class="list-row" (click)="showDocumentPreview(doc)" [class.selectable]="allowSelection" (dblclick)="selectDocument(doc)">
+            <div class="list-cell name">
+              <div class="file-info">
+                <span class="file-icon-small" [class]="getFileColorClass(doc.type)">{{getFileIcon(doc.type)}}</span>
+                <div class="file-details">
+                  <span class="file-name">{{doc.name}}</span>
+                  @if(doc.tags && doc.tags.length > 0){
+                    <div class="file-tags">
+                      @for(tag of doc.tags.slice(0, 2); track tag){
+                        <span class="tag-small">#{{tag}}</span>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="list-cell uploader">
+              <div class="uploader-cell">
+                <span class="uploader-avatar-small">{{getInitials(doc.uploadedBy.name)}}</span>
+                <div class="uploader-info">
+                  <span class="uploader-name">{{doc.uploadedBy.name}}</span>
+                  @if(doc.uploadedBy.role){
+                    <span class="uploader-role">{{doc.uploadedBy.role}}</span>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="list-cell date">
+              <div class="date-info">
+                <span class="date-full">{{doc.uploadDate | date:'mediumDate'}}</span>
+                <span class="date-relative">{{formatDate(doc.uploadDate)}}</span>
+              </div>
+            </div>
+
+            <div class="list-cell size">{{formatFileSize(doc.size)}}</div>
+
+            <div class="list-cell category">
+              <span class="category-badge">{{doc.category || 'Uncategorized'}}</span>
+            </div>
+
+            <div class="list-cell actions">
+              <div class="action-buttons">
+                @if(allowStar){
+                  <button class="action-icon" [class.starred]="doc.starred" (click)="onStar(doc, $event)" title="Star">
+                    <span>{{doc.starred ? '⭐' : '☆'}}</span>
+                  </button>
+                }
+                @if(allowDownload){
+                  <button class="action-icon" (click)="onDownload(doc, $event)" title="Download">
+                    <span>📥</span>
+                  </button>
+                }
+                @if(allowShare){
+                  <button class="action-icon" (click)="onShare(doc, $event)" title="Share">
+                    <span>🔗</span>
+                  </button>
+                }
+                @if(allowDelete){
+                  <button class="action-icon delete" (click)="onDelete(doc, $event)" title="Delete">
+                    <span>🗑️</span>
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      }
+
+      <!-- Empty State -->
+      @if(filteredDocuments().length === 0){
+        <div class="empty-state">
+          <span class="empty-icon">📄</span>
+          <h3>No documents found</h3>
+          <p>Try adjusting your search or filters to find what you're looking for.</p>
+          @if(searchTerm() || selectedCategory() !== 'all' || selectedTags().length > 0){
+            <button class="btn-clear" (click)="clearFilters()">
+              <span class="btn-icon">✕</span>
+              Clear Filters
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Document Preview Modal -->
+    @if(showPreview() && selectedDocument()){
+      <div class="preview-modal" (click)="closePreview()">
+        <div class="preview-content" (click)="$event.stopPropagation()">
+          
+          <!-- Preview Header -->
+          <div class="preview-header">
+            <div class="preview-title">
+              <span class="preview-icon" [class]="getFileColorClass(selectedDocument()!.type)">
+                {{getFileIcon(selectedDocument()!.type)}}
+              </span>
+              <h3>{{selectedDocument()!.name}}</h3>
+            </div>
+            <button class="close-preview" (click)="closePreview()">✕</button>
+          </div>
+
+          <!-- Preview Body -->
+          <div class="preview-body">
+            <!-- Document Info Grid -->
+            <div class="info-grid">
+              <div class="info-row">
+                <span class="info-label">Uploaded by</span>
+                <div class="info-value uploader">
+                  <span class="uploader-avatar">{{getInitials(selectedDocument()!.uploadedBy.name)}}</span>
+                  <div>
+                    <div class="uploader-name">{{selectedDocument()!.uploadedBy.name}}</div>
+                    @if(selectedDocument()!.uploadedBy.role){
+                      <div class="uploader-role">{{selectedDocument()!.uploadedBy.role}}</div>
+                    }
+                  </div>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label">Upload date</span>
+                <div class="info-value">
+                  <strong>{{selectedDocument()!.uploadDate | date:'fullDate'}}</strong>
+                  <span class="info-sub">at {{selectedDocument()!.uploadDate | date:'shortTime'}}</span>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label">Last modified</span>
+                <div class="info-value">
+                  @if(selectedDocument()!.lastModified){
+                    <strong>{{selectedDocument()!.lastModified | date:'fullDate'}}</strong>
+                    <span class="info-sub">at {{selectedDocument()!.lastModified | date:'shortTime'}}</span>
+                  } @else {
+                    <span class="info-sub">Not available</span>
+                  }
+                </div>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label">File size</span>
+                <div class="info-value">
+                  <strong>{{formatFileSize(selectedDocument()!.size)}}</strong>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label">File type</span>
+                <div class="info-value">
+                  <span class="file-type-badge">{{selectedDocument()!.type}}</span>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label">Category</span>
+                <div class="info-value">
+                  <span class="category-badge">{{selectedDocument()!.category || 'Uncategorized'}}</span>
+                </div>
+              </div>
+
+              @if(selectedDocument()!.tags && (selectedDocument()!.tags?.length || 0) > 0){
+                <div class="info-row full-width">
+                  <span class="info-label">Tags</span>
+                  <div class="info-value tags">
+                    @for(tag of selectedDocument()!.tags; track tag){
+                      <span class="tag">#{{tag}}</span>
+                    }
+                  </div>
+                </div>
+              }
+
+              @if(selectedDocument()!.description){
+                <div class="info-row full-width">
+                  <span class="info-label">Description</span>
+                  <div class="info-value description">
+                    {{selectedDocument()!.description}}
+                  </div>
+                </div>
+              }
+
+              @if(selectedDocument()!.version){
+                <div class="info-row">
+                  <span class="info-label">Version</span>
+                  <div class="info-value">
+                    <span class="version-badge">v{{selectedDocument()!.version}}</span>
+                  </div>
+                </div>
+              }
+
+              <div class="info-row">
+                <span class="info-label">Status</span>
+                <div class="info-value">
+                  <span class="status-badge" [class]="selectedDocument()!.status || 'active'">
+                    {{(selectedDocument()!.status || 'active') | titlecase}}
+                  </span>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label">Access</span>
+                <div class="info-value">
+                  <span class="access-badge" [class]="selectedDocument()!.accessLevel || 'private'">
+                    {{(selectedDocument()!.accessLevel || 'private') | titlecase}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview Footer -->
+          <div class="preview-footer">
+            <div class="footer-left">
+              <button class="btn-star" [class.starred]="selectedDocument()!.starred" (click)="onStar(selectedDocument()!, $event)">
+                <span class="star-icon">{{selectedDocument()!.starred ? '⭐' : '☆'}}</span>
+                {{selectedDocument()!.starred ? 'Starred' : 'Star'}}
+              </button>
+            </div>
+            
+            <div class="footer-right">
+              @if(allowShare){
+                <button class="btn btn-secondary" (click)="onShare(selectedDocument()!, $event)">
+                  <span class="btn-icon">🔗</span>
+                  Share
+                </button>
+              }
+              @if(allowDownload){
+                <button class="btn btn-primary" (click)="onDownload(selectedDocument()!, $event)">
+                  <span class="btn-icon">📥</span>
+                  Download
+                </button>
+              }
+              @if(allowDelete){
+                <button class="btn btn-danger" (click)="onDelete(selectedDocument()!, $event)">
+                  <span class="btn-icon">🗑️</span>
+                  Delete
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <div class="footer-left">
+        <span class="footer-info">
+          Showing {{filteredDocuments().length}} of {{totalDocuments()}} documents
+        </span>
+      </div>
+      
+      <div class="footer-right">
+        @if(allowSelection && filteredDocuments().length > 0){
+          <button class="btn btn-primary" (click)="selectDocument(filteredDocuments()[0])">
+            <span class="btn-icon">✓</span>
+            Select Document
+          </button>
+        }
+        <button class="btn btn-secondary" (click)="closeModal()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

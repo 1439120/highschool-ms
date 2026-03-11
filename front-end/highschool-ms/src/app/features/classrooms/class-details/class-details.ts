@@ -17,7 +17,8 @@ import { UsersService } from '../../../services/users-service';
 import { User } from '../../../models/User';
 import { ContentResourceCard } from '../../../components/content-resource-card/content-resource-card';
 import { DocumentUploadModal } from "../../../components/document-upload-modal/document-upload-modal";
-import { UploadedFile } from '../../../models/UploadFile';
+import { DocumentFile, UploadedFile } from '../../../models/UploadFile';
+import { DocumentsViewerModal } from '../../../components/documents-viewer-modal/documents-viewer-modal';
 
 /**
  * I need the learner results table to be displayed on the roster
@@ -28,7 +29,7 @@ import { UploadedFile } from '../../../models/UploadFile';
   imports: [
     FormsModule, Breadcrumb, DetailsHeader, ClassroomInformationSection,
     SubjectCard, GenericSelectModal, StudentsRoster, ContentResourceCard,
-    DocumentUploadModal
+    DocumentUploadModal, DocumentsViewerModal
 ],
   templateUrl: './class-details.html',
   styleUrl: './class-details.scss',
@@ -42,6 +43,49 @@ export class ClassDetails {
   showStudentsModal = signal<boolean>(false)
   classroomId = signal<string>("")
   showUploadModal = signal<boolean>(false);
+  showDocumentsViewModal = signal<boolean>(false);
+
+  documents: DocumentFile[] = [
+    {
+      id: '1',
+      name: 'Mathematics Syllabus 2024.pdf',
+      size: 2457600,
+      type: 'application/pdf',
+      uploadedBy: {
+        id: 'u1',
+        name: 'Alice Mbatha',
+        role: 'Teacher',
+        avatar: 'assets/avatars/alice.jpg'
+      },
+      uploadDate: new Date(2024, 0, 15, 10, 30),
+      lastModified: new Date(2024, 0, 15, 14, 20),
+      category: 'Syllabus',
+      tags: ['mathematics', 'grade8', 'curriculum'],
+      description: 'Complete mathematics syllabus for Grade 8 including all topics and learning outcomes.',
+      version: 2,
+      starred: true,
+      status: 'active',
+      accessLevel: 'public'
+    },
+    {
+      id: '2',
+      name: 'Lesson Plan - Algebra.docx',
+      size: 512000,
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      uploadedBy: {
+        id: 'u2',
+        name: 'John Smith',
+        role: 'Teacher'
+      },
+      uploadDate: new Date(2024, 1, 3, 9, 15),
+      category: 'Lesson Plans',
+      tags: ['algebra', 'lesson-plan'],
+      starred: false,
+      status: 'active',
+      accessLevel: 'shared'
+    }
+  ];
+
   
   classroom = computed(()=>{
     return this.service.currentClassroom();
@@ -271,4 +315,29 @@ export class ClassDetails {
     const total = this.classroom().registeredStudents || 0;
     return Math.ceil(total * 0.15); // 15% need support
   }
+
+  // Documents helper methods
+  openDocumentsViewerModal(type: string){
+    this.showDocumentsViewModal.set(true)
+  }
+  onDownloadDocument(doc: DocumentFile) {
+    console.log('Downloading:', doc.name);
+    // Implement download logic
+  }
+
+   onDeleteDocument(doc: DocumentFile) {
+    console.log('Deleting:', doc.name);
+    this.documents = this.documents.filter(d => d.id !== doc.id);
+  }
+
+  onShareDocument(doc: DocumentFile) {
+    console.log('Sharing:', doc.name);
+    // Implement share logic
+  }
+
+  onStarDocument(doc: DocumentFile) {
+    console.log('Star toggled:', doc.name);
+    // Star status is already toggled in component
+  }
+
 }

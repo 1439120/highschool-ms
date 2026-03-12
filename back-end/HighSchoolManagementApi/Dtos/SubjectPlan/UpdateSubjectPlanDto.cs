@@ -11,6 +11,5 @@ namespace HighSchoolManagementApi.Dtos.SubjectPlan
         public int SubjectId { get; set; }
         public string CreatedById { get; set; }
         public int GradeId { get; set; }
-        public DateTime LastUpdatedOn { get; set; } = DateTime.UtcNow;
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -7,6 +7,7 @@ import BreadcrumbModel from '../../../models/BreadcrumbModel';
 import SubjectPlanModel from '../../../models/SubjectPlanModel';
 import Grades from '../../../models/Grades';
 import { SubjectsModel } from '../../../models/SubjectsModel';
+import { SubjectPlanService } from '../../../services/subject-plan-service';
 
 @Component({
   selector: 'app-subject-plan-details',
@@ -16,9 +17,13 @@ import { SubjectsModel } from '../../../models/SubjectsModel';
   providers: [DatePipe]
 })
 export class SubjectPlanDetails {
-  breadCrumb!: BreadcrumbModel[];
-  subjectPlan: Partial<SubjectPlanModel> = {};
+  breadCrumb = signal<BreadcrumbModel[]>([]);
   currentYear: number = new Date().getFullYear();
+  recordId = signal<string>("");
+  subjectPlan = signal<SubjectPlanModel | null>(null);
+  creatorFullname = computed(()=>(
+    `${this.subjectPlan()?.createdBy.name} ${this.subjectPlan()?.createdBy.surname}`
+  ))
   
   // View state
   activeTerm: number = 1;
@@ -43,13 +48,13 @@ export class SubjectPlanDetails {
     }
   ];
   
-  grades: Grades[] = [
-    { id: 1, name: '8', gradeNumber: 8 },
-    { id: 2, name: '9', gradeNumber: 9 },
-    { id: 3, name: '10', gradeNumber: 10 },
-    { id: 4, name: '11', gradeNumber: 11 },
-    { id: 5, name: '12', gradeNumber: 12 }
-  ];
+  // grades: Grades[] = [
+  //   { id: 1, name: '8', gradeNumber: 8 },
+  //   { id: 2, name: '9', gradeNumber: 9 },
+  //   { id: 3, name: '10', gradeNumber: 10 },
+  //   { id: 4, name: '11', gradeNumber: 11 },
+  //   { id: 5, name: '12', gradeNumber: 12 }
+  // ];
 
   // Terms data
   terms = [
@@ -220,8 +225,29 @@ export class SubjectPlanDetails {
 
   constructor(
     private route: ActivatedRoute,
-    private datePipe: DatePipe
-  ) {}
+    private datePipe: DatePipe,
+    private service: SubjectPlanService
+  ) {
+    // this.service.
+    this.route.params.subscribe(params => {
+      this.recordId.set(params['id']);
+      // get data from the service
+      service
+        .getSubjectPlanById(this.recordId())
+        .subscribe((data) => {
+          // update the data
+          this.subjectPlan.set(data)
+          // update the breadcrumb
+          this.breadCrumb.set([
+            { name: 'Subject Plans', url: '/subject-plan' },
+            { name: data?.name || 'New Subject Plan', url: '' }
+          ]);
+          console.log("This is the data loade: ", data)
+        }
+      )
+      
+    });
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -235,52 +261,47 @@ export class SubjectPlanDetails {
   loadSubjectPlan(planId: string) {
     if (planId === 'new') {
       // Initialize new subject plan
-      this.subjectPlan = {
-        name: 'Annual Teaching Plan',
-        subject: this.subjects[0],
-        createdById: {
-          id: 1, name: 'Alice Mbatha', email: 'a.mbatha@school.edu', role: 'teacher',
-          surname: '',
-          phone: '',
-          address: '',
-          dateOfBirth: null,
-          dateJoined: null,
-          type: '',
-          title: ''
-        },
-        grade: this.grades[0],
-        createdOn: new Date(),
-        lastUpdatedOn: new Date(),
-        year: this.currentYear
-      };
+      // this.subjectPlan = {
+      //   name: 'Annual Teaching Plan',
+      //   subject: this.subjects[0],
+      //   createdById: {
+      //     id: 1, name: 'Alice Mbatha', email: 'a.mbatha@school.edu', role: 'teacher',
+      //     surname: '',
+      //     phone: '',
+      //     address: '',
+      //     dateOfBirth: null,
+      //     dateJoined: null,
+      //     type: '',
+      //     title: ''
+      //   },
+      //   grade: this.grades[0],
+      //   createdOn: new Date(),
+      //   lastUpdatedOn: new Date(),
+      //   year: this.currentYear
+      // };
     } else {
       // Load existing subject plan
-      this.subjectPlan = {
-        id: parseInt(planId),
-        name: 'Grade 8 Mathematics Annual Plan',
-        subject: this.subjects[0],
-        createdById: {
-          id: 1, name: 'Alice Mbatha',
-          email: 'a.mbatha@school.edu', role: 'teacher',
-          surname: '',
-          phone: '',
-          address: '',
-          dateOfBirth: null,
-          dateJoined: null,
-          type: '',
-          title: ''
-        },
-        grade: this.grades[0],
-        createdOn: new Date(2024, 0, 15),
-        lastUpdatedOn: new Date(),
-        year: 2024
-      };
+      // this.subjectPlan = {
+      //   id: parseInt(planId),
+      //   name: 'Grade 8 Mathematics Annual Plan',
+      //   subject: this.subjects[0],
+      //   createdById: {
+      //     id: 1, name: 'Alice Mbatha',
+      //     email: 'a.mbatha@school.edu', role: 'teacher',
+      //     surname: '',
+      //     phone: '',
+      //     address: '',
+      //     dateOfBirth: null,
+      //     dateJoined: null,
+      //     type: '',
+      //     title: ''
+      //   },
+      //   grade: this.grades[0],
+      //   createdOn: new Date(2024, 0, 15),
+      //   lastUpdatedOn: new Date(),
+      //   year: 2024
+      // };
     }
-
-    this.breadCrumb = [
-      { name: 'Subject Plans', url: '/subject-plan' },
-      { name: this.subjectPlan?.name || 'New Subject Plan', url: '' }
-    ];
   }
 
   calculateProgress() {

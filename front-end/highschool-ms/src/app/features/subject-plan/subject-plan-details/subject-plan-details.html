@@ -1,4 +1,4 @@
-<app-breadcrumb [titleBreadcrumbs]="breadCrumb"/>
+<app-breadcrumb [titleBreadcrumbs]="breadCrumb()"/>
 
 <div class="subject-plan-container">
   <!-- Fixed Header -->
@@ -9,16 +9,16 @@
     <div class="header-actions">
       <div class="plan-stats">
         <div class="stat-badge subject">
-          <span class="stat-icon">{{getSubjectIcon(subjectPlan.subject?.name)}}</span>
-          <span class="stat-text">{{subjectPlan.subject?.name || 'Mathematics'}}</span>
+          <span class="stat-icon">{{getSubjectIcon(subjectPlan()?.subject?.name)}}</span>
+          <span class="stat-text">{{subjectPlan()?.subject?.name || 'Mathematics'}}</span>
         </div>
         <div class="stat-badge grade">
           <span class="stat-icon">🎓</span>
-          <span class="stat-text">Grade {{subjectPlan.grade?.name || '8'}}</span>
+          <span class="stat-text">Grade {{subjectPlan()?.grade?.gradeNumber || 8}}</span>
         </div>
         <div class="stat-badge year">
           <span class="stat-icon">📅</span>
-          <span class="stat-text">{{subjectPlan.year || currentYear}}</span>
+          <span class="stat-text">{{subjectPlan()?.year || currentYear}}</span>
         </div>
         <div class="stat-badge lessons">
           <span class="stat-icon">📚</span>
@@ -45,29 +45,29 @@
       <div class="plan-header-card">
         <div class="plan-header">
           <div class="plan-avatar">
-            <div class="plan-icon">{{getSubjectIcon(subjectPlan.subject?.name)}}</div>
-            <div class="plan-subject-icon">{{getSubjectInitials(subjectPlan.subject?.name)}}</div>
+            <div class="plan-icon">{{getSubjectIcon(subjectPlan()?.subject?.name)}}</div>
+            <div class="plan-subject-icon">{{getSubjectInitials(subjectPlan()?.subject?.name)}}</div>
           </div>
           <div class="plan-info">
             <h1 class="plan-name">
-              {{subjectPlan.name || 'Annual Teaching Plan'}}
-              <span class="plan-year">{{subjectPlan.year || currentYear}}</span>
+              {{subjectPlan()?.name || 'Annual Teaching Plan'}}
+              <span class="plan-year">{{subjectPlan()?.year || currentYear}}</span>
             </h1>
             <div class="plan-meta">
               <div class="meta-item">
                 <span class="meta-icon">👨‍🏫</span>
                 <span class="meta-label">Created by:</span>
-                <span class="meta-value">{{subjectPlan.createdById?.name || 'Alice Mbatha'}}</span>
+                <span class="meta-value">{{creatorFullname() || 'Alice Mbatha'}}</span>
               </div>
               <div class="meta-item">
                 <span class="meta-icon">📅</span>
                 <span class="meta-label">Created on:</span>
-                <span class="meta-value">{{subjectPlan.createdOn}}</span>
+                <span class="meta-value">{{subjectPlan()?.createdOn | date:'dd MMM, yyyy'}}</span>
               </div>
               <div class="meta-item">
                 <span class="meta-icon">🔄</span>
                 <span class="meta-label">Last updated:</span>
-                <span class="meta-value">{{subjectPlan.lastUpdatedOn}}</span>
+                <span class="meta-value">{{subjectPlan()?.lastUpdatedOn  | date:'dd MMM, yyyy @ HH:mm'}}</span>
               </div>
             </div>
           </div>

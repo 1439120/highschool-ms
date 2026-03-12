@@ -6,7 +6,7 @@ export default interface SubjectPlanModel{
     id: number,
     name: string,
     subject: SubjectsModel,
-    createdById: User,
+    createdBy: User,
     grade: Grades,
     lastUpdatedOn: Date,
     createdOn: Date,

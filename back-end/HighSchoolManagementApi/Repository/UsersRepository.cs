@@ -74,6 +74,7 @@ namespace HighSchoolManagementApi.Repository
             usersModel.DateJoined = usersDto.DateJoined;
             usersModel.Type = usersDto.Type;
             usersModel.LearnerClassroomId = usersDto.LearnerClassroomId;
+            usersModel.LastUpdatedOn = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
             return usersModel;

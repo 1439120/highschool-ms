@@ -124,6 +124,9 @@ namespace HighSchoolManagementApi.Migrations
                     b.Property<int?>("GradeId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime>("LastUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("MaximumOccupants")
                         .HasColumnType("integer");
 
@@ -174,6 +177,9 @@ namespace HighSchoolManagementApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("LastUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Table")
                         .IsRequired()
                         .HasColumnType("text");
@@ -215,6 +221,12 @@ namespace HighSchoolManagementApi.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("LastUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -282,8 +294,14 @@ namespace HighSchoolManagementApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("Duration")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("LastUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -353,12 +371,18 @@ namespace HighSchoolManagementApi.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("EndWeek")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("LastUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -370,7 +394,15 @@ namespace HighSchoolManagementApi.Migrations
                     b.Property<int>("StartWeek")
                         .HasColumnType("integer");
 
+                    b.Property<int>("SubjectPlanId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Term")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SubjectPlanId");
 
                     b.ToTable("SubjectTopics");
                 });
@@ -478,6 +510,9 @@ namespace HighSchoolManagementApi.Migrations
 
                     b.Property<string>("Email")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("LastUpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("LearnerClassroomId")
                         .HasColumnType("integer");
@@ -789,6 +824,17 @@ namespace HighSchoolManagementApi.Migrations
                     b.Navigation("Subject");
                 });
 
+            modelBuilder.Entity("HighSchoolManagementApi.Models.SubjectTopics", b =>
+                {
+                    b.HasOne("HighSchoolManagementApi.Models.SubjectPlan", "SubjectPlan")
+                        .WithMany("SubjectTopics")
+                        .HasForeignKey("SubjectPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SubjectPlan");
+                });
+
             modelBuilder.Entity("HighSchoolManagementApi.Models.Subjects", b =>
                 {
                     b.HasOne("HighSchoolManagementApi.Models.Grades", "Grade")
@@ -950,6 +996,8 @@ namespace HighSchoolManagementApi.Migrations
             modelBuilder.Entity("HighSchoolManagementApi.Models.SubjectPlan", b =>
                 {
                     b.Navigation("LessonPlans");
+
+                    b.Navigation("SubjectTopics");
                 });
 
             modelBuilder.Entity("HighSchoolManagementApi.Models.SubjectTopics", b =>

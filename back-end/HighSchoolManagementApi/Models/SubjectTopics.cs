@@ -9,11 +9,16 @@ namespace HighSchoolManagementApi.Models
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
+        public int Term { get; set; }
         public int StartWeek { get; set; }
         public int EndWeek { get; set; }
         public int Progress { get; set; }
         public string Description { get; set; }
         public List<LessonObjectives> Objectives { get; set; } = new List<LessonObjectives>();
         public List<Lessons> Lessons { get; set; } = new List<Lessons>();
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public DateTime LastUpdatedOn { get; set; } = DateTime.UtcNow;
+        public int SubjectPlanId { get; set; }
+        public SubjectPlan SubjectPlan { get; set; }
     }
 }

@@ -13,5 +13,7 @@ namespace HighSchoolManagementApi.Models
         public int Duration { get; set; }
         public int TopicId { get; set; }
         public SubjectTopics Topic { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public DateTime LastUpdatedOn { get; set; } = DateTime.UtcNow;
     }
 }

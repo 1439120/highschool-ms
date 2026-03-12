@@ -20,6 +20,7 @@ namespace HighSchoolManagementApi.Models
         public int AcademicYear { get; set; }
         public string RoomNumber { get; set; } = string.Empty;
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public DateTime LastUpdatedOn { get; set; } = DateTime.UtcNow;
         public List<Users> Learners {get; set;} = new List<Users>();
     }
 }

@@ -13,6 +13,7 @@ namespace HighSchoolManagementApi.Models
         public string Table { get; set; }
         public byte[] Data { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public DateTime LastUpdatedOn { get; set; } = DateTime.UtcNow;
         public string CreatedById { get; set; }
         public AuthUser CreatedBy { get; set; }
     }

@@ -11,5 +11,7 @@ namespace HighSchoolManagementApi.Models
         public string Name { get; set; } = string.Empty;
         public int TopicId { get; set; }
         public SubjectTopics Topic { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public DateTime LastUpdatedOn { get; set; } = DateTime.UtcNow;
     }
 }

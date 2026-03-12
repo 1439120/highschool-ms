@@ -68,6 +68,7 @@ namespace HighSchoolManagementApi.Repository
             updateClassroom.RegisteredStudents = classroomDto.RegisteredStudents;
             updateClassroom.AcademicYear = classroomDto.AcademicYear;
             updateClassroom.RoomNumber = classroomDto.RoomNumber;
+            updateClassroom.LastUpdatedOn = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
             return updateClassroom;

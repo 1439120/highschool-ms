@@ -24,6 +24,7 @@ namespace HighSchoolManagementApi.Models
         public DateOnly? DateJoined { get; set; }
         public string Type { get; set; } = string.Empty;
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public DateTime LastUpdatedOn { get; set; } = DateTime.UtcNow;
         public int? LearnerClassroomId { get; set; }
         public Classroom? Classroom { get; set; }
     }

@@ -10,6 +10,7 @@ namespace HighSchoolManagementApi.Interfaces
     public interface ISubjectPlanRepository
     {
         Task<List<SubjectPlan>> GetAll();
+        Task<SubjectPlan> GetByIdAsync(int id);
         Task<SubjectPlan?> Update(UpdateSubjectPlanDto subjectPlan, int subjectPlanId);
         Task<SubjectPlan> Add(AddSubjectPlanDto subjectPlanDto);
     }

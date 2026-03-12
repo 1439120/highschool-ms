@@ -28,6 +28,12 @@ namespace HighSchoolManagementApi.Controllers
             var subjectPlanDto = subjectPlans.Select(a => a.ToSubjectPlanDto());
             return Ok(subjectPlanDto);
         }
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById([FromRoute] int id)
+        {
+            var subjectPlan = await _subjectPlanRepo.GetByIdAsync(id);
+            return Ok(subjectPlan.ToSubjectPlanDto());
+        }
 
         [HttpPost]
         [Authorize]

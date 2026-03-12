@@ -26,6 +26,14 @@ namespace HighSchoolManagementApi.Repository
             .Include(c => c.CreatedBy)
             .ToListAsync();
         }
+        public async Task<SubjectPlan> GetByIdAsync(int id)
+        {
+            return await _context.SubjectPlan
+            .Include(c => c.Grade)
+            .Include(c => c.Subject)
+            .Include(c => c.CreatedBy)
+            .FirstOrDefaultAsync(s => s.Id == id);
+        }
         public async Task<SubjectPlan?> Update(UpdateSubjectPlanDto subjectPlan, int subjectPlanId)
         {
             var subjectPlanModel = await _context.SubjectPlan.FirstOrDefaultAsync(c => c.Id == subjectPlanId);

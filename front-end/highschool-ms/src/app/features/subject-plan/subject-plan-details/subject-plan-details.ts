@@ -5,13 +5,16 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Breadcrumb } from '../../../components/breadcrumb/breadcrumb';
 import BreadcrumbModel from '../../../models/BreadcrumbModel';
 import SubjectPlanModel from '../../../models/SubjectPlanModel';
-import Grades from '../../../models/Grades';
 import { SubjectsModel } from '../../../models/SubjectsModel';
 import { SubjectPlanService } from '../../../services/subject-plan-service';
+import { SubjectTopicCard } from '../../../components/subject-topic-card/subject-topic-card';
 
 @Component({
   selector: 'app-subject-plan-details',
-  imports: [CommonModule, FormsModule, Breadcrumb, RouterLink, DatePipe],
+  imports: [
+    CommonModule, FormsModule, Breadcrumb, RouterLink, DatePipe,
+    SubjectTopicCard
+  ],
   templateUrl: './subject-plan-details.html',
   styleUrl: './subject-plan-details.scss',
   providers: [DatePipe]
@@ -26,7 +29,8 @@ export class SubjectPlanDetails {
   ))
   
   // View state
-  activeTerm: number = 1;
+  // activeTerm: number = 1;
+  activeTerm = signal<number>(1);
   viewType: 'topics' | 'weeks' | 'assessments' = 'topics';
   
   // Mock data for dropdowns
@@ -323,7 +327,7 @@ export class SubjectPlanDetails {
 
   // Getters for active term
   getActiveTermName(): string {
-    const term = this.terms.find(t => t.id === this.activeTerm);
+    const term = this.terms.find(t => t.id === this.activeTerm());
     return term ? term.name : 'Term 1';
   }
 
@@ -334,31 +338,26 @@ export class SubjectPlanDetails {
       3: 'Jul 8 - Sep 20, 2024',
       4: 'Sep 30 - Dec 6, 2024'
     };
-    return dates[this.activeTerm as keyof typeof dates] || 'TBD';
+    return dates[this.activeTerm() as keyof typeof dates] || 'TBD';
   }
 
   getActiveTermWeeks(): number {
     const weeks = { 1: 11, 2: 11, 3: 11, 4: 10 };
-    return weeks[this.activeTerm as keyof typeof weeks] || 10;
+    return weeks[this.activeTerm() as keyof typeof weeks] || 10;
   }
 
   getActiveTermTopics(): number {
-    return this.topics.filter(t => t.termId === this.activeTerm).length;
+    return this.topics.filter(t => t.termId === this.activeTerm()).length;
   }
 
   getActiveTermLessons(): number {
     return this.topics
-      .filter(t => t.termId === this.activeTerm)
+      .filter(t => t.termId === this.activeTerm())
       .reduce((sum, topic) => sum + topic.lessons.length, 0);
   }
 
   getActiveTermAssessments(): number {
-    return this.assessments.filter(a => a.termId === this.activeTerm).length;
-  }
-
-  // Filter methods
-  getTopicsByTerm(termId: number): any[] {
-    return this.topics.filter(topic => topic.termId === termId);
+    return this.assessments.filter(a => a.termId === this.activeTerm()).length;
   }
 
   getWeeksByTerm(termId: number): any[] {
@@ -425,7 +424,7 @@ export class SubjectPlanDetails {
 
   // UI Actions
   setActiveTerm(termId: number) {
-    this.activeTerm = termId;
+    this.activeTerm.set(termId);
   }
 
   addTopic() {
@@ -474,28 +473,6 @@ export class SubjectPlanDetails {
       .join('')
       .substring(0, 2)
       .toUpperCase();
-  }
-
-  getTopicIcon(topicName: string): string {
-    const icons: {[key: string]: string} = {
-      'algebra': '🔢',
-      'geometry': '📐',
-      'equations': '⚖️',
-      'graphs': '📈',
-      'fractions': '🥧',
-      'statistics': '📊',
-      'probability': '🎲',
-      'trigonometry': '📐',
-      'calculus': '∫'
-    };
-    
-    const lowercaseName = topicName.toLowerCase();
-    for (const [key, icon] of Object.entries(icons)) {
-      if (lowercaseName.includes(key)) {
-        return icon;
-      }
-    }
-    return '📋';
   }
 
   getAssessmentIcon(type: string): string {

@@ -1,0 +1,63 @@
+    <div class="topics-grid">
+            <div *ngFor="let topic of getTopicsByTerm()" class="topic-card">
+        <div class="topic-header">
+        <div class="topic-icon">{{getTopicIcon(topic.name)}}</div>
+        <div class="topic-info">
+            <h3 class="topic-name">{{topic.name}}</h3>
+            <span class="topic-weeks">
+            <span class="meta-icon">📅</span>
+            Weeks {{topic.startWeek}} - {{topic.endWeek}}
+            </span>
+        </div>
+        <div class="topic-progress">
+            <div class="progress-ring">{{topic.progress}}%</div>
+        </div>
+        </div>
+        
+        <div class="topic-content">
+        <div class="topic-objectives">
+            <div class="objectives-title">
+            <span class="meta-icon">🎯</span> Learning Objectives
+            </div>
+            <ul class="objectives-list">
+            <li *ngFor="let objective of topic.objectives.slice(0, 3)">{{objective}}</li>
+            <li *ngIf="topic.objectives.length > 3">+{{topic.objectives.length - 3}} more</li>
+            </ul>
+        </div>
+        
+        <div class="topic-lessons">
+            <div *ngFor="let lesson of topic.lessons.slice(0, 2)" class="lesson-item">
+            <span class="lesson-status" [class]="lesson.status"></span>
+            <span class="lesson-name">{{lesson.name}}</span>
+            <span class="lesson-duration">{{lesson.duration}} min</span>
+            </div>
+            <div *ngIf="topic.lessons.length > 2" class="lesson-item">
+            <span class="lesson-name">+{{topic.lessons.length - 2}} more lessons</span>
+            </div>
+        </div>
+        
+        <div class="topic-footer">
+            <div class="topic-resources">
+            <span>
+                <span class="meta-icon">📄</span>
+                {{topic.resources}}
+            </span>
+            <span>
+                <span class="meta-icon">📝</span>
+                {{topic.assessments}}
+            </span>
+            </div>
+            <button class="topic-action">
+            <span class="btn-icon">👁️</span>
+            </button>
+        </div>
+        </div>
+    </div>
+    
+    <div *ngIf="getTopicsByTerm().length === 0" class="no-items">
+        <span class="no-items-icon">📋</span>
+        <h3>No topics for this term</h3>
+        <p>Click "Add Topic" to start building your curriculum.</p>
+    </div>
+</div>
+

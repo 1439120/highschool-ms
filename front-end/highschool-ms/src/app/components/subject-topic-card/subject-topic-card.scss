@@ -1,0 +1,248 @@
+$border-color: #e2e8f0;
+$dark-color: #2d3748;
+$primary-color: #4361ee;
+$light-color: #f8f9fa;
+$success-color: #2ecc71;
+$warning-color: #f39c12;
+
+// Topics Grid
+.topics-grid {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.topic-card {
+  background: white;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .topic-header {
+    padding: 16px;
+    background: linear-gradient(135deg, #f8fafc, #edf2f7);
+    border-bottom: 1px solid $border-color;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    
+    .topic-icon {
+      font-size: 24px;
+    }
+    
+    .topic-info {
+      flex: 1;
+      
+      .topic-name {
+        margin: 0 0 4px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: $dark-color;
+      }
+      
+      .topic-weeks {
+        font-size: 12px;
+        color: #718096;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+    }
+    
+    .topic-progress {
+      .progress-ring {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border: 2px solid $border-color;
+        font-size: 12px;
+        font-weight: 700;
+        color: $primary-color;
+      }
+    }
+  }
+  
+  .topic-content {
+    padding: 16px;
+    
+    .topic-objectives {
+      margin-bottom: 16px;
+      
+      .objectives-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #718096;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      
+      .objectives-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        
+        li {
+          font-size: 13px;
+          color: #4a5568;
+          padding: 4px 0;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          
+          &:before {
+            content: "•";
+            color: $primary-color;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+    
+    .topic-lessons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+      
+      .lesson-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+        background: $light-color;
+        border-radius: 6px;
+        
+        .lesson-status {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          
+          &.completed {
+            background: $success-color;
+          }
+          
+          &.in-progress {
+            background: $warning-color;
+          }
+          
+          &.pending {
+            background: $border-color;
+          }
+        }
+        
+        .lesson-name {
+          flex: 1;
+          font-size: 13px;
+          color: $dark-color;
+        }
+        
+        .lesson-duration {
+          font-size: 12px;
+          color: #718096;
+        }
+      }
+    }
+    
+    .topic-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid $border-color;
+      
+      .topic-resources {
+        display: flex;
+        gap: 12px;
+        
+        span {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 12px;
+          color: #718096;
+        }
+      }
+      
+      .topic-action {
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 6px;
+        background: $light-color;
+        color: $dark-color;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+        
+        &:hover {
+          background: $primary-color;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .topics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Tablet Responsive
+@media (min-width: 769px) and (max-width: 1024px) {
+  .topics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.no-items {
+  padding: 60px 20px;
+  text-align: center;
+  color: #718096;
+  
+  .no-items-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 20px;
+    opacity: 0.5;
+  }
+  
+  h3 {
+    margin: 0 0 10px 0;
+    color: $dark-color;
+    font-size: 20px;
+  }
+  
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// .topics-grid {
+//   animation: fadeIn 0.5s ease-out forwards;
+//   opacity: 0;
+  
+//   @for $i from 1 through 6 {
+//     &:nth-child(#{$i}) {
+//       animation-delay: $i * 0.1s;
+//     }
+//   }
+// }

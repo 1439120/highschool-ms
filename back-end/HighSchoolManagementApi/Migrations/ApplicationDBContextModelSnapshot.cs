@@ -208,6 +208,28 @@ namespace HighSchoolManagementApi.Migrations
                     b.ToTable("Grades");
                 });
 
+            modelBuilder.Entity("HighSchoolManagementApi.Models.LessonObjectives", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicId");
+
+                    b.ToTable("LessonObjectives");
+                });
+
             modelBuilder.Entity("HighSchoolManagementApi.Models.LessonPlan", b =>
                 {
                     b.Property<int>("Id")
@@ -252,6 +274,35 @@ namespace HighSchoolManagementApi.Migrations
                     b.ToTable("LessonPlan");
                 });
 
+            modelBuilder.Entity("HighSchoolManagementApi.Models.Lessons", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("TopicId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicId");
+
+                    b.ToTable("Lessons");
+                });
+
             modelBuilder.Entity("HighSchoolManagementApi.Models.SubjectPlan", b =>
                 {
                     b.Property<int>("Id")
@@ -292,6 +343,36 @@ namespace HighSchoolManagementApi.Migrations
                     b.HasIndex("SubjectId");
 
                     b.ToTable("SubjectPlan");
+                });
+
+            modelBuilder.Entity("HighSchoolManagementApi.Models.SubjectTopics", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("EndWeek")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Progress")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StartWeek")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SubjectTopics");
                 });
 
             modelBuilder.Entity("HighSchoolManagementApi.Models.Subjects", b =>
@@ -626,6 +707,17 @@ namespace HighSchoolManagementApi.Migrations
                     b.Navigation("CreatedBy");
                 });
 
+            modelBuilder.Entity("HighSchoolManagementApi.Models.LessonObjectives", b =>
+                {
+                    b.HasOne("HighSchoolManagementApi.Models.SubjectTopics", "Topic")
+                        .WithMany("Objectives")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Topic");
+                });
+
             modelBuilder.Entity("HighSchoolManagementApi.Models.LessonPlan", b =>
                 {
                     b.HasOne("HighSchoolManagementApi.Models.Grades", "Grades")
@@ -657,6 +749,17 @@ namespace HighSchoolManagementApi.Migrations
                     b.Navigation("SubjectPlan");
 
                     b.Navigation("Subjects");
+                });
+
+            modelBuilder.Entity("HighSchoolManagementApi.Models.Lessons", b =>
+                {
+                    b.HasOne("HighSchoolManagementApi.Models.SubjectTopics", "Topic")
+                        .WithMany("Lessons")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Topic");
                 });
 
             modelBuilder.Entity("HighSchoolManagementApi.Models.SubjectPlan", b =>
@@ -847,6 +950,13 @@ namespace HighSchoolManagementApi.Migrations
             modelBuilder.Entity("HighSchoolManagementApi.Models.SubjectPlan", b =>
                 {
                     b.Navigation("LessonPlans");
+                });
+
+            modelBuilder.Entity("HighSchoolManagementApi.Models.SubjectTopics", b =>
+                {
+                    b.Navigation("Lessons");
+
+                    b.Navigation("Objectives");
                 });
 
             modelBuilder.Entity("HighSchoolManagementApi.Models.Subjects", b =>

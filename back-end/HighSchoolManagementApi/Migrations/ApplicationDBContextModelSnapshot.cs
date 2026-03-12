@@ -70,6 +70,9 @@ namespace HighSchoolManagementApi.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("UserDetailsId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -421,7 +424,8 @@ namespace HighSchoolManagementApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthUserId");
+                    b.HasIndex("AuthUserId")
+                        .IsUnique();
 
                     b.HasIndex("ClassroomId");
 
@@ -759,8 +763,8 @@ namespace HighSchoolManagementApi.Migrations
             modelBuilder.Entity("HighSchoolManagementApi.Models.Users", b =>
                 {
                     b.HasOne("HighSchoolManagementApi.Models.AuthUser", "AuthUser")
-                        .WithMany()
-                        .HasForeignKey("AuthUserId");
+                        .WithOne("UserDetails")
+                        .HasForeignKey("HighSchoolManagementApi.Models.Users", "AuthUserId");
 
                     b.HasOne("HighSchoolManagementApi.Models.Classroom", "Classroom")
                         .WithMany()
@@ -829,6 +833,9 @@ namespace HighSchoolManagementApi.Migrations
 
             modelBuilder.Entity("HighSchoolManagementApi.Models.AuthUser", b =>
                 {
+                    b.Navigation("UserDetails")
+                        .IsRequired();
+
                     b.Navigation("UserSubject");
                 });
 

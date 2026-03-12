@@ -23,6 +23,7 @@ namespace HighSchoolManagementApi.Data
 
             // defining a many 2 many relation wfor subjects and teachers/learners
             modelBuilder.Entity<UserSubject>(x => x.HasKey(p => new {p.AuthUserId, p.SubjectId}));
+
             modelBuilder.Entity<UserSubject>()
                 .HasOne(u => u.AuthUser)
                 .WithMany(u => u.UserSubject)
@@ -55,6 +56,12 @@ namespace HighSchoolManagementApi.Data
             
             modelBuilder.Entity<UserAssignedSubjects>()
                 .HasKey(uc => new { uc.UserId, uc.ClassId, uc.SubjectId });
+
+            // relationship between user and auth user
+            modelBuilder.Entity<AuthUser>()
+                .HasOne(a => a.UserDetails)
+                .WithOne(u => u.AuthUser)
+                .HasForeignKey<Users>(u => u.AuthUserId);
 
             List<IdentityRole > roles = new List<IdentityRole >
             {

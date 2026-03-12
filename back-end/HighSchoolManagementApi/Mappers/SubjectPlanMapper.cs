@@ -28,7 +28,7 @@ namespace HighSchoolManagementApi.Mappers
                 Id = subjectPlanModel.Id,
                 Name = subjectPlanModel.Name,
                 Subject = subjectPlanModel.Subject?.ToSubjectsDTO(),
-                CreatedBy = subjectPlanModel.CreatedBy?.ToUserDto(),
+                CreatedBy = subjectPlanModel.CreatedBy?.UserDetails?.ToUsersDto(),
                 Grade = subjectPlanModel.Grade?.ToGradesDto(),
                 CreatedOn = subjectPlanModel.CreatedOn,
                 LastUpdatedOn = subjectPlanModel.LastUpdatedOn,

@@ -24,6 +24,7 @@ namespace HighSchoolManagementApi.Repository
             .Include(c => c.Grade)
             .Include(c => c.Subject)
             .Include(c => c.CreatedBy)
+            .ThenInclude(u => u.UserDetails) 
             .ToListAsync();
         }
         public async Task<SubjectPlan> GetByIdAsync(int id)
@@ -32,6 +33,7 @@ namespace HighSchoolManagementApi.Repository
             .Include(c => c.Grade)
             .Include(c => c.Subject)
             .Include(c => c.CreatedBy)
+            .ThenInclude(u => u.UserDetails)
             .FirstOrDefaultAsync(s => s.Id == id);
         }
         public async Task<SubjectPlan?> Update(UpdateSubjectPlanDto subjectPlan, int subjectPlanId)

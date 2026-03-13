@@ -1,63 +1,285 @@
-    <div class="topics-grid">
-            <div *ngFor="let topic of getTopicsByTerm()" class="topic-card">
-        <div class="topic-header">
-        <div class="topic-icon">{{getTopicIcon(topic.name)}}</div>
-        <div class="topic-info">
-            <h3 class="topic-name">{{topic.name}}</h3>
-            <span class="topic-weeks">
-            <span class="meta-icon">📅</span>
-            Weeks {{topic.startWeek}} - {{topic.endWeek}}
-            </span>
-        </div>
-        <div class="topic-progress">
-            <div class="progress-ring">{{topic.progress}}%</div>
-        </div>
-        </div>
-        
-        <div class="topic-content">
-        <div class="topic-objectives">
-            <div class="objectives-title">
-            <span class="meta-icon">🎯</span> Learning Objectives
-            </div>
-            <ul class="objectives-list">
-            <li *ngFor="let objective of topic.objectives.slice(0, 3)">{{objective}}</li>
-            <li *ngIf="topic.objectives.length > 3">+{{topic.objectives.length - 3}} more</li>
-            </ul>
-        </div>
-        
-        <div class="topic-lessons">
-            <div *ngFor="let lesson of topic.lessons.slice(0, 2)" class="lesson-item">
-            <span class="lesson-status" [class]="lesson.status"></span>
-            <span class="lesson-name">{{lesson.name}}</span>
-            <span class="lesson-duration">{{lesson.duration}} min</span>
-            </div>
-            <div *ngIf="topic.lessons.length > 2" class="lesson-item">
-            <span class="lesson-name">+{{topic.lessons.length - 2}} more lessons</span>
-            </div>
-        </div>
-        
-        <div class="topic-footer">
-            <div class="topic-resources">
-            <span>
-                <span class="meta-icon">📄</span>
-                {{topic.resources}}
-            </span>
-            <span>
-                <span class="meta-icon">📝</span>
-                {{topic.assessments}}
-            </span>
-            </div>
-            <button class="topic-action">
-            <span class="btn-icon">👁️</span>
-            </button>
-        </div>
-        </div>
-    </div>
+<!-- Header with actions -->
+<div class="topics-header">
+  <div class="header-left">
+    <!-- <h3 class="section-title">
+      <span class="section-icon">📚</span>
+      Topics for {{termNumber()}}
+      <span class="topic-count">{{topics().length}} topics</span>
+    </h3> -->
     
-    <div *ngIf="getTopicsByTerm().length === 0" class="no-items">
-        <span class="no-items-icon">📋</span>
-        <h3>No topics for this term</h3>
-        <p>Click "Add Topic" to start building your curriculum.</p>
+    <!-- Search Bar -->
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Search topics..."
+        [ngModel]="searchTerm()"
+        (ngModelChange)="updateSearch($event)"
+      >
+      @if(searchTerm()){
+        <button class="clear-search" (click)="clearSearch()">✕</button>
+      }
     </div>
+  </div>
+  
+  <!-- Add Topic Button -->
+  @if(editable){
+    <button class="btn-add-topic" (click)="openAddForm()">
+      <span class="btn-icon">➕</span>
+      Add New Topic
+    </button>
+  }
 </div>
 
+<!-- Topics Grid -->
+<div class="topics-grid">
+  <!-- Add Form Card -->
+  @if(showAddForm()){
+    <div class="topic-card add-form-card">
+      <div class="form-header">
+        <h3>{{editingTopic() ? 'Edit Topic' : 'New Topic'}}</h3>
+        <button class="close-form" (click)="closeAddForm()">✕</button>
+      </div>
+      
+      <div class="form-body">
+        <!-- Topic Name -->
+        <div class="form-group">
+          <label>Topic Name *</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            [(ngModel)]="newTopic.name"
+            placeholder="e.g., Algebraic Expressions"
+          >
+        </div>
+        
+        <!-- Weeks Range -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Start Week</label>
+            <select class="form-control" [(ngModel)]="newTopic.startWeek">
+              @for(week of weeks; track week){
+                <option [value]="week">Week {{week}}</option>
+              }
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>End Week</label>
+            <select class="form-control" [(ngModel)]="newTopic.endWeek">
+              @for(week of weeks; track week){
+                <option [value]="week">Week {{week}}</option>
+              }
+            </select>
+          </div>
+        </div>
+        
+        <!-- Learning Objectives -->
+        <div class="form-group">
+          <label>Learning Objectives</label>
+          <div class="objectives-input">
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="newObjective"
+              placeholder="Add an objective..."
+              (keyup.enter)="addObjective()"
+            >
+            <button class="btn-add-objective" (click)="addObjective()">Add</button>
+          </div>
+          
+          @if(newTopic.objectives.length > 0){
+            <div class="objectives-list">
+              @for(objective of newTopic.objectives; track $index){
+                <div class="objective-item">
+                  <span>{{objective}}</span>
+                  <button class="remove-objective" (click)="removeObjective($index)">✕</button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+        
+        <!-- Lessons -->
+        <div class="form-group">
+          <div class="label-with-action">
+            <label>Lessons</label>
+            <button class="btn-add-small" (click)="addLesson()">+ Add Lesson</button>
+          </div>
+          
+          @if(newTopic.lessons.length > 0){
+            <div class="lessons-list">
+              @for(lesson of newTopic.lessons; track $index){
+                <div class="lesson-edit-item">
+                  <input 
+                    type="text" 
+                    class="lesson-name-input" 
+                    [(ngModel)]="lesson.name"
+                  >
+                  <input 
+                    type="number" 
+                    class="lesson-duration-input" 
+                    [(ngModel)]="lesson.duration"
+                    min="15"
+                    max="120"
+                    step="15"
+                  >
+                  <select class="lesson-status-select" [(ngModel)]="lesson.status">
+                    <option value="pending">Pending</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                  <button class="remove-lesson" (click)="removeLesson($index)">✕</button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+        
+        <!-- Resources & Assessments -->
+        <!-- <div class="form-row">
+          <div class="form-group">
+            <label>Resources</label>
+            <input 
+              type="number" 
+              class="form-control" 
+              [(ngModel)]="newTopic.resources"
+              min="0"
+            >
+          </div>
+          
+          <div class="form-group">
+            <label>Assessments</label>
+            <input 
+              type="number" 
+              class="form-control" 
+              [(ngModel)]="newTopic.assessments"
+              min="0"
+            >
+          </div>
+        </div> -->
+      </div>
+      
+      <div class="form-footer">
+        <button class="btn-cancel" (click)="closeAddForm()">Cancel</button>
+        <button class="btn-save" (click)="saveTopic()" [disabled]="!newTopic.name">
+          {{editingTopic() ? 'Update' : 'Create'}} Topic
+        </button>
+      </div>
+    </div>
+  }
+  
+  <!-- Topic Cards -->
+  @for(topic of filteredTopics(); track topic.id){
+    <div class="topic-card" [class.editable]="editable">
+      <!-- Delete Confirmation Overlay -->
+      @if(showDeleteConfirm() === topic.id){
+        <div class="delete-overlay">
+          <p>Delete "{{topic.name}}"?</p>
+          <div class="delete-actions">
+            <button class="btn-cancel-small" (click)="cancelDelete()">No</button>
+            <button class="btn-delete-small" (click)="deleteTopic(topic.id!)">Yes</button>
+          </div>
+        </div>
+      }
+      
+      <div class="topic-header">
+        <div class="topic-icon">{{getTopicIcon(topic.name)}}</div>
+        <div class="topic-info">
+          <h3 class="topic-name">{{topic.name}}</h3>
+          <span class="topic-weeks">
+            <span class="meta-icon">📅</span>
+            Weeks {{topic.startWeek}} - {{topic.endWeek}}
+          </span>
+        </div>
+        <div class="topic-progress">
+          <div class="progress-ring">{{topic.progress}}%</div>
+        </div>
+      </div>
+      
+      <div class="topic-content">
+        <!-- Learning Objectives -->
+        <div class="topic-objectives">
+          <div class="objectives-title">
+            <span class="meta-icon">🎯</span> Learning Objectives
+          </div>
+          <ul class="objectives-list">
+            @for(objective of topic.objectives.slice(0, 3); track $index){
+              <li>{{objective}}</li>
+            }
+            @if(topic.objectives.length > 3){
+              <li>+{{topic.objectives.length - 3}} more</li>
+            }
+          </ul>
+        </div>
+        
+        <!-- Lessons Preview -->
+        <div class="topic-lessons">
+          @for(lesson of topic.lessons.slice(0, 2); track $index){
+            <div class="lesson-item">
+              <span class="lesson-status" [class]="lesson.status"></span>
+              <span class="lesson-name">{{lesson.name}}</span>
+              <span class="lesson-duration">{{lesson.duration}} min</span>
+            </div>
+          }
+          @if(topic.lessons.length > 2){
+            <div class="lesson-item">
+              <span class="lesson-name">+{{topic.lessons.length - 2}} more lessons</span>
+            </div>
+          }
+        </div>
+        
+        <!-- Footer with Actions -->
+        <div class="topic-footer">
+          <div class="topic-resources">
+            <span>
+              <span class="meta-icon">📄</span>
+              {{topic.resources}}
+            </span>
+            <span>
+              <span class="meta-icon">📝</span>
+              {{topic.assessments}}
+            </span>
+          </div>
+          
+          <div class="topic-actions">
+            <button class="topic-action view" (click)="viewTopic(topic)" title="View Details">
+              <span class="btn-icon">👁️</span>
+            </button>
+            
+            @if(editable){
+              <button class="topic-action edit" (click)="editTopic(topic, $event)" title="Edit Topic">
+                <span class="btn-icon">✏️</span>
+              </button>
+              <button class="topic-action delete" (click)="confirmDelete(topic.id!, $event)" title="Delete Topic">
+                <span class="btn-icon">🗑️</span>
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+  
+  <!-- Empty State -->
+  @if(filteredTopics().length === 0 && !showAddForm()){
+    <div class="no-items">
+      <span class="no-items-icon">📋</span>
+      <h3>No topics for this term</h3>
+      <p>
+        @if(searchTerm()){
+          No topics match "{{searchTerm()}}"
+        } @else {
+          Click "Add New Topic" to start building your curriculum.
+        }
+      </p>
+      @if(searchTerm()){
+        <button class="btn-clear-search" (click)="clearSearch()">
+          <span class="btn-icon">✕</span>
+          Clear Search
+        </button>
+      }
+    </div>
+  }
+</div>

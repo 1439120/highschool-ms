@@ -236,7 +236,7 @@
           </div>
 
           <!-- Term Overview -->
-          <div class="term-overview">
+          <!-- <div class="term-overview">
             <div class="term-info">
               <h2 class="term-title">{{getActiveTermName()}}</h2>
               <div class="term-dates">
@@ -258,8 +258,15 @@
                 <span class="stat-label">Assessments</span>
               </div>
             </div>
-          </div>
-
+          </div> -->
+          <app-term-overview-card 
+            [term]="getActiveTermName()" 
+            [term_dates]="getActiveTermDates()" 
+            [weeks]="getActiveTermWeeks()"
+            [no_topics]="getActiveTermTopics()"
+            [no_lessons]="getActiveTermLessons()"
+            [no_assessments]="getActiveTermAssessments()"
+            />
           <!-- Topics View -->
            @if(viewType === 'topics'){
             <app-subject-topic-card [topics]="topics" [termNumber]="activeTerm()"/>

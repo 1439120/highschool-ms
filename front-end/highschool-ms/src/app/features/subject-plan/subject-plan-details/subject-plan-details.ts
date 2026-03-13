@@ -8,12 +8,13 @@ import SubjectPlanModel from '../../../models/SubjectPlanModel';
 import { SubjectsModel } from '../../../models/SubjectsModel';
 import { SubjectPlanService } from '../../../services/subject-plan-service';
 import { SubjectTopicCard } from '../../../components/subject-topic-card/subject-topic-card';
+import { TermOverviewCard } from '../../../components/term-overview-card/term-overview-card';
 
 @Component({
   selector: 'app-subject-plan-details',
   imports: [
     CommonModule, FormsModule, Breadcrumb, RouterLink, DatePipe,
-    SubjectTopicCard
+    SubjectTopicCard, TermOverviewCard
   ],
   templateUrl: './subject-plan-details.html',
   styleUrl: './subject-plan-details.scss',

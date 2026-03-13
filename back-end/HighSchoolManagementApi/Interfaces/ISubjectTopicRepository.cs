@@ -9,10 +9,10 @@ namespace HighSchoolManagementApi.Interfaces
     public interface ISubjectTopicRepository
     {
         Task<List<SubjectTopics>> GetTopicsBySubject(int subjectId);
-        Task<List<SubjectTopics>> GetTopicsByTerms(int term);
+        Task<List<SubjectTopics>> GetTopicsByTerms(int subjectId, int term);
         Task<SubjectTopics> AddNewTopic(SubjectTopics topic);
-        Task<LessonObjectives> AddNewLessonObjective(int topicId, LessonObjectives objective);
-        Task<Lessons> AddNewLesson(int topicId, Lessons lesson);
+        Task<LessonObjectives> AddNewTopicObjective(LessonObjectives objective);
+        Task<Lessons> AddNewLesson(Lessons lesson);
         Task<SubjectTopics?> DeleteTopic(int topicId);
         Task<LessonObjectives?> DeleteObjective(int objectiveId);
         Task<Lessons?> DeleteLesson(int lessonId);

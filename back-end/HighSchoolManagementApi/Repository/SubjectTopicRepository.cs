@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HighSchoolManagementApi.Interfaces;
 using HighSchoolManagementApi.Models;
 using HighSchoolManagementApi.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace HighSchoolManagementApi.Repository
 {
@@ -17,36 +18,69 @@ namespace HighSchoolManagementApi.Repository
         }
         public async Task<List<SubjectTopics>> GetTopicsBySubject(int subjectId)
         {
-            var topics = new List<SubjectTopics>();
-            return topics;
+            return await _context
+                .SubjectTopics
+                .Include(s => s.Objectives)
+                .Include(s => s.Lessons)
+                .Where(s => s.SubjectPlanId == subjectId)
+                .ToListAsync();
         }
-        public async Task<List<SubjectTopics>> GetTopicsByTerms(int term){
-            var topics = new List<SubjectTopics>();
-            return topics;
+        public async Task<List<SubjectTopics>> GetTopicsByTerms(int subjectId, int term){
+            return await _context
+                .SubjectTopics
+                .Where(s => s.SubjectPlanId == subjectId && s.Term == term)
+                .ToListAsync();
         }
         public async Task<SubjectTopics> AddNewTopic(SubjectTopics topic)
         {
+            await _context.SubjectTopics.AddAsync(topic);
+            await _context.SaveChangesAsync();
             return topic;
         }
-        public async Task<LessonObjectives> AddNewLessonObjective(int topicId, LessonObjectives objective)
+        public async Task<LessonObjectives> AddNewTopicObjective(LessonObjectives objective)
         {
+            await _context.LessonObjectives.AddAsync(objective);
+            await _context.SaveChangesAsync();
             return objective;
         }
-        public async Task<Lessons> AddNewLesson(int topicId, Lessons lesson)
+        public async Task<Lessons> AddNewLesson(Lessons lesson)
         {
+            await _context.Lessons.AddAsync(lesson);
+            await _context.SaveChangesAsync();
             return lesson;
         }
         public async Task<SubjectTopics?> DeleteTopic(int topicId)
         {
-            return null;
+            var topic = await _context
+                .SubjectTopics
+                .FirstOrDefaultAsync(s => s.Id == topicId);
+            if(topic == null) return null;
+            _context.SubjectTopics.Remove(topic);
+            await _context.SaveChangesAsync();
+
+            return topic;
         }
         public async Task<LessonObjectives?> DeleteObjective(int objectiveId)
         {
-            return null;
+            var objective = await _context
+                .LessonObjectives
+                .FirstOrDefaultAsync(s => s.Id == objectiveId);
+            if(objective == null) return null;
+            _context.LessonObjectives.Remove(objective);
+            await _context.SaveChangesAsync();
+
+            return objective;
         }
         public async Task<Lessons?> DeleteLesson(int lessonId)
         {
-            return null;
+            var lesson = await _context
+                .Lessons
+                .FirstOrDefaultAsync(s => s.Id == lessonId);
+            if(lesson == null) return null;
+            _context.Lessons.Remove(lesson);
+            await _context.SaveChangesAsync();
+
+            return lesson;
         }
         public async Task<SubjectTopics> EditTopic(SubjectTopics topic)
         {

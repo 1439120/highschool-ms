@@ -116,6 +116,7 @@ builder.Services.AddScoped<IUserClassesRepository, UserClassesRepository>();
 builder.Services.AddScoped<IClassSubjectsRepository, ClassSubjectsRepository>();
 builder.Services.AddScoped<IUserAssignedSubjectRepository, UserAssignedSubjectRepository>();
 builder.Services.AddScoped<IDocumentsRepository, DocumentsRepository>();
+builder.Services.AddScoped<ISubjectTopicRepository, SubjectTopicRepository>();
 
 var app = builder.Build();
 

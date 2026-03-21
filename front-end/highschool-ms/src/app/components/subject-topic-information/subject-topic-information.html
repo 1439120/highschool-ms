@@ -33,7 +33,7 @@
             </div>
             <ul class="objectives-list">
             @for(objective of topic()?.objectives?.slice(0, 3); track $index){
-                <li>{{objective}}</li>
+                <li>{{objective.name}}</li>
             }
             @if(topic()?.objectives?.length || 0 > 3){
                 <li>+{{topic()?.objectives?.length || 0 - 3}} more</li>

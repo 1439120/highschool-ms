@@ -95,7 +95,7 @@ export class SubjectTopicInformation {
   }
   addObjective() {
     if (this.newObjective.trim()) {
-      this.newTopic.objectives.push(this.newObjective.trim());
+      this.newTopic.objectives.push({name: this.newObjective.trim()});
       this.newObjective = '';
     }
   }
@@ -113,7 +113,8 @@ export class SubjectTopicInformation {
     this.newTopic.lessons.splice(index, 1);
   }
   saveTopic(){
-
+    // console.log("saving topic", this.editingTopic())
+    console.log("saving topic", this.newTopic)
   }
 
 

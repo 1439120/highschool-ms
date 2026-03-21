@@ -246,7 +246,7 @@
             />
           <!-- Topics View -->
            @if(viewType === 'topics'){
-            <app-subject-topic-card [topics]="topics" [termNumber]="activeTerm()"/>
+            <app-subject-topic-card [topics]="subjectTopics()" [termNumber]="activeTerm()"/>
            }
           
 

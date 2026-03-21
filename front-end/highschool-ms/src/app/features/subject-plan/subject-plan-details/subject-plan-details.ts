@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, effect, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -9,6 +9,8 @@ import { SubjectsModel } from '../../../models/SubjectsModel';
 import { SubjectPlanService } from '../../../services/subject-plan-service';
 import { SubjectTopicCard } from '../../../components/subject-topic-card/subject-topic-card';
 import { TermOverviewCard } from '../../../components/term-overview-card/term-overview-card';
+import { Topic } from '../../../models/Topic';
+import { SubjectTopicService } from '../../../services/subject-topic-service';
 
 @Component({
   selector: 'app-subject-plan-details',
@@ -25,6 +27,7 @@ export class SubjectPlanDetails {
   currentYear: number = new Date().getFullYear();
   recordId = signal<string>("");
   subjectPlan = signal<SubjectPlanModel | null>(null);
+  subjectTopics = signal<Topic[]>([]);
   creatorFullname = computed(()=>(
     `${this.subjectPlan()?.createdBy.name} ${this.subjectPlan()?.createdBy.surname}`
   ))
@@ -52,14 +55,6 @@ export class SubjectPlanDetails {
       id: 5, name: 'Life Orientation', 
     }
   ];
-  
-  // grades: Grades[] = [
-  //   { id: 1, name: '8', gradeNumber: 8 },
-  //   { id: 2, name: '9', gradeNumber: 9 },
-  //   { id: 3, name: '10', gradeNumber: 10 },
-  //   { id: 4, name: '11', gradeNumber: 11 },
-  //   { id: 5, name: '12', gradeNumber: 12 }
-  // ];
 
   // Terms data
   terms = [
@@ -231,7 +226,8 @@ export class SubjectPlanDetails {
   constructor(
     private route: ActivatedRoute,
     private datePipe: DatePipe,
-    private service: SubjectPlanService
+    private service: SubjectPlanService,
+    private subjectTopicsService: SubjectTopicService
   ) {
     // this.service.
     this.route.params.subscribe(params => {
@@ -250,8 +246,22 @@ export class SubjectPlanDetails {
           console.log("This is the data loade: ", data)
         }
       )
-      
     });
+
+    effect(()=>{
+      // get subject topics
+      subjectTopicsService
+        .getSubjectTopics(this.recordId())
+        .subscribe({
+          next: data => {
+              console.log("The data has bee loaded successfully: ", data)
+              this.subjectTopics.set(data)
+            },
+          error: err => {
+            console.log("There was an error: ", err)
+          }
+      });
+    })
   }
 
   ngOnInit() {

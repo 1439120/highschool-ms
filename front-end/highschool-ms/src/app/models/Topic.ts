@@ -4,7 +4,9 @@ export interface Topic {
   startWeek: number;
   endWeek: number;
   progress: number;
-  objectives: string[];
+  objectives: {
+    name: string
+  }[];
   lessons: {
     name: string;
     duration: number;

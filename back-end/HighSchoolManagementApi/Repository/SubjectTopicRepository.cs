@@ -16,7 +16,7 @@ namespace HighSchoolManagementApi.Repository
         {
             _context = context;
         }
-        public async Task<List<SubjectTopics>> GetTopicsBySubject(int subjectId)
+        public async Task<List<SubjectTopics>> GetTopicsBySubjectPlan(int subjectId)
         {
             return await _context
                 .SubjectTopics

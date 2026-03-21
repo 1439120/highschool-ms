@@ -20,10 +20,10 @@ namespace HighSchoolManagementApi.Controllers
             _topicRepo = topicRepo;
         }
         
-        [HttpGet("{subjectTopicId:int}")]
-        public async Task<IActionResult> GetSubjectTopics([FromRoute] int subjectTopicId)
+        [HttpGet("{subjectPlanId:int}")]
+        public async Task<IActionResult> GetSubjectTopics([FromRoute] int subjectPlanId)
         {
-            var topics = await _topicRepo.GetTopicsBySubject(subjectTopicId);
+            var topics = await _topicRepo.GetTopicsBySubjectPlan(subjectPlanId);
             return Ok(topics.Select(t => t.FromSubjectTopicsToDto()).ToList());
         }
         [HttpPost]

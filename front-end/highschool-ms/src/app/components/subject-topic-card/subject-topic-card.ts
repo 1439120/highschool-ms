@@ -36,7 +36,9 @@ export class SubjectTopicCard {
     objectives: [],
     lessons: [],
     resources: 0,
-    assessments: 0
+    assessments: 0,
+    term: 0,
+    description: 'no description'
   };
   newObjective: string = '';
 
@@ -97,7 +99,9 @@ export class SubjectTopicCard {
       objectives: [],
       lessons: [],
       resources: 0,
-      assessments: 0
+      assessments: 0,
+      term: 0,
+      description: 'no description',
     };
     this.newObjective = '';
   }

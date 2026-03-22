@@ -1,6 +1,8 @@
 import { Component, effect, EventEmitter, input, linkedSignal, Output, signal } from '@angular/core';
 import { Topic } from '../../models/Topic';
 import { FormsModule } from '@angular/forms';
+import { SubjectTopicService } from '../../services/subject-topic-service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-subject-topic-information',
@@ -12,6 +14,7 @@ export class SubjectTopicInformation {
   
   @Output() closeFormOnCancel = new EventEmitter();
   showDeleteConfirm = signal<boolean>(false);
+  recordId = signal<string>("");
   topic = input<Topic>();
   editMode = linkedSignal({
     source: this.topic,
@@ -29,12 +32,20 @@ export class SubjectTopicInformation {
     objectives: [],
     lessons: [],
     resources: 0,
-    assessments: 0
+    assessments: 0,
+    term: 0,
+    description: 'no description'
   };
   newObjective: string = '';
   weeks = Array.from({ length: 13 }, (_, i) => i + 1);
 
-   ngOnInit() {
+  constructor(private route: ActivatedRoute, private topicService: SubjectTopicService){
+    this.route.params.subscribe(params => {
+      this.recordId.set(params['id']);
+    })
+  }
+
+  ngOnInit() {
     // This runs once after inputs are initialized
     if (!this.topic()) {
       this.editMode.set(true);
@@ -113,8 +124,17 @@ export class SubjectTopicInformation {
     this.newTopic.lessons.splice(index, 1);
   }
   saveTopic(){
-    // console.log("saving topic", this.editingTopic())
     console.log("saving topic", this.newTopic)
+    this.topicService
+      .addNewTopic(this.recordId(), this.newTopic)
+      .subscribe({
+        next: data => {
+          console.log("The data was loaded successfully: ", data)
+        },
+        error: err => {
+          console.log("There was an error: ", err)
+        }
+      });
   }
 
 

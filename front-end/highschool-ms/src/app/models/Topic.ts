@@ -1,9 +1,11 @@
 export interface Topic {
   id?: string;
   name: string;
+  term: number;
   startWeek: number;
   endWeek: number;
   progress: number;
+  description: string;
   objectives: {
     name: string
   }[];

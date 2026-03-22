@@ -64,97 +64,97 @@ export class SubjectPlanDetails {
     { id: 4, name: 'Term 4', coverage: 20, completedTopics: 4, totalTopics: 20 }
   ];
 
-  // Topics data
-  topics = [
-    {
-      id: 1,
-      termId: 1,
-      name: 'Algebraic Expressions',
-      startWeek: 1,
-      endWeek: 3,
-      progress: 100,
-      objectives: [
-        'Simplify algebraic expressions',
-        'Expand and factorize expressions',
-        'Solve linear equations'
-      ],
-      lessons: [
-        { id: 1, name: 'Introduction to Variables', duration: 45, status: 'completed' },
-        { id: 2, name: 'Simplifying Expressions', duration: 45, status: 'completed' },
-        { id: 3, name: 'Solving Equations', duration: 45, status: 'completed' },
-        { id: 4, name: 'Word Problems', duration: 45, status: 'completed' }
-      ],
-      resources: 4,
-      assessments: 1,
-      lessonPlanId: 101
-    },
-    {
-      id: 2,
-      termId: 1,
-      name: 'Linear Equations',
-      startWeek: 4,
-      endWeek: 6,
-      progress: 75,
-      objectives: [
-        'Solve one-step equations',
-        'Solve two-step equations',
-        'Solve equations with variables on both sides'
-      ],
-      lessons: [
-        { id: 5, name: 'One-Step Equations', duration: 45, status: 'completed' },
-        { id: 6, name: 'Two-Step Equations', duration: 45, status: 'completed' },
-        { id: 7, name: 'Variables on Both Sides', duration: 45, status: 'in-progress' },
-        { id: 8, name: 'Equation Word Problems', duration: 45, status: 'pending' }
-      ],
-      resources: 3,
-      assessments: 1,
-      lessonPlanId: 102
-    },
-    {
-      id: 3,
-      termId: 1,
-      name: 'Linear Graphs',
-      startWeek: 7,
-      endWeek: 9,
-      progress: 40,
-      objectives: [
-        'Plot points on coordinate plane',
-        'Draw linear graphs',
-        'Find gradient and intercept'
-      ],
-      lessons: [
-        { id: 9, name: 'Coordinate Plane', duration: 45, status: 'completed' },
-        { id: 10, name: 'Plotting Linear Graphs', duration: 45, status: 'in-progress' },
-        { id: 11, name: 'Gradient and Intercept', duration: 45, status: 'pending' },
-        { id: 12, name: 'Real-world Applications', duration: 45, status: 'pending' }
-      ],
-      resources: 5,
-      assessments: 2,
-      lessonPlanId: 103
-    },
-    {
-      id: 4,
-      termId: 2,
-      name: 'Geometry: Angles',
-      startWeek: 1,
-      endWeek: 3,
-      progress: 90,
-      objectives: [
-        'Identify angle types',
-        'Calculate missing angles',
-        'Work with parallel lines'
-      ],
-      lessons: [
-        { id: 13, name: 'Angle Basics', duration: 45, status: 'completed' },
-        { id: 14, name: 'Complementary & Supplementary', duration: 45, status: 'completed' },
-        { id: 15, name: 'Parallel Lines', duration: 45, status: 'completed' },
-        { id: 16, name: 'Angle Problems', duration: 45, status: 'in-progress' }
-      ],
-      resources: 4,
-      assessments: 1,
-      lessonPlanId: 104
-    }
-  ];
+  // // Topics data
+  // topics = [
+  //   {
+  //     id: 1,
+  //     termId: 1,
+  //     name: 'Algebraic Expressions',
+  //     startWeek: 1,
+  //     endWeek: 3,
+  //     progress: 100,
+  //     objectives: [
+  //       'Simplify algebraic expressions',
+  //       'Expand and factorize expressions',
+  //       'Solve linear equations'
+  //     ],
+  //     lessons: [
+  //       { id: 1, name: 'Introduction to Variables', duration: 45, status: 'completed' },
+  //       { id: 2, name: 'Simplifying Expressions', duration: 45, status: 'completed' },
+  //       { id: 3, name: 'Solving Equations', duration: 45, status: 'completed' },
+  //       { id: 4, name: 'Word Problems', duration: 45, status: 'completed' }
+  //     ],
+  //     resources: 4,
+  //     assessments: 1,
+  //     lessonPlanId: 101
+  //   },
+  //   {
+  //     id: 2,
+  //     termId: 1,
+  //     name: 'Linear Equations',
+  //     startWeek: 4,
+  //     endWeek: 6,
+  //     progress: 75,
+  //     objectives: [
+  //       'Solve one-step equations',
+  //       'Solve two-step equations',
+  //       'Solve equations with variables on both sides'
+  //     ],
+  //     lessons: [
+  //       { id: 5, name: 'One-Step Equations', duration: 45, status: 'completed' },
+  //       { id: 6, name: 'Two-Step Equations', duration: 45, status: 'completed' },
+  //       { id: 7, name: 'Variables on Both Sides', duration: 45, status: 'in-progress' },
+  //       { id: 8, name: 'Equation Word Problems', duration: 45, status: 'pending' }
+  //     ],
+  //     resources: 3,
+  //     assessments: 1,
+  //     lessonPlanId: 102
+  //   },
+  //   {
+  //     id: 3,
+  //     termId: 1,
+  //     name: 'Linear Graphs',
+  //     startWeek: 7,
+  //     endWeek: 9,
+  //     progress: 40,
+  //     objectives: [
+  //       'Plot points on coordinate plane',
+  //       'Draw linear graphs',
+  //       'Find gradient and intercept'
+  //     ],
+  //     lessons: [
+  //       { id: 9, name: 'Coordinate Plane', duration: 45, status: 'completed' },
+  //       { id: 10, name: 'Plotting Linear Graphs', duration: 45, status: 'in-progress' },
+  //       { id: 11, name: 'Gradient and Intercept', duration: 45, status: 'pending' },
+  //       { id: 12, name: 'Real-world Applications', duration: 45, status: 'pending' }
+  //     ],
+  //     resources: 5,
+  //     assessments: 2,
+  //     lessonPlanId: 103
+  //   },
+  //   {
+  //     id: 4,
+  //     termId: 2,
+  //     name: 'Geometry: Angles',
+  //     startWeek: 1,
+  //     endWeek: 3,
+  //     progress: 90,
+  //     objectives: [
+  //       'Identify angle types',
+  //       'Calculate missing angles',
+  //       'Work with parallel lines'
+  //     ],
+  //     lessons: [
+  //       { id: 13, name: 'Angle Basics', duration: 45, status: 'completed' },
+  //       { id: 14, name: 'Complementary & Supplementary', duration: 45, status: 'completed' },
+  //       { id: 15, name: 'Parallel Lines', duration: 45, status: 'completed' },
+  //       { id: 16, name: 'Angle Problems', duration: 45, status: 'in-progress' }
+  //     ],
+  //     resources: 4,
+  //     assessments: 1,
+  //     lessonPlanId: 104
+  //   }
+  // ];
 
   // Assessments data
   assessments = [
@@ -321,10 +321,10 @@ export class SubjectPlanDetails {
 
   calculateProgress() {
     // Calculate total lessons
-    this.totalLessons = this.topics.reduce((sum, topic) => sum + topic.lessons.length, 0);
+    this.totalLessons = this.subjectTopics().reduce((sum, topic) => sum + topic.lessons.length, 0);
     
     // Calculate completed lessons
-    this.completedLessons = this.topics.reduce((sum, topic) => 
+    this.completedLessons = this.subjectTopics().reduce((sum, topic) => 
       sum + topic.lessons.filter(lesson => lesson.status === 'completed').length, 0
     );
     
@@ -332,8 +332,8 @@ export class SubjectPlanDetails {
     this.overallProgress = Math.round((this.completedLessons / this.totalLessons) * 100);
     
     // Calculate topic status
-    this.completedTopics = this.topics.filter(topic => topic.progress === 100).length;
-    this.inProgressTopics = this.topics.filter(topic => topic.progress > 0 && topic.progress < 100).length;
+    this.completedTopics = this.subjectTopics().filter(topic => topic.progress === 100).length;
+    this.inProgressTopics = this.subjectTopics().filter(topic => topic.progress > 0 && topic.progress < 100).length;
   }
 
   // Getters for active term
@@ -358,12 +358,12 @@ export class SubjectPlanDetails {
   }
 
   getActiveTermTopics(): number {
-    return this.topics.filter(t => t.termId === this.activeTerm()).length;
+    return this.subjectTopics().filter(t => t.term === this.activeTerm()).length;
   }
 
   getActiveTermLessons(): number {
-    return this.topics
-      .filter(t => t.termId === this.activeTerm())
+    return this.subjectTopics()
+      .filter(t => t.term === this.activeTerm())
       .reduce((sum, topic) => sum + topic.lessons.length, 0);
   }
 
@@ -377,8 +377,8 @@ export class SubjectPlanDetails {
     const totalWeeks = this.getActiveTermWeeks();
     
     for (let i = 1; i <= totalWeeks; i++) {
-      const weekTopics = this.topics.filter(t => 
-        t.termId === termId && 
+      const weekTopics = this.subjectTopics().filter(t => 
+        t.term === termId && 
         t.startWeek <= i && 
         t.endWeek >= i
       );

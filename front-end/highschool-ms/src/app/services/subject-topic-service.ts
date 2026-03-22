@@ -13,4 +13,10 @@ export class SubjectTopicService {
   getSubjectTopics(subjectId: string): Observable<Topic[]> {
     return this.http.get<Topic[]>(`${this.apiUrl}/${subjectId}`);
   }
+
+  addNewTopic(subjectId: string, topic: Topic): Observable<Topic>{
+    const payload = { ...topic, subjectPlanId: parseInt(subjectId)};
+    console.log("this is my payload", payload)
+    return this.http.post<Topic>(`${this.apiUrl}`, payload)
+  }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HighSchoolManagementApi.Models;
+using HighSchoolManagementApi.Dtos.SubjectTopic;
 
 namespace HighSchoolManagementApi.Interfaces
 {
@@ -11,6 +12,7 @@ namespace HighSchoolManagementApi.Interfaces
         Task<List<SubjectTopics>> GetTopicsBySubjectPlan(int subjectId);
         Task<List<SubjectTopics>> GetTopicsByTerms(int subjectId, int term);
         Task<SubjectTopics> AddNewTopic(SubjectTopics topic);
+        Task<SubjectTopics?> EditSubjectTopic(int topicId, EditSubjectTopicDto topic);
         Task<LessonObjectives> AddNewTopicObjective(LessonObjectives objective);
         Task<Lessons> AddNewLesson(Lessons lesson);
         Task<SubjectTopics?> DeleteTopic(int topicId);

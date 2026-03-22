@@ -32,6 +32,12 @@ namespace HighSchoolManagementApi.Controllers
             var topic = await _topicRepo.AddNewTopic(topicDto.FromDtoToSubjectTopics());
             return Ok(topic);
         }
+        [HttpPut("{topicId:int}")]
+        public async Task<IActionResult> EditSubjectTopic([FromRoute] int topicId, [FromBody] EditSubjectTopicDto topicDto)
+        {
+            var topic = await _topicRepo.EditSubjectTopic(topicId, topicDto);
+            return Ok(topic);
+        }
         [HttpPost("objective")]
         public async Task<IActionResult> AddTopicObjective([FromBody] AddObjectiveDto objectiveDto)
         {

@@ -6,6 +6,7 @@ using HighSchoolManagementApi.Interfaces;
 using HighSchoolManagementApi.Models;
 using HighSchoolManagementApi.Data;
 using Microsoft.EntityFrameworkCore;
+using HighSchoolManagementApi.Dtos.SubjectTopic;
 
 namespace HighSchoolManagementApi.Repository
 {
@@ -36,6 +37,21 @@ namespace HighSchoolManagementApi.Repository
             await _context.SubjectTopics.AddAsync(topic);
             await _context.SaveChangesAsync();
             return topic;
+        }
+        public async Task<SubjectTopics?> EditSubjectTopic(int topicId, EditSubjectTopicDto topic)
+        {
+            var topicsModel = await _context.SubjectTopics.FirstOrDefaultAsync(x => x.Id == topicId);
+            if(topicsModel == null) return null;
+
+            topicsModel.Name = topic.Name;
+            topicsModel.Term = topic.Term;
+            topicsModel.StartWeek = topic.StartWeek;
+            topicsModel.EndWeek = topic.EndWeek;
+            topicsModel.Progress = topic.Progress;
+            topicsModel.LastUpdatedOn = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return topicsModel;
         }
         public async Task<LessonObjectives> AddNewTopicObjective(LessonObjectives objective)
         {

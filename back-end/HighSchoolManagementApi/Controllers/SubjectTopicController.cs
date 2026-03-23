@@ -64,6 +64,19 @@ namespace HighSchoolManagementApi.Controllers
             var topic = await _topicRepo.AddNewLesson(lessonDto.FromDtoToTopicLesson());
             return Ok(topic);
         }
+        [HttpPost("lessons/all")]
+        public async Task<IActionResult> AddMultipleLessons([FromBody] List<AddLessonDto> lessonDto)
+        {
+            var topics = lessonDto.Select(x => x.FromDtoToTopicLesson()).ToList();
+            var result = await _topicRepo.AddMultipleLesson(topics);
+            return Ok(result);
+        }
+        [HttpDelete("lessons/removeall/{topicId:int}")]
+        public async Task<IActionResult> RemoveAllLessons([FromRoute] int topicId)
+        {
+            var topics = await _topicRepo.RemoveAllLesson(topicId);
+            return Ok(topics);
+        }
         [HttpDelete("{topicId:int}")]
         public async Task<IActionResult> DeleteTopic([FromRoute] int topicId)
         {

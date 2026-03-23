@@ -45,11 +45,18 @@ namespace HighSchoolManagementApi.Controllers
             return Ok(topic);
         }
         [HttpPost("objective/all")]
-        public async Task<IActionResult> AddTopicObjective([FromBody] List<AddObjectiveDto> objectiveDto)
+        public async Task<IActionResult> AddMultipleObjective([FromBody] List<AddObjectiveDto> objectiveDto)
         {
             var objectiveModel = objectiveDto.Select(dto => dto.FromDtoToLessonObjective()).ToList();
             var objectives = await _topicRepo.AddMultipleObjectives(objectiveModel);
             return Ok(objectives);
+        }
+        [HttpDelete("objective/removeall/{topicId:int}")]
+        public async Task<IActionResult> RemoveAllObjectives([FromRoute] int topicId)
+        {
+            var objectives = await _topicRepo.RemoveAllObjectives(topicId);
+            var objectivesDto = objectives.Select(x => x.FromObjectivesToDto());
+            return Ok(objectivesDto);
         }
         [HttpPost("lessons")]
         public async Task<IActionResult> AddTopicLessons([FromBody] AddLessonDto lessonDto)

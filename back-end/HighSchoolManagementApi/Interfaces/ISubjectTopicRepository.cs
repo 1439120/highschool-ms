@@ -15,6 +15,7 @@ namespace HighSchoolManagementApi.Interfaces
         Task<SubjectTopics?> EditSubjectTopic(int topicId, EditSubjectTopicDto topic);
         Task<LessonObjectives> AddNewTopicObjective(LessonObjectives objective);
         Task<List<LessonObjectives>> AddMultipleObjectives(List<LessonObjectives> objectives);
+        Task<List<LessonObjectives>> RemoveAllObjectives(int topicId);
         Task<Lessons> AddNewLesson(Lessons lesson);
         Task<SubjectTopics?> DeleteTopic(int topicId);
         Task<LessonObjectives?> DeleteObjective(int objectiveId);

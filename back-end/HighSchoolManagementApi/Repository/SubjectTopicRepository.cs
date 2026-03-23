@@ -66,6 +66,16 @@ namespace HighSchoolManagementApi.Repository
             await _context.SaveChangesAsync();
             return objectives;
         }
+        public async Task<List<LessonObjectives>> RemoveAllObjectives(int topicId)
+        {
+            var objectives = await _context
+                .LessonObjectives
+                .Where(x => x.TopicId == topicId)
+                .ToListAsync();
+            _context.LessonObjectives.RemoveRange(objectives);
+            await _context.SaveChangesAsync();
+            return objectives;
+        }
         public async Task<Lessons> AddNewLesson(Lessons lesson)
         {
             await _context.Lessons.AddAsync(lesson);

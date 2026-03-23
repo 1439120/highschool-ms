@@ -143,6 +143,12 @@ export class SubjectTopicInformation {
               console.log("Objective added successfully", addedObjectives)
               this.editMode.set(false);
             });
+          this.topicService
+            .removeTopicLessons(data.id)
+            .subscribe((rmLesson) => console.log("Removed all the lessons"))
+          this.topicService
+            .addTopicLessons(data.id, this.newTopic.lessons)
+            .subscribe(addLessons => console.log("Added lessons: ", addLessons))
         }
       },
       error: (err) => console.error("Save failed:", err)

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Topic } from '../models/Topic';
+import { Topic, TopicLesson } from '../models/Topic';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -32,5 +32,15 @@ export class SubjectTopicService {
   }
   removeAllObjectives(topicId: string): Observable<Topic>{
     return this.http.delete<Topic>(`${this.apiUrl}/objective/removeall/${topicId}`)
+  }
+
+  addTopicLessons(topicId: string, lessons: TopicLesson[]){
+    // const payload = lessons
+    const payload = lessons.map((data)=> ({...data, topicId:topicId}));
+    console.log("these are my lessons payload", payload)
+    return this.http.post<Topic>(`${this.apiUrl}/lessons/all`, payload)
+  }
+  removeTopicLessons(topicId: string){
+    return this.http.delete<Topic>(`${this.apiUrl}/lessons/removeall/${topicId}`)
   }
 }

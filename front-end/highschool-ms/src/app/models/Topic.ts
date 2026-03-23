@@ -9,12 +9,14 @@ export interface Topic {
   objectives: {
     name: string
   }[];
-  lessons: {
-    name: string;
-    duration: number;
-    status: 'completed' | 'in-progress' | 'pending';
-  }[];
+  lessons: TopicLesson[];
   resources: number;
   assessments: number;
   lessonPlanId?: number;
+}
+
+export interface TopicLesson{
+  name: string;
+    duration: number;
+    status: 'completed' | 'in-progress' | 'pending';
 }

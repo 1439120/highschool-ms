@@ -123,18 +123,30 @@ export class SubjectTopicInformation {
   removeLesson(index: number) {
     this.newTopic.lessons.splice(index, 1);
   }
-  saveTopic(){
-    console.log("saving topic", this.newTopic)
-    this.topicService
-      .addNewTopic(this.recordId(), this.newTopic)
-      .subscribe({
-        next: data => {
-          console.log("The data was loaded successfully: ", data)
-        },
-        error: err => {
-          console.log("There was an error: ", err)
+  saveTopic() {
+    // Determine which service method to call
+    const request$ = this.editingTopic() 
+      ? this.topicService.editExistingTopic(this.recordId(), this.newTopic)
+      : this.topicService.addNewTopic(this.recordId(), this.newTopic);
+
+    request$.subscribe({
+      next: (data) => {
+        console.log("Topic saved successfully:", data);
+        // Handle objectives if ID exists
+        if (data?.id) {
+          this.topicService
+            .removeAllObjectives(data.id)
+            .subscribe((rmObjectives)=>console.log("Objective removed successfully", rmObjectives));
+          this.topicService
+            .addObjectiveToTopic(data.id, this.newTopic.objectives)
+            .subscribe((addedObjectives)=>{
+              console.log("Objective added successfully", addedObjectives)
+              this.editMode.set(false);
+            });
         }
-      });
+      },
+      error: (err) => console.error("Save failed:", err)
+    });
   }
 
 

@@ -146,7 +146,7 @@
             <div class="objectives-list">
               @for(objective of newTopic.objectives; track $index){
                 <div class="objective-item">
-                  <span>{{objective}}</span>
+                  <span>{{objective.name}}</span>
                   <button class="remove-objective" (click)="removeObjective($index)">✕</button>
                 </div>
               }

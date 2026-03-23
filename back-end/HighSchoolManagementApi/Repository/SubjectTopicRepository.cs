@@ -48,6 +48,7 @@ namespace HighSchoolManagementApi.Repository
             topicsModel.StartWeek = topic.StartWeek;
             topicsModel.EndWeek = topic.EndWeek;
             topicsModel.Progress = topic.Progress;
+            topicsModel.Description = topic.Description;
             topicsModel.LastUpdatedOn = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
@@ -58,6 +59,12 @@ namespace HighSchoolManagementApi.Repository
             await _context.LessonObjectives.AddAsync(objective);
             await _context.SaveChangesAsync();
             return objective;
+        }
+        public async Task<List<LessonObjectives>> AddMultipleObjectives(List<LessonObjectives> objectives)
+        {
+            _context.LessonObjectives.AddRange(objectives);
+            await _context.SaveChangesAsync();
+            return objectives;
         }
         public async Task<Lessons> AddNewLesson(Lessons lesson)
         {

@@ -44,6 +44,13 @@ namespace HighSchoolManagementApi.Controllers
             var topic = await _topicRepo.AddNewTopicObjective(objectiveDto.FromDtoToLessonObjective());
             return Ok(topic);
         }
+        [HttpPost("objective/all")]
+        public async Task<IActionResult> AddTopicObjective([FromBody] List<AddObjectiveDto> objectiveDto)
+        {
+            var objectiveModel = objectiveDto.Select(dto => dto.FromDtoToLessonObjective()).ToList();
+            var objectives = await _topicRepo.AddMultipleObjectives(objectiveModel);
+            return Ok(objectives);
+        }
         [HttpPost("lessons")]
         public async Task<IActionResult> AddTopicLessons([FromBody] AddLessonDto lessonDto)
         {

@@ -1,7 +1,7 @@
 <app-breadcrumb [titleBreadcrumbs]="breadCrumb()"/>
 
 <div class="subject-plan-container">
-  <!-- Fixed Header -->
+  <!-- Fixed Header - Always visible -->
   <div class="details-header">
     <button class="back-btn" routerLink="/subject-plans">
       <span class="btn-icon">←</span> Back to Subject Plans
@@ -32,16 +32,27 @@
       <button class="btn btn-secondary" (click)="exportPlan()">
         <span class="btn-icon">📤</span> Export
       </button>
-      <button class="btn btn-primary" (click)="editPlan()">
-        <span class="btn-icon">✏️</span> Edit Plan
-      </button>
+      @if(!editMode()){
+        <button class="btn btn-primary" (click)="editPlan()">
+          <span class="btn-icon">✏️</span> Edit Plan
+        </button>
+      }
+      @if(editMode()){
+        <button class="btn btn-secondary" (click)="cancelEdit()">
+          <span class="btn-icon">✕</span> Cancel
+        </button>
+        <button class="btn btn-primary" (click)="saveEdit()" [disabled]="editForm.invalid || !editForm.dirty">
+          <span class="btn-icon">💾</span> Save Changes
+        </button>
+      }
     </div>
   </div>
 
   <!-- Scrollable Content Area -->
   <div class="scrollable-content">
     <div class="details-content-wrapper">
-      <!-- Subject Plan Header Card -->
+      
+      <!-- Subject Plan Header Card - Always visible -->
       <div class="plan-header-card">
         <div class="plan-header">
           <div class="plan-avatar">
@@ -73,21 +84,21 @@
           </div>
         </div>
 
-        <!-- Progress Overview Cards -->
+        <!-- Progress Overview Cards - Always visible -->
         <div class="progress-overview">
           <div class="progress-card">
             <div class="progress-icon">📊</div>
             <div class="progress-content">
               <span class="progress-label">Overall Progress</span>
-              <span class="progress-value">{{overallProgress}}%</span>
-              <span class="progress-sub">{{completedLessons}}/{{totalLessons}} lessons</span>
+              <span class="progress-value">{{overallProgress()}}%</span>
+              <span class="progress-sub">{{completedLessons()}}/{{totalLessons()}} lessons</span>
             </div>
           </div>
           <div class="progress-card">
             <div class="progress-icon">✅</div>
             <div class="progress-content">
               <span class="progress-label">Completed</span>
-              <span class="progress-value">{{completedTopics}}</span>
+              <span class="progress-value">{{completedTopics()}}</span>
               <span class="progress-sub">topics</span>
             </div>
           </div>
@@ -95,7 +106,7 @@
             <div class="progress-icon">⏳</div>
             <div class="progress-content">
               <span class="progress-label">In Progress</span>
-              <span class="progress-value">{{inProgressTopics}}</span>
+              <span class="progress-value">{{inProgressTopics()}}</span>
               <span class="progress-sub">topics</span>
             </div>
           </div>
@@ -110,218 +121,337 @@
         </div>
       </div>
 
-      <!-- Main Content Grid -->
-      <div class="plan-content-grid">
-        <!-- Sidebar -->
-        <div class="plan-sidebar">
-          <!-- Curriculum Coverage -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-title">
-              <span class="title-icon">📈</span>
-              Curriculum Coverage
+      <!-- Edit Mode Form - Replaces the main content when in edit mode -->
+      @if(editMode()){
+        <div class="edit-mode-container">
+          <div class="edit-mode-header">
+            <h3>
+              <span class="edit-icon">✏️</span>
+              Edit Subject Plan Details
             </h3>
-            <div class="curriculum-progress">
-              <div *ngFor="let term of terms" class="progress-item">
-                <div class="progress-header">
-                  <span class="term-name">{{term.name}}</span>
-                  <span class="term-percentage">{{term.coverage}}%</span>
-                </div>
-                <div class="progress-bar-container">
-                  <div class="progress-bar" [style.width]="term.coverage + '%'"></div>
-                </div>
-                <div class="progress-detail">
-                  {{term.completedTopics}}/{{term.totalTopics}} topics
-                </div>
-              </div>
-            </div>
           </div>
-
-          <!-- Key Dates -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-title">
-              <span class="title-icon">📅</span>
-              Key Dates
-            </h3>
-            <div class="key-dates-list">
-              <div class="date-item" *ngFor="let date of keyDates">
-                <span class="date-icon">{{date.icon}}</span>
-                <div class="date-content">
-                  <div class="date-title">{{date.title}}</div>
-                  <div class="date-value">{{date.date | date:'mediumDate'}}</div>
-                </div>
-                <span class="date-badge" [class]="date.status">{{date.status}}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Resources Summary -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-title">
-              <span class="title-icon">📁</span>
-              Resources
-            </h3>
-            <div class="resources-summary">
-              <div class="resource-stat">
-                <span class="resource-label">
-                  <span class="resource-icon">📖</span>
-                  Textbooks
-                </span>
-                <span class="resource-count">{{resourceCounts.textbooks}}</span>
-              </div>
-              <div class="resource-stat">
-                <span class="resource-label">
-                  <span class="resource-icon">📝</span>
-                  Worksheets
-                </span>
-                <span class="resource-count">{{resourceCounts.worksheets}}</span>
-              </div>
-              <div class="resource-stat">
-                <span class="resource-label">
-                  <span class="resource-icon">🎬</span>
-                  Videos
-                </span>
-                <span class="resource-count">{{resourceCounts.videos}}</span>
-              </div>
-              <div class="resource-stat">
-                <span class="resource-label">
-                  <span class="resource-icon">📋</span>
-                  Assessments
-                </span>
-                <span class="resource-count">{{resourceCounts.assessments}}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Quick Actions -->
-          <div class="sidebar-section">
-            <h3 class="sidebar-title">
-              <span class="title-icon">⚡</span>
-              Quick Actions
-            </h3>
-            <button class="btn btn-outline btn-sm" style="width: 100%; margin-bottom: 8px;" (click)="addTopic()">
-              <span class="btn-icon">➕</span> Add Topic
-            </button>
-            <button class="btn btn-outline btn-sm" style="width: 100%; margin-bottom: 8px;" (click)="addLesson()">
-              <span class="btn-icon">📚</span> Add Lesson
-            </button>
-            <button class="btn btn-outline btn-sm" style="width: 100%;" (click)="scheduleAssessment()">
-              <span class="btn-icon">📝</span> Schedule Assessment
-            </button>
-          </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="plan-main-content">
-          <!-- Term Tabs -->
-          <div class="term-tabs">
-            <div class="tabs-container">
-              <button *ngFor="let term of terms" 
-                      class="term-tab" 
-                      [class.active]="activeTerm() === term.id"
-                      (click)="setActiveTerm(term.id)">
-                {{term.name}}
-              </button>
-            </div>
-            <div class="term-actions">
-              <button class="btn btn-outline btn-sm" (click)="viewType = 'topics'" [class.btn-primary]="viewType === 'topics'">
-                <span class="btn-icon">📋</span> Topics
-              </button>
-              <button class="btn btn-outline btn-sm" (click)="viewType = 'weeks'" [class.btn-primary]="viewType === 'weeks'">
-                <span class="btn-icon">📅</span> Weeks
-              </button>
-              <button class="btn btn-outline btn-sm" (click)="viewType = 'assessments'" [class.btn-primary]="viewType === 'assessments'">
-                <span class="btn-icon">📝</span> Assessments
-              </button>
-            </div>
-          </div>
-
-          <!-- Term Overview -->
-          <app-term-overview-card 
-            [term]="getActiveTermName()" 
-            [term_dates]="getActiveTermDates()" 
-            [weeks]="getActiveTermWeeks()"
-            [no_topics]="getActiveTermTopics()"
-            [no_lessons]="getActiveTermLessons()"
-            [no_assessments]="getActiveTermAssessments()"
-            />
-          <!-- Topics View -->
-           @if(viewType === 'topics'){
-            <app-subject-topic-card [topics]="subjectTopics()" [termNumber]="activeTerm()"/>
-           }
           
-
-          <!-- Week-by-Week View -->
-          <div *ngIf="viewType === 'weeks'" class="week-view">
-            <div *ngFor="let week of getWeeksByTerm(activeTerm())" class="week-item">
-              <div class="week-header">
-                <div class="week-title">
-                  <h3>Week {{week.weekNumber}}</h3>
-                  <span class="week-dates">{{week.startDate | date:'MMM d'}} - {{week.endDate | date:'MMM d, yyyy'}}</span>
-                </div>
-                <div class="week-progress">
-                  <span class="progress-text">{{week.progress}}% complete</span>
-                </div>
+          <form [formGroup]="editForm" (ngSubmit)="saveEdit()" class="edit-form">
+            <div class="edit-form-grid">
+              <!-- Plan Name -->
+              <div class="form-field full-width">
+                <label class="form-label">
+                  <span class="label-icon">📝</span>
+                  Plan Name
+                  <span class="required">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  formControlName="name"
+                  placeholder="e.g., Grade 8 Mathematics Annual Plan"
+                >
+                @if(editForm.get('name')?.invalid && editForm.get('name')?.touched){
+                  <div class="error-message">
+                    Plan name is required (minimum 3 characters)
+                  </div>
+                }
               </div>
               
-              <div class="week-lessons">
-                <div *ngFor="let lesson of week.lessons" class="week-lesson-card">
-                  <div class="lesson-number">{{lesson.lessonNumber}}</div>
-                  <div class="lesson-details">
-                    <div class="lesson-title">{{lesson.name}}</div>
-                    <div class="lesson-meta">
-                      <span>
-                        <span class="meta-icon">⏱️</span>
-                        {{lesson.duration}} min
-                      </span>
-                      <span>
-                        <span class="meta-icon">📋</span>
-                        {{lesson.topic}}
-                      </span>
-                    </div>
+              <!-- Subject -->
+              <div class="form-field">
+                <label class="form-label">
+                  <span class="label-icon">📚</span>
+                  Subject
+                  <span class="required">*</span>
+                </label>
+                <select class="form-control" formControlName="subject">
+                  <option value="">Select Subject</option>
+                  @for(subject of subjects; track subject.id){
+                    <option [value]="subject.id">{{subject.name}}</option>
+                  }
+                </select>
+                @if(editForm.get('subject')?.invalid && editForm.get('subject')?.touched){
+                  <div class="error-message">Please select a subject</div>
+                }
+              </div>
+              
+              <!-- Grade -->
+              <div class="form-field">
+                <label class="form-label">
+                  <span class="label-icon">🎓</span>
+                  Grade Level
+                  <span class="required">*</span>
+                </label>
+                <select class="form-control" formControlName="grade">
+                  <option value="">Select Grade</option>
+                  @for(grade of grades(); track grade.id){
+                    <option [value]="grade.id">Grade {{grade.gradeNumber}}</option>
+                  }
+                </select>
+                @if(editForm.get('grade')?.invalid && editForm.get('grade')?.touched){
+                  <div class="error-message">Please select a grade level</div>
+                }
+              </div>
+              
+              <!-- Year -->
+              <div class="form-field">
+                <label class="form-label">
+                  <span class="label-icon">📅</span>
+                  Academic Year
+                  <span class="required">*</span>
+                </label>
+                <select class="form-control" formControlName="year">
+                  <option value="">Select Year</option>
+                  @for(year of years(); track year){
+                    <option [value]="year">{{year}}</option>
+                  }
+                </select>
+                @if(editForm.get('year')?.invalid && editForm.get('year')?.touched){
+                  <div class="error-message">Please select a valid year</div>
+                }
+              </div>
+              
+              <!-- Preview Section -->
+              <div class="edit-preview full-width">
+                <div class="preview-title">Preview Changes</div>
+                <div class="preview-grid">
+                  <div class="preview-item">
+                    <span class="preview-label">Plan Name</span>
+                    <span class="preview-value">{{editForm.get('name')?.value || 'Not set'}}</span>
                   </div>
-                  <span class="lesson-status" [class]="lesson.status"></span>
+                  <div class="preview-item">
+                    <span class="preview-label">Subject</span>
+                    <span class="preview-value">
+                      {{'Not selected'}}
+                    </span>
+                  </div>
+                  <div class="preview-item">
+                    <span class="preview-label">Grade</span>
+                    <span class="preview-value">
+                      {{'Not selected'}}
+                    </span>
+                  </div>
+                  <div class="preview-item">
+                    <span class="preview-label">Year</span>
+                    <span class="preview-value">{{editForm.get('year')?.value || 'Not selected'}}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </form>
+        </div>
+      }
 
-          <!-- Assessments View -->
-          <div *ngIf="viewType === 'assessments'" class="assessment-timeline">
-            <div *ngFor="let assessment of getAssessmentsByTerm(activeTerm())" class="assessment-item">
-              <div class="assessment-date">
-                <span class="date-day">{{assessment.date | date:'d'}}</span>
-                <span class="date-month">{{assessment.date | date:'MMM'}}</span>
-              </div>
-              <div class="assessment-icon">{{getAssessmentIcon(assessment.type)}}</div>
-              <div class="assessment-info">
-                <div class="assessment-name">{{assessment.name}}</div>
-                <div class="assessment-meta">
-                  <span>
-                    <span class="meta-icon">📋</span>
-                    {{assessment.topic}}
-                  </span>
-                  <span>
-                    <span class="meta-icon">⏱️</span>
-                    {{assessment.duration}} min
-                  </span>
+      <!-- Main Content - Only visible when NOT in edit mode -->
+      @if(!editMode()){
+        <div class="plan-content-grid">
+          <!-- Sidebar -->
+          <div class="plan-sidebar">
+            <!-- Curriculum Coverage -->
+            <div class="sidebar-section">
+              <h3 class="sidebar-title">
+                <span class="title-icon">📈</span>
+                Curriculum Coverage
+              </h3>
+              <div class="curriculum-progress">
+                <div *ngFor="let term of terms" class="progress-item">
+                  <div class="progress-header">
+                    <span class="term-name">{{term.name}}</span>
+                    <span class="term-percentage">{{term.coverage}}%</span>
+                  </div>
+                  <div class="progress-bar-container">
+                    <div class="progress-bar" [style.width]="term.coverage + '%'"></div>
+                  </div>
+                  <div class="progress-detail">
+                    {{term.completedTopics}}/{{term.totalTopics}} topics
+                  </div>
                 </div>
               </div>
-              <span class="assessment-weight">{{assessment.weight}}%</span>
-              <div class="assessment-actions">
-                <button class="btn btn-outline btn-sm" [routerLink]="['/assessments', assessment.id]">
-                  <span class="btn-icon">👁️</span>
+            </div>
+
+            <!-- Key Dates -->
+            <div class="sidebar-section">
+              <h3 class="sidebar-title">
+                <span class="title-icon">📅</span>
+                Key Dates
+              </h3>
+              <div class="key-dates-list">
+                <div class="date-item" *ngFor="let date of keyDates">
+                  <span class="date-icon">{{date.icon}}</span>
+                  <div class="date-content">
+                    <div class="date-title">{{date.title}}</div>
+                    <div class="date-value">{{date.date | date:'mediumDate'}}</div>
+                  </div>
+                  <span class="date-badge" [class]="date.status">{{date.status}}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Resources Summary -->
+            <div class="sidebar-section">
+              <h3 class="sidebar-title">
+                <span class="title-icon">📁</span>
+                Resources
+              </h3>
+              <div class="resources-summary">
+                <div class="resource-stat">
+                  <span class="resource-label">
+                    <span class="resource-icon">📖</span>
+                    Textbooks
+                  </span>
+                  <span class="resource-count">{{resourceCounts.textbooks}}</span>
+                </div>
+                <div class="resource-stat">
+                  <span class="resource-label">
+                    <span class="resource-icon">📝</span>
+                    Worksheets
+                  </span>
+                  <span class="resource-count">{{resourceCounts.worksheets}}</span>
+                </div>
+                <div class="resource-stat">
+                  <span class="resource-label">
+                    <span class="resource-icon">🎬</span>
+                    Videos
+                  </span>
+                  <span class="resource-count">{{resourceCounts.videos}}</span>
+                </div>
+                <div class="resource-stat">
+                  <span class="resource-label">
+                    <span class="resource-icon">📋</span>
+                    Assessments
+                  </span>
+                  <span class="resource-count">{{resourceCounts.assessments}}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="sidebar-section">
+              <h3 class="sidebar-title">
+                <span class="title-icon">⚡</span>
+                Quick Actions
+              </h3>
+              <button class="btn btn-outline btn-sm" style="width: 100%; margin-bottom: 8px;" (click)="addTopic()">
+                <span class="btn-icon">➕</span> Add Topic
+              </button>
+              <button class="btn btn-outline btn-sm" style="width: 100%; margin-bottom: 8px;" (click)="addLesson()">
+                <span class="btn-icon">📚</span> Add Lesson
+              </button>
+              <button class="btn btn-outline btn-sm" style="width: 100%;" (click)="scheduleAssessment()">
+                <span class="btn-icon">📝</span> Schedule Assessment
+              </button>
+            </div>
+          </div>
+
+          <!-- Main Content Area -->
+          <div class="plan-main-content">
+            <!-- Term Tabs -->
+            <div class="term-tabs">
+              <div class="tabs-container">
+                <button *ngFor="let term of terms" 
+                        class="term-tab" 
+                        [class.active]="activeTerm() === term.id"
+                        (click)="setActiveTerm(term.id)">
+                  {{term.name}}
+                </button>
+              </div>
+              <div class="term-actions">
+                <button class="btn btn-outline btn-sm" (click)="viewType = 'topics'" [class.btn-primary]="viewType === 'topics'">
+                  <span class="btn-icon">📋</span> Topics
+                </button>
+                <button class="btn btn-outline btn-sm" (click)="viewType = 'weeks'" [class.btn-primary]="viewType === 'weeks'">
+                  <span class="btn-icon">📅</span> Weeks
+                </button>
+                <button class="btn btn-outline btn-sm" (click)="viewType = 'assessments'" [class.btn-primary]="viewType === 'assessments'">
+                  <span class="btn-icon">📝</span> Assessments
                 </button>
               </div>
             </div>
-            
-            <div *ngIf="getAssessmentsByTerm(activeTerm()).length === 0" class="no-items">
-              <span class="no-items-icon">📝</span>
-              <h3>No assessments scheduled</h3>
-              <p>Add assessments to track student progress.</p>
+
+            <!-- Term Overview -->
+            <app-term-overview-card 
+              [term]="getActiveTermName()" 
+              [term_dates]="getActiveTermDates()" 
+              [weeks]="getActiveTermWeeks()"
+              [no_topics]="getActiveTermTopics()"
+              [no_lessons]="getActiveTermLessons()"
+              [no_assessments]="getActiveTermAssessments()"
+            />
+
+            <!-- Topics View -->
+            @if(viewType === 'topics'){
+              <app-subject-topic-card [topics]="subjectTopics()" [termNumber]="activeTerm()"/>
+            }
+
+            <!-- Week-by-Week View -->
+            <div *ngIf="viewType === 'weeks'" class="week-view">
+              <div *ngFor="let week of getWeeksByTerm(activeTerm())" class="week-item">
+                <div class="week-header">
+                  <div class="week-title">
+                    <h3>Week {{week.weekNumber}}</h3>
+                    <span class="week-dates">{{week.startDate | date:'MMM d'}} - {{week.endDate | date:'MMM d, yyyy'}}</span>
+                  </div>
+                  <div class="week-progress">
+                    <span class="progress-text">{{week.progress}}% complete</span>
+                  </div>
+                </div>
+                
+                <div class="week-lessons">
+                  <div *ngFor="let lesson of week.lessons" class="week-lesson-card">
+                    <div class="lesson-number">{{lesson.lessonNumber}}</div>
+                    <div class="lesson-details">
+                      <div class="lesson-title">{{lesson.name}}</div>
+                      <div class="lesson-meta">
+                        <span>
+                          <span class="meta-icon">⏱️</span>
+                          {{lesson.duration}} min
+                        </span>
+                        <span>
+                          <span class="meta-icon">📋</span>
+                          {{lesson.topic}}
+                        </span>
+                      </div>
+                    </div>
+                    <span class="lesson-status" [class]="lesson.status"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Assessments View -->
+            <div *ngIf="viewType === 'assessments'" class="assessment-timeline">
+              <div *ngFor="let assessment of getAssessmentsByTerm(activeTerm())" class="assessment-item">
+                <div class="assessment-date">
+                  <span class="date-day">{{assessment.date | date:'d'}}</span>
+                  <span class="date-month">{{assessment.date | date:'MMM'}}</span>
+                </div>
+                <div class="assessment-icon">{{getAssessmentIcon(assessment.type)}}</div>
+                <div class="assessment-info">
+                  <div class="assessment-name">{{assessment.name}}</div>
+                  <div class="assessment-meta">
+                    <span>
+                      <span class="meta-icon">📋</span>
+                      {{assessment.topic}}
+                    </span>
+                    <span>
+                      <span class="meta-icon">⏱️</span>
+                      {{assessment.duration}} min
+                    </span>
+                  </div>
+                </div>
+                <span class="assessment-weight">{{assessment.weight}}%</span>
+                <div class="assessment-actions">
+                  <button class="btn btn-outline btn-sm" [routerLink]="['/assessments', assessment.id]">
+                    <span class="btn-icon">👁️</span>
+                  </button>
+                </div>
+              </div>
+              
+              <div *ngIf="getAssessmentsByTerm(activeTerm()).length === 0" class="no-items">
+                <span class="no-items-icon">📝</span>
+                <h3>No assessments scheduled</h3>
+                <p>Add assessments to track student progress.</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      }
     </div>
   </div>
 </div>

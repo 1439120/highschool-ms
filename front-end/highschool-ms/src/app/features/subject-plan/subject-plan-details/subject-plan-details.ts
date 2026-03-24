@@ -1,6 +1,6 @@
-import { Component, computed, effect, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Breadcrumb } from '../../../components/breadcrumb/breadcrumb';
 import BreadcrumbModel from '../../../models/BreadcrumbModel';
@@ -11,26 +11,77 @@ import { SubjectTopicCard } from '../../../components/subject-topic-card/subject
 import { TermOverviewCard } from '../../../components/term-overview-card/term-overview-card';
 import { Topic } from '../../../models/Topic';
 import { SubjectTopicService } from '../../../services/subject-topic-service';
+import Grades from '../../../models/Grades';
 
 @Component({
   selector: 'app-subject-plan-details',
   imports: [
     CommonModule, FormsModule, Breadcrumb, RouterLink, DatePipe,
-    SubjectTopicCard, TermOverviewCard
+    SubjectTopicCard, TermOverviewCard, ReactiveFormsModule 
   ],
   templateUrl: './subject-plan-details.html',
   styleUrl: './subject-plan-details.scss',
   providers: [DatePipe]
 })
 export class SubjectPlanDetails {
+  // injections
+  private fb = inject(FormBuilder);
+  // states
   breadCrumb = signal<BreadcrumbModel[]>([]);
   currentYear: number = new Date().getFullYear();
   recordId = signal<string>("");
   subjectPlan = signal<SubjectPlanModel | null>(null);
   subjectTopics = signal<Topic[]>([]);
+  editMode = signal<boolean>(true)
+
+  // computed
   creatorFullname = computed(()=>(
     `${this.subjectPlan()?.createdBy.name} ${this.subjectPlan()?.createdBy.surname}`
   ))
+  overallProgress = computed(() => {
+    let totalCompleted = 0;
+    let totalLessons = 0;
+    
+    for (let topic of this.subjectTopics()) {
+      for (let lesson of topic.lessons) {
+        totalCompleted += lesson.status === 'completed' ? 1 : 0;
+      }
+      totalLessons += topic.lessons.length;
+    }
+    
+    // Don't set signals inside computed - just calculate and return
+    return totalLessons === 0 ? 0 : Math.ceil((totalCompleted / totalLessons) * 100);
+  });
+  totalLessons = computed(() => {
+    return this.subjectTopics().reduce((sum, topic) => sum + topic.lessons.length, 0);
+  });
+  completedLessons = computed(() => {
+    return this.subjectTopics().reduce((sum, topic) => 
+      sum + topic.lessons.filter(lesson => lesson.status === 'completed').length, 0
+    );
+  });
+  completedTopics = computed(()=>{
+    let total = 0;
+    let totalCompleted = 0;
+    for(let topic of this.subjectTopics()){
+      let non_completed = topic.lessons.filter(x => x.status != 'completed')
+      totalCompleted += non_completed.length == 0 ? 1 : 0
+    }
+    return totalCompleted
+  })
+    // Computed properties
+  inProgressTopics = computed(()=>{
+    return this.subjectTopics().length - this.completedTopics() 
+  });
+    
+  
+  // editForm: FormGroup;
+  editForm = this.fb.group({
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    subject: ['', Validators.required],
+    grade: ['', Validators.required],
+    year: ['', [Validators.required, Validators.min(2000), Validators.max(2030)]]
+  });
   
   // View state
   // activeTerm: number = 1;
@@ -63,6 +114,18 @@ export class SubjectPlanDetails {
     { id: 3, name: 'Term 3', coverage: 45, completedTopics: 9, totalTopics: 20 },
     { id: 4, name: 'Term 4', coverage: 20, completedTopics: 4, totalTopics: 20 }
   ];
+  
+  grades = signal<Grades[]>([
+    { id: 1, name: '8', gradeNumber: 8 },
+    { id: 2, name: '9', gradeNumber: 9 },
+    { id: 3, name: '10', gradeNumber: 10 },
+    { id: 4, name: '11', gradeNumber: 11 },
+    { id: 5, name: '12', gradeNumber: 12 }
+  ]);
+
+  years = signal<number[]>([
+    2023, 2024, 2025, 2026, 2027
+  ]);
 
   // // Topics data
   // topics = [
@@ -216,13 +279,6 @@ export class SubjectPlanDetails {
     assessments: 8
   };
 
-  // Computed properties
-  totalLessons: number = 0;
-  completedLessons: number = 0;
-  overallProgress: number = 0;
-  completedTopics: number = 0;
-  inProgressTopics: number = 0;
-
   constructor(
     private route: ActivatedRoute,
     private datePipe: DatePipe,
@@ -231,21 +287,32 @@ export class SubjectPlanDetails {
   ) {
     // this.service.
     this.route.params.subscribe(params => {
-      this.recordId.set(params['id']);
-      // get data from the service
-      service
-        .getSubjectPlanById(this.recordId())
-        .subscribe((data) => {
-          // update the data
-          this.subjectPlan.set(data)
-          // update the breadcrumb
-          this.breadCrumb.set([
-            { name: 'Subject Plans', url: '/subject-plan' },
-            { name: data?.name || 'New Subject Plan', url: '' }
-          ]);
-          console.log("This is the data loade: ", data)
-        }
-      )
+      const Id = params['id'];
+      if(Id != 'edit'){
+        this.recordId.set(Id);
+        this.editMode.set(false);
+        // get data from the service
+        service
+          .getSubjectPlanById(Id)
+          .subscribe((data) => {
+            // update the data
+            this.subjectPlan.set(data)
+            // update the breadcrumb
+            this.breadCrumb.set([
+              { name: 'Subject Plans', url: '/subject-plan' },
+              { name: data?.name || 'New Subject Plan', url: '' }
+            ]);
+            console.log("This is the data loade: ", data)
+          }
+        )
+      }
+
+      this.editForm = this.fb.group({
+        name: ['', [Validators.required, Validators.minLength(3)]],
+        subject: ['', Validators.required],
+        grade: ['', Validators.required],
+        year: ['', [Validators.required, Validators.min(2000), Validators.max(2030)]]
+      });
     });
 
     effect(()=>{
@@ -270,7 +337,7 @@ export class SubjectPlanDetails {
       this.loadSubjectPlan(planId);
     });
 
-    this.calculateProgress();
+    // this.calculateProgress();
   }
 
   loadSubjectPlan(planId: string) {
@@ -319,22 +386,22 @@ export class SubjectPlanDetails {
     }
   }
 
-  calculateProgress() {
-    // Calculate total lessons
-    this.totalLessons = this.subjectTopics().reduce((sum, topic) => sum + topic.lessons.length, 0);
+  // calculateProgress() {
+  //   // Calculate total lessons
+  //   this.totalLessons = this.subjectTopics().reduce((sum, topic) => sum + topic.lessons.length, 0);
     
-    // Calculate completed lessons
-    this.completedLessons = this.subjectTopics().reduce((sum, topic) => 
-      sum + topic.lessons.filter(lesson => lesson.status === 'completed').length, 0
-    );
+  //   // Calculate completed lessons
+  //   this.completedLessons = this.subjectTopics().reduce((sum, topic) => 
+  //     sum + topic.lessons.filter(lesson => lesson.status === 'completed').length, 0
+  //   );
     
-    // Calculate overall progress
-    this.overallProgress = Math.round((this.completedLessons / this.totalLessons) * 100);
+  //   // Calculate overall progress
+  //   this.overallProgress = Math.round((this.completedLessons / this.totalLessons) * 100);
     
-    // Calculate topic status
-    this.completedTopics = this.subjectTopics().filter(topic => topic.progress === 100).length;
-    this.inProgressTopics = this.subjectTopics().filter(topic => topic.progress > 0 && topic.progress < 100).length;
-  }
+  //   // Calculate topic status
+  //   this.completedTopics = this.subjectTopics().filter(topic => topic.progress === 100).length;
+  //   this.inProgressTopics = this.subjectTopics().filter(topic => topic.progress > 0 && topic.progress < 100).length;
+  // }
 
   // Getters for active term
   getActiveTermName(): string {
@@ -430,7 +497,7 @@ export class SubjectPlanDetails {
   }
 
   getTotalLessons(): number {
-    return this.totalLessons;
+    return this.totalLessons();
   }
 
   // UI Actions
@@ -456,6 +523,7 @@ export class SubjectPlanDetails {
   editPlan() {
     console.log('Edit plan');
     // Navigate to edit mode
+    this.editMode.set(true);
   }
 
   exportPlan() {
@@ -497,4 +565,37 @@ export class SubjectPlanDetails {
     };
     return icons[type] || '📊';
   }
+
+  initEditForm() {
+    const plan = this.subjectPlan();
+    this.editForm.patchValue({
+      name: plan?.name || '',
+      subject: plan?.subject?.name || '',
+      grade: plan?.grade?.name || '',
+      year: plan?.year.toString() || '2025'
+    });
+  }
+
+  cancelEdit() {
+    this.editMode.set(false);
+    // Reset form to original values
+    this.initEditForm();
+  }
+
+  saveEdit() {
+
+    
+  }
+
+  // Helper methods for the edit form
+getSubjectNameById(subjectId: number): string {
+  const subject = this.subjects.find(s => s.id === subjectId);
+  return subject ? subject.name : '';
+}
+
+getGradeNameById(gradeId: number): string {
+  const grade = this.grades().find(g => g.id === gradeId);
+  return grade ? `Grade ${grade.gradeNumber}` : '';
+}
+
 }

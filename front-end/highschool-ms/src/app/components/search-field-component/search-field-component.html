@@ -83,8 +83,8 @@
           }
           <div class="item-info">
             <span class="item-name">{{item[displayField] || item.name}} {{item['surname']}}</span>
-            @if(item[subtitleField]){
-            <span class="item-subtitle">{{item[subtitleField]}}</span>
+            @if(getFieldValue(item, subtitleField)){
+            <span class="item-subtitle">{{getFieldValue(item, subtitleField)}}</span>
             }
           </div>
         </div>

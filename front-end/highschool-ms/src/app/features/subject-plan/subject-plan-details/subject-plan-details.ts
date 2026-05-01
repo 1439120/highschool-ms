@@ -12,12 +12,15 @@ import { TermOverviewCard } from '../../../components/term-overview-card/term-ov
 import { Topic } from '../../../models/Topic';
 import { SubjectTopicService } from '../../../services/subject-topic-service';
 import Grades from '../../../models/Grades';
+import { SubjectsService } from '../../../services/subjects-service';
+import { SearchFieldComponent, SearchItem } from '../../../components/search-field-component/search-field-component';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-subject-plan-details',
   imports: [
     CommonModule, FormsModule, Breadcrumb, RouterLink, DatePipe,
-    SubjectTopicCard, TermOverviewCard, ReactiveFormsModule 
+    SubjectTopicCard, TermOverviewCard, ReactiveFormsModule, SearchFieldComponent
   ],
   templateUrl: './subject-plan-details.html',
   styleUrl: './subject-plan-details.scss',
@@ -61,7 +64,6 @@ export class SubjectPlanDetails {
     );
   });
   completedTopics = computed(()=>{
-    let total = 0;
     let totalCompleted = 0;
     for(let topic of this.subjectTopics()){
       let non_completed = topic.lessons.filter(x => x.status != 'completed')
@@ -74,8 +76,6 @@ export class SubjectPlanDetails {
     return this.subjectTopics().length - this.completedTopics() 
   });
     
-  
-  // editForm: FormGroup;
   editForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
     subject: ['', Validators.required],
@@ -283,7 +283,8 @@ export class SubjectPlanDetails {
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private service: SubjectPlanService,
-    private subjectTopicsService: SubjectTopicService
+    private subjectTopicsService: SubjectTopicService,
+    private subjectService: SubjectsService
   ) {
     // this.service.
     this.route.params.subscribe(params => {
@@ -521,9 +522,19 @@ export class SubjectPlanDetails {
   }
 
   editPlan() {
-    console.log('Edit plan');
-    // Navigate to edit mode
-    this.editMode.set(true);
+    console.log('=== Edit Plan Debug ===');
+    console.log('1. Subject plan data:', this.subjectPlan());
+    console.log('2. Subject plan name:', this.subjectPlan()?.name);
+    console.log('3. Subject plan subject id:', this.subjectPlan()?.subject?.id);
+    console.log('4. Subject plan grade id:', this.subjectPlan()?.grade?.id);
+    console.log('5. Subject plan year:', this.subjectPlan()?.year);
+    
+    this.initEditForm();
+    console.log('6. Form after patch:', this.editForm.value);
+    console.log('7. Form valid:', this.editForm.valid);
+    console.log('8. Form dirty:', this.editForm.dirty);
+
+  this.editMode.set(true);
   }
 
   exportPlan() {
@@ -572,7 +583,7 @@ export class SubjectPlanDetails {
       name: plan?.name || '',
       subject: plan?.subject?.name || '',
       grade: plan?.grade?.name || '',
-      year: plan?.year.toString() || '2025'
+      year: plan?.year?.toString() || '2025'
     });
   }
 
@@ -588,14 +599,46 @@ export class SubjectPlanDetails {
   }
 
   // Helper methods for the edit form
-getSubjectNameById(subjectId: number): string {
-  const subject = this.subjects.find(s => s.id === subjectId);
-  return subject ? subject.name : '';
-}
+  getSubjectNameById(subjectId: number): string {
+    const subject = this.subjects.find(s => s.id === subjectId);
+    return subject ? subject.name : '';
+  }
 
-getGradeNameById(gradeId: number): string {
-  const grade = this.grades().find(g => g.id === gradeId);
-  return grade ? `Grade ${grade.gradeNumber}` : '';
-}
+  getGradeNameById(gradeId: number): string {
+    const grade = this.grades().find(g => g.id === gradeId);
+    return grade ? `Grade ${grade.gradeNumber}` : '';
+  }
+
+  async loadSubjects(): Promise<SubjectsModel[]>{
+    return await this.subjectService.loadSubjects(1).toPromise() ?? [];
+  }
+
+  assignSubjectToPlan(plan: SubjectsModel){
+
+  }
+
+  searchSubjects = async (term: string): Promise<SearchItem[]> => {
+
+    const gradeId = this.subjectPlan()?.grade?.id;
+
+    if (!gradeId) {
+      return []; // 🚫 prevent bad API calls
+    }
+
+    return await firstValueFrom(
+      this.subjectService.searchSubjects(term, gradeId)
+    );
+  };
+
+  // Handle subject selection
+  onSubjectSelected(subject: SearchItem) {
+      console.log('Subject selected:', subject);
+  }
+
+  // Handle add new subject
+  onAddNewSubject(searchTerm: string) {
+      console.log('Add new subject:', searchTerm);
+      // Open modal to create new subject
+  }
 
 }

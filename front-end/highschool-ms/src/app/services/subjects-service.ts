@@ -12,16 +12,16 @@ export class SubjectsService {
   isLoading = signal<boolean>(false)
   subjects = signal<SubjectsModel[]>([])
 
-  loadSubjects(grade: number): Observable<SubjectsModel[]> {
+  loadSubjects(gradeId: number): Observable<SubjectsModel[]> {
     return this.http.get<SubjectsModel[]>(`${this.apiUrl}`,{
-      params: {Grade: grade}
+      params: {Grade: gradeId}
     });
   }
-  searchSubjects(searchTerm: string, grade: number): Observable<SubjectsModel[]> {
-    if(!searchTerm.trim().length) return this.loadSubjects(grade);
+  searchSubjects(searchTerm: string, gradeId: number): Observable<SubjectsModel[]> {
+    if(!searchTerm.trim().length) return this.loadSubjects(gradeId);
 
     return this.http.get<SubjectsModel[]>(`${this.apiUrl}`,{
-      params: { Name: searchTerm, Grade: grade}
+      params: { Name: searchTerm, Grade: gradeId}
     });
   }
 }

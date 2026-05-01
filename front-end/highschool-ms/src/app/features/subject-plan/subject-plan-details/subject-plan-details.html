@@ -134,7 +134,7 @@
           <form [formGroup]="editForm" (ngSubmit)="saveEdit()" class="edit-form">
             <div class="edit-form-grid">
               <!-- Plan Name -->
-              <div class="form-field full-width">
+              <div class="form-field">
                 <label class="form-label">
                   <span class="label-icon">📝</span>
                   Plan Name
@@ -155,17 +155,25 @@
               
               <!-- Subject -->
               <div class="form-field">
-                <label class="form-label">
-                  <span class="label-icon">📚</span>
-                  Subject
-                  <span class="required">*</span>
-                </label>
-                <select class="form-control" formControlName="subject">
-                  <option value="">Select Subject</option>
-                  @for(subject of subjects; track subject.id){
-                    <option [value]="subject.id">{{subject.name}}</option>
-                  }
-                </select>
+                <app-search-field-component
+                    [label]="'Subject'"
+                    [placeholder]="'Search for a subject...'"
+                    [icon]="'📚'"
+                    [searchFn]="searchSubjects"
+                    [loadAllOnFocus]="true"
+                    [topResults]="20"
+                    [minChars]="0"
+                    [debounceTime]="400"
+                    [allowAddNew]="false"
+                    [required]="true"
+                    [showAvatars]="true"
+                    [displayField]="'name'"
+                    [subtitleField]="'grade.name'"
+                    (itemSelected)="onSubjectSelected($event)"
+                    (addNew)="onAddNewSubject($event)"
+                    formControlName="subject"
+                />
+                
                 @if(editForm.get('subject')?.invalid && editForm.get('subject')?.touched){
                   <div class="error-message">Please select a subject</div>
                 }

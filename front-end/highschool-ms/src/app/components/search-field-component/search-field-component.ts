@@ -252,4 +252,10 @@ export class SearchFieldComponent implements ControlValueAccessor, OnInit, OnDes
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
+
+  getFieldValue(obj: any, path: string): any {
+    if (!obj || !path) return '';
+
+    return path.split('.').reduce((acc, key) => acc?.[key], obj);
+  }
 }

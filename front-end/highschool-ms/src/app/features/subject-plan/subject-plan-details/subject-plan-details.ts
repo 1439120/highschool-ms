@@ -13,14 +13,16 @@ import { Topic } from '../../../models/Topic';
 import { SubjectTopicService } from '../../../services/subject-topic-service';
 import Grades from '../../../models/Grades';
 import { SubjectsService } from '../../../services/subjects-service';
-import { SearchFieldComponent, SearchItem } from '../../../components/search-field-component/search-field-component';
+import {  SearchItem } from '../../../components/search-field-component/search-field-component';
 import { firstValueFrom } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { EditSubjectplanModal } from '../../../components/edit-subjectplan-modal/edit-subjectplan-modal';
 
 @Component({
   selector: 'app-subject-plan-details',
   imports: [
     CommonModule, FormsModule, Breadcrumb, RouterLink, DatePipe,
-    SubjectTopicCard, TermOverviewCard, ReactiveFormsModule, SearchFieldComponent
+    SubjectTopicCard, TermOverviewCard, ReactiveFormsModule
   ],
   templateUrl: './subject-plan-details.html',
   styleUrl: './subject-plan-details.scss',
@@ -84,7 +86,6 @@ export class SubjectPlanDetails {
   });
   
   // View state
-  // activeTerm: number = 1;
   activeTerm = signal<number>(1);
   viewType: 'topics' | 'weeks' | 'assessments' = 'topics';
   
@@ -284,7 +285,8 @@ export class SubjectPlanDetails {
     private datePipe: DatePipe,
     private service: SubjectPlanService,
     private subjectTopicsService: SubjectTopicService,
-    private subjectService: SubjectsService
+    private subjectService: SubjectsService,
+    private dialog: MatDialog
   ) {
     // this.service.
     this.route.params.subscribe(params => {
@@ -521,20 +523,33 @@ export class SubjectPlanDetails {
     // Open modal for scheduling assessment
   }
 
-  editPlan() {
-    console.log('=== Edit Plan Debug ===');
-    console.log('1. Subject plan data:', this.subjectPlan());
-    console.log('2. Subject plan name:', this.subjectPlan()?.name);
-    console.log('3. Subject plan subject id:', this.subjectPlan()?.subject?.id);
-    console.log('4. Subject plan grade id:', this.subjectPlan()?.grade?.id);
-    console.log('5. Subject plan year:', this.subjectPlan()?.year);
+  editPlan(plan: any) {
+  //   console.log('=== Edit Plan Debug ===');
+  //   console.log('1. Subject plan data:', this.subjectPlan());
+  //   console.log('2. Subject plan name:', this.subjectPlan()?.name);
+  //   console.log('3. Subject plan subject id:', this.subjectPlan()?.subject?.id);
+  //   console.log('4. Subject plan grade id:', this.subjectPlan()?.grade?.id);
+  //   console.log('5. Subject plan year:', this.subjectPlan()?.year);
     
-    this.initEditForm();
-    console.log('6. Form after patch:', this.editForm.value);
-    console.log('7. Form valid:', this.editForm.valid);
-    console.log('8. Form dirty:', this.editForm.dirty);
+  //   this.initEditForm();
+  //   console.log('6. Form after patch:', this.editForm.value);
+  //   console.log('7. Form valid:', this.editForm.valid);
+  //   console.log('8. Form dirty:', this.editForm.dirty);
 
-  this.editMode.set(true);
+  // this.editMode.set(true);
+
+    const dialogRef = this.dialog.open(EditSubjectplanModal, {
+      width: '1400px',
+      maxWidth: '90vw',
+      data: plan // This flows into the @Inject(MAT_DIALOG_DATA) in your modal
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Update the database with:', result);
+      }
+    });
+
   }
 
   exportPlan() {
@@ -582,7 +597,7 @@ export class SubjectPlanDetails {
     this.editForm.patchValue({
       name: plan?.name || '',
       subject: plan?.subject?.name || '',
-      grade: plan?.grade?.name || '',
+      grade: plan?.grade?.id.toString() || '',
       year: plan?.year?.toString() || '2025'
     });
   }
@@ -616,19 +631,6 @@ export class SubjectPlanDetails {
   assignSubjectToPlan(plan: SubjectsModel){
 
   }
-
-  searchSubjects = async (term: string): Promise<SearchItem[]> => {
-
-    const gradeId = this.subjectPlan()?.grade?.id;
-
-    if (!gradeId) {
-      return []; // 🚫 prevent bad API calls
-    }
-
-    return await firstValueFrom(
-      this.subjectService.searchSubjects(term, gradeId)
-    );
-  };
 
   // Handle subject selection
   onSubjectSelected(subject: SearchItem) {

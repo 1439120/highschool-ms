@@ -29,4 +29,8 @@ export class SubjectPlanService {
   getSubjectPlanById(Id: string): Observable<SubjectPlanModel>{
     return this.http.get<SubjectPlanModel>(`${this.apiUrl}/${Id}`);
   }
+
+  updateSubjectPlan(Id: number, subjectPlan: SubjectPlanModel){
+    
+  }
 }

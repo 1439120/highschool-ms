@@ -33,7 +33,7 @@
         <span class="btn-icon">📤</span> Export
       </button>
       @if(!editMode()){
-        <button class="btn btn-primary" (click)="editPlan()">
+        <button class="btn btn-primary" (click)="editPlan(subjectPlan())">
           <span class="btn-icon">✏️</span> Edit Plan
         </button>
       }
@@ -121,133 +121,8 @@
         </div>
       </div>
 
-      <!-- Edit Mode Form - Replaces the main content when in edit mode -->
-      @if(editMode()){
-        <div class="edit-mode-container">
-          <div class="edit-mode-header">
-            <h3>
-              <span class="edit-icon">✏️</span>
-              Edit Subject Plan Details
-            </h3>
-          </div>
-          
-          <form [formGroup]="editForm" (ngSubmit)="saveEdit()" class="edit-form">
-            <div class="edit-form-grid">
-              <!-- Plan Name -->
-              <div class="form-field">
-                <label class="form-label">
-                  <span class="label-icon">📝</span>
-                  Plan Name
-                  <span class="required">*</span>
-                </label>
-                <input 
-                  type="text" 
-                  class="form-control" 
-                  formControlName="name"
-                  placeholder="e.g., Grade 8 Mathematics Annual Plan"
-                >
-                @if(editForm.get('name')?.invalid && editForm.get('name')?.touched){
-                  <div class="error-message">
-                    Plan name is required (minimum 3 characters)
-                  </div>
-                }
-              </div>
-              
-              <!-- Subject -->
-              <div class="form-field">
-                <app-search-field-component
-                    [label]="'Subject'"
-                    [placeholder]="'Search for a subject...'"
-                    [icon]="'📚'"
-                    [searchFn]="searchSubjects"
-                    [loadAllOnFocus]="true"
-                    [topResults]="20"
-                    [minChars]="0"
-                    [debounceTime]="400"
-                    [allowAddNew]="false"
-                    [required]="true"
-                    [showAvatars]="true"
-                    [displayField]="'name'"
-                    [subtitleField]="'grade.name'"
-                    (itemSelected)="onSubjectSelected($event)"
-                    (addNew)="onAddNewSubject($event)"
-                    formControlName="subject"
-                />
-                
-                @if(editForm.get('subject')?.invalid && editForm.get('subject')?.touched){
-                  <div class="error-message">Please select a subject</div>
-                }
-              </div>
-              
-              <!-- Grade -->
-              <div class="form-field">
-                <label class="form-label">
-                  <span class="label-icon">🎓</span>
-                  Grade Level
-                  <span class="required">*</span>
-                </label>
-                <select class="form-control" formControlName="grade">
-                  <option value="">Select Grade</option>
-                  @for(grade of grades(); track grade.id){
-                    <option [value]="grade.id">Grade {{grade.gradeNumber}}</option>
-                  }
-                </select>
-                @if(editForm.get('grade')?.invalid && editForm.get('grade')?.touched){
-                  <div class="error-message">Please select a grade level</div>
-                }
-              </div>
-              
-              <!-- Year -->
-              <div class="form-field">
-                <label class="form-label">
-                  <span class="label-icon">📅</span>
-                  Academic Year
-                  <span class="required">*</span>
-                </label>
-                <select class="form-control" formControlName="year">
-                  <option value="">Select Year</option>
-                  @for(year of years(); track year){
-                    <option [value]="year">{{year}}</option>
-                  }
-                </select>
-                @if(editForm.get('year')?.invalid && editForm.get('year')?.touched){
-                  <div class="error-message">Please select a valid year</div>
-                }
-              </div>
-              
-              <!-- Preview Section -->
-              <div class="edit-preview full-width">
-                <div class="preview-title">Preview Changes</div>
-                <div class="preview-grid">
-                  <div class="preview-item">
-                    <span class="preview-label">Plan Name</span>
-                    <span class="preview-value">{{editForm.get('name')?.value || 'Not set'}}</span>
-                  </div>
-                  <div class="preview-item">
-                    <span class="preview-label">Subject</span>
-                    <span class="preview-value">
-                      {{'Not selected'}}
-                    </span>
-                  </div>
-                  <div class="preview-item">
-                    <span class="preview-label">Grade</span>
-                    <span class="preview-value">
-                      {{'Not selected'}}
-                    </span>
-                  </div>
-                  <div class="preview-item">
-                    <span class="preview-label">Year</span>
-                    <span class="preview-value">{{editForm.get('year')?.value || 'Not selected'}}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      }
-
       <!-- Main Content - Only visible when NOT in edit mode -->
-      @if(!editMode()){
+      <!-- @if(!editMode()){ -->
         <div class="plan-content-grid">
           <!-- Sidebar -->
           <div class="plan-sidebar">
@@ -459,7 +334,7 @@
             </div>
           </div>
         </div>
-      }
+      <!-- } -->
     </div>
   </div>
 </div>

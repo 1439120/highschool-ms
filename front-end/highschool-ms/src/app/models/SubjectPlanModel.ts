@@ -12,3 +12,10 @@ export default interface SubjectPlanModel{
     createdOn: Date,
     year: number,
 }
+
+export interface EditSubjectPlanModel{
+    name: string,
+    subjectId: number,
+    gradeId: number,
+    year: number,
+}

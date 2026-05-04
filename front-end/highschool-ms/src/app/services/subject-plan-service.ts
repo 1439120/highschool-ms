@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import SubjectPlanModel from '../models/SubjectPlanModel';
+import SubjectPlanModel, { EditSubjectPlanModel } from '../models/SubjectPlanModel';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -30,7 +30,17 @@ export class SubjectPlanService {
     return this.http.get<SubjectPlanModel>(`${this.apiUrl}/${Id}`);
   }
 
-  updateSubjectPlan(Id: number, subjectPlan: SubjectPlanModel){
-    
+  updateSubjectPlan(Id: number, subjectPlan: EditSubjectPlanModel){
+    this.http
+        .put<SubjectPlanModel[]>(`${this.apiUrl}/${Id}`, subjectPlan)
+        .subscribe({
+          next: (data) => {
+            console.log('Subject plans loaded:', data);
+            this.subjectPlans.set(data);
+          },
+          error: (err) => {
+            console.error('Failed to load Subject plans', err);
+          }
+        });
   }
 }

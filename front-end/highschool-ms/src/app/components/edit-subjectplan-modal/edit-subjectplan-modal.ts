@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/materia
 import Grades from '../../models/Grades';
 import { SubjectsService } from '../../services/subjects-service';
 import { toSignal } from '@angular/core/rxjs-interop'
+import SubjectPlanModel, { EditSubjectPlanModel } from '../../models/SubjectPlanModel';
 
 
 @Component({
@@ -38,15 +39,23 @@ export class EditSubjectplanModal {
     year: ['', [Validators.required, Validators.min(2000), Validators.max(2030)]]
   });
 
+  editSubjectPlan: EditSubjectPlanModel = {
+    name: '',
+    subjectId: 0,
+    gradeId: 0,
+    year: 0
+  };
+
   gradeId: Signal<any>;
 
-   constructor(
-     private subjectService: SubjectsService,
+  constructor(
+      private subjectService: SubjectsService,
       private dialogRef: MatDialogRef<EditSubjectplanModal>,
       @Inject(MAT_DIALOG_DATA) public data: any // This is the Subject Plan passed in
     ){
       console.log(`This is the data ${typeof(data)}`)
       console.log(data)
+      this.editSubjectPlan.subjectId = data?.subject?.id
       this.editForm = this.fb.group({
         name: [data?.name || '', [Validators.required, Validators.minLength(3)]],
         subject: [data?.subject?.name || null, Validators.required],
@@ -54,17 +63,23 @@ export class EditSubjectplanModal {
         year: [data?.year || '', Validators.required]
       });
 
-       const gradeControl = this.editForm.get('grade')!;
-        this.gradeId = toSignal(
-          gradeControl.valueChanges.pipe(startWith(gradeControl.value)),
-          { initialValue: gradeControl.value }
-        );
-    }
+      const gradeControl = this.editForm.get('grade')!;
+      this.gradeId = toSignal(
+        gradeControl.valueChanges.pipe(startWith(gradeControl.value)),
+        { initialValue: gradeControl.value }
+      );
+  }
 
   saveEdit() {
+    
     if (this.editForm.valid) {
+      this.editSubjectPlan.name = this.editForm.get('name')?.value || this.editSubjectPlan.name
+      this.editSubjectPlan.gradeId = parseInt(this.editForm.get('grade')?.value || '') || this.editSubjectPlan.gradeId
+      this.editSubjectPlan.year = parseInt(this.editForm.get('year')?.value || '') || this.editSubjectPlan.year
       // Return the form value to the caller
-      this.dialogRef.close(this.editForm.value);
+      console.log("This is the saved data: ", this.editSubjectPlan)
+      // this.dialogRef.close(this.editForm.value);
+      this.dialogRef.close(this.editSubjectPlan);
     } else {
       this.editForm.markAllAsTouched();
     }
@@ -95,6 +110,7 @@ export class EditSubjectplanModal {
 
   onSubjectSelected(subject: any) {
     console.log("This is the selected subject", subject)
+    this.editSubjectPlan.subjectId = subject.id
     this.editForm.patchValue({ subject: subject.name });
   }
   onAddNewSubject(searchTerm: string) {

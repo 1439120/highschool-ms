@@ -32,19 +32,10 @@
       <button class="btn btn-secondary" (click)="exportPlan()">
         <span class="btn-icon">📤</span> Export
       </button>
-      @if(!editMode()){
         <button class="btn btn-primary" (click)="editPlan(subjectPlan())">
           <span class="btn-icon">✏️</span> Edit Plan
         </button>
-      }
-      @if(editMode()){
-        <button class="btn btn-secondary" (click)="cancelEdit()">
-          <span class="btn-icon">✕</span> Cancel
-        </button>
-        <button class="btn btn-primary" (click)="saveEdit()" [disabled]="editForm.invalid || !editForm.dirty">
-          <span class="btn-icon">💾</span> Save Changes
-        </button>
-      }
+
     </div>
   </div>
 

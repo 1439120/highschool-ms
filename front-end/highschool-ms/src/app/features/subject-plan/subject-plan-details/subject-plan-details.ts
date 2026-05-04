@@ -128,97 +128,6 @@ export class SubjectPlanDetails {
     2023, 2024, 2025, 2026, 2027
   ]);
 
-  // // Topics data
-  // topics = [
-  //   {
-  //     id: 1,
-  //     termId: 1,
-  //     name: 'Algebraic Expressions',
-  //     startWeek: 1,
-  //     endWeek: 3,
-  //     progress: 100,
-  //     objectives: [
-  //       'Simplify algebraic expressions',
-  //       'Expand and factorize expressions',
-  //       'Solve linear equations'
-  //     ],
-  //     lessons: [
-  //       { id: 1, name: 'Introduction to Variables', duration: 45, status: 'completed' },
-  //       { id: 2, name: 'Simplifying Expressions', duration: 45, status: 'completed' },
-  //       { id: 3, name: 'Solving Equations', duration: 45, status: 'completed' },
-  //       { id: 4, name: 'Word Problems', duration: 45, status: 'completed' }
-  //     ],
-  //     resources: 4,
-  //     assessments: 1,
-  //     lessonPlanId: 101
-  //   },
-  //   {
-  //     id: 2,
-  //     termId: 1,
-  //     name: 'Linear Equations',
-  //     startWeek: 4,
-  //     endWeek: 6,
-  //     progress: 75,
-  //     objectives: [
-  //       'Solve one-step equations',
-  //       'Solve two-step equations',
-  //       'Solve equations with variables on both sides'
-  //     ],
-  //     lessons: [
-  //       { id: 5, name: 'One-Step Equations', duration: 45, status: 'completed' },
-  //       { id: 6, name: 'Two-Step Equations', duration: 45, status: 'completed' },
-  //       { id: 7, name: 'Variables on Both Sides', duration: 45, status: 'in-progress' },
-  //       { id: 8, name: 'Equation Word Problems', duration: 45, status: 'pending' }
-  //     ],
-  //     resources: 3,
-  //     assessments: 1,
-  //     lessonPlanId: 102
-  //   },
-  //   {
-  //     id: 3,
-  //     termId: 1,
-  //     name: 'Linear Graphs',
-  //     startWeek: 7,
-  //     endWeek: 9,
-  //     progress: 40,
-  //     objectives: [
-  //       'Plot points on coordinate plane',
-  //       'Draw linear graphs',
-  //       'Find gradient and intercept'
-  //     ],
-  //     lessons: [
-  //       { id: 9, name: 'Coordinate Plane', duration: 45, status: 'completed' },
-  //       { id: 10, name: 'Plotting Linear Graphs', duration: 45, status: 'in-progress' },
-  //       { id: 11, name: 'Gradient and Intercept', duration: 45, status: 'pending' },
-  //       { id: 12, name: 'Real-world Applications', duration: 45, status: 'pending' }
-  //     ],
-  //     resources: 5,
-  //     assessments: 2,
-  //     lessonPlanId: 103
-  //   },
-  //   {
-  //     id: 4,
-  //     termId: 2,
-  //     name: 'Geometry: Angles',
-  //     startWeek: 1,
-  //     endWeek: 3,
-  //     progress: 90,
-  //     objectives: [
-  //       'Identify angle types',
-  //       'Calculate missing angles',
-  //       'Work with parallel lines'
-  //     ],
-  //     lessons: [
-  //       { id: 13, name: 'Angle Basics', duration: 45, status: 'completed' },
-  //       { id: 14, name: 'Complementary & Supplementary', duration: 45, status: 'completed' },
-  //       { id: 15, name: 'Parallel Lines', duration: 45, status: 'completed' },
-  //       { id: 16, name: 'Angle Problems', duration: 45, status: 'in-progress' }
-  //     ],
-  //     resources: 4,
-  //     assessments: 1,
-  //     lessonPlanId: 104
-  //   }
-  // ];
 
   // Assessments data
   assessments = [
@@ -295,19 +204,7 @@ export class SubjectPlanDetails {
         this.recordId.set(Id);
         this.editMode.set(false);
         // get data from the service
-        service
-          .getSubjectPlanById(Id)
-          .subscribe((data) => {
-            // update the data
-            this.subjectPlan.set(data)
-            // update the breadcrumb
-            this.breadCrumb.set([
-              { name: 'Subject Plans', url: '/subject-plan' },
-              { name: data?.name || 'New Subject Plan', url: '' }
-            ]);
-            console.log("This is the data loade: ", data)
-          }
-        )
+        this.updateSubjectPlanFromService(Id);
       }
 
       this.editForm = this.fb.group({
@@ -334,60 +231,30 @@ export class SubjectPlanDetails {
     })
   }
 
+  updateSubjectPlanFromService(Id: string){
+    this.service
+          .getSubjectPlanById(Id)
+          .subscribe((data) => {
+            // update the data
+            this.subjectPlan.set(data)
+            // update the breadcrumb
+            this.breadCrumb.set([
+              { name: 'Subject Plans', url: '/subject-plan' },
+              { name: data?.name || 'New Subject Plan', url: '' }
+            ]);
+            console.log("This is the data loade: ", data)
+          }
+        )
+  }
+
   ngOnInit() {
     this.route.params.subscribe(params => {
       const planId = params['id'];
-      this.loadSubjectPlan(planId);
     });
 
     // this.calculateProgress();
   }
 
-  loadSubjectPlan(planId: string) {
-    if (planId === 'new') {
-      // Initialize new subject plan
-      // this.subjectPlan = {
-      //   name: 'Annual Teaching Plan',
-      //   subject: this.subjects[0],
-      //   createdById: {
-      //     id: 1, name: 'Alice Mbatha', email: 'a.mbatha@school.edu', role: 'teacher',
-      //     surname: '',
-      //     phone: '',
-      //     address: '',
-      //     dateOfBirth: null,
-      //     dateJoined: null,
-      //     type: '',
-      //     title: ''
-      //   },
-      //   grade: this.grades[0],
-      //   createdOn: new Date(),
-      //   lastUpdatedOn: new Date(),
-      //   year: this.currentYear
-      // };
-    } else {
-      // Load existing subject plan
-      // this.subjectPlan = {
-      //   id: parseInt(planId),
-      //   name: 'Grade 8 Mathematics Annual Plan',
-      //   subject: this.subjects[0],
-      //   createdById: {
-      //     id: 1, name: 'Alice Mbatha',
-      //     email: 'a.mbatha@school.edu', role: 'teacher',
-      //     surname: '',
-      //     phone: '',
-      //     address: '',
-      //     dateOfBirth: null,
-      //     dateJoined: null,
-      //     type: '',
-      //     title: ''
-      //   },
-      //   grade: this.grades[0],
-      //   createdOn: new Date(2024, 0, 15),
-      //   lastUpdatedOn: new Date(),
-      //   year: 2024
-      // };
-    }
-  }
 
   // calculateProgress() {
   //   // Calculate total lessons
@@ -547,6 +414,8 @@ export class SubjectPlanDetails {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Update the database with:', result);
+        this.service.updateSubjectPlan(this.subjectPlan()?.id || 0, result);
+        this.updateSubjectPlanFromService(this.subjectPlan()?.id.toString() || '');
       }
     });
 
@@ -592,27 +461,6 @@ export class SubjectPlanDetails {
     return icons[type] || '📊';
   }
 
-  initEditForm() {
-    const plan = this.subjectPlan();
-    this.editForm.patchValue({
-      name: plan?.name || '',
-      subject: plan?.subject?.name || '',
-      grade: plan?.grade?.id.toString() || '',
-      year: plan?.year?.toString() || '2025'
-    });
-  }
-
-  cancelEdit() {
-    this.editMode.set(false);
-    // Reset form to original values
-    this.initEditForm();
-  }
-
-  saveEdit() {
-
-    
-  }
-
   // Helper methods for the edit form
   getSubjectNameById(subjectId: number): string {
     const subject = this.subjects.find(s => s.id === subjectId);
@@ -624,13 +472,9 @@ export class SubjectPlanDetails {
     return grade ? `Grade ${grade.gradeNumber}` : '';
   }
 
-  async loadSubjects(): Promise<SubjectsModel[]>{
-    return await this.subjectService.loadSubjects(1).toPromise() ?? [];
-  }
-
-  assignSubjectToPlan(plan: SubjectsModel){
-
-  }
+  // async loadSubjects(): Promise<SubjectsModel[]>{
+  //   return await this.subjectService.loadSubjects(1).toPromise() ?? [];
+  // }
 
   // Handle subject selection
   onSubjectSelected(subject: SearchItem) {

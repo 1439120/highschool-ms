@@ -18,6 +18,7 @@ namespace HighSchoolManagementApi.Models
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         public DateTime LastUpdatedOn { get; set; } = DateTime.UtcNow;
         public int Year { get; set; }
+        public string Term { get; set; }
         public List<LessonPlan> LessonPlans {get; set;} = new List<LessonPlan>();
         public List<SubjectTopics> SubjectTopics {get; set;} = new List<SubjectTopics>();
     }

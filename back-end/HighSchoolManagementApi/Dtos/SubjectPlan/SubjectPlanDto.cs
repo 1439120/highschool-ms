@@ -16,6 +16,7 @@ namespace HighSchoolManagementApi.Dtos.SubjectPlan
         public SubjectsDto Subject { get; set; }
         public UsersDto CreatedBy { get; set; }
         public GradesDto Grade { get; set; }
+        public int Year { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime LastUpdatedOn { get; set; }
     }

@@ -349,6 +349,10 @@ namespace HighSchoolManagementApi.Migrations
                     b.Property<int>("SubjectId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Term")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("Year")
                         .HasColumnType("integer");
 

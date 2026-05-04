@@ -30,6 +30,7 @@ namespace HighSchoolManagementApi.Mappers
                 Subject = subjectPlanModel.Subject?.ToSubjectsDTO(),
                 CreatedBy = subjectPlanModel.CreatedBy?.UserDetails?.ToUsersDto(),
                 Grade = subjectPlanModel.Grade?.ToGradesDto(),
+                Year = subjectPlanModel.Year,
                 CreatedOn = subjectPlanModel.CreatedOn,
                 LastUpdatedOn = subjectPlanModel.LastUpdatedOn,
             };

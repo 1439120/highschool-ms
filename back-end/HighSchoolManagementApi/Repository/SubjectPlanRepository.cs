@@ -45,6 +45,7 @@ namespace HighSchoolManagementApi.Repository
             subjectPlanModel.Name = subjectPlan.Name;
             subjectPlanModel.SubjectId = subjectPlan.SubjectId;
             subjectPlanModel.GradeId = subjectPlan.GradeId;
+            // subjectPlanModel.Term = subjectPlan.Term;
             subjectPlanModel.LastUpdatedOn = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();

@@ -10,5 +10,6 @@ namespace HighSchoolManagementApi.Dtos.SubjectPlan
         public string Name { get; set; }
         public int SubjectId { get; set; }
         public int GradeId { get; set; }
+        public int Year { get; set; }
     }
 }

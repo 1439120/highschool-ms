@@ -43,5 +43,13 @@ namespace HighSchoolManagementApi.Controllers
             
             return Ok(subjectPlan);
         }
+        [HttpPut("{id:int}")]
+        [Authorize]
+        public async Task<IActionResult> Update( [FromRoute] int id, [FromBody] UpdateSubjectPlanDto subjectPlanDto)
+        {
+            var subjectPlan = await _subjectPlanRepo.Update(subjectPlanDto, id);
+            
+            return Ok(subjectPlan);
+        }
     }
 }

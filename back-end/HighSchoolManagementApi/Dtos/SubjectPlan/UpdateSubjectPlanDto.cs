@@ -9,7 +9,6 @@ namespace HighSchoolManagementApi.Dtos.SubjectPlan
     {
         public string Name { get; set; }
         public int SubjectId { get; set; }
-        public string CreatedById { get; set; }
         public int GradeId { get; set; }
     }
 }

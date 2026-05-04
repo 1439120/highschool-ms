@@ -38,14 +38,13 @@ namespace HighSchoolManagementApi.Repository
         }
         public async Task<SubjectPlan?> Update(UpdateSubjectPlanDto subjectPlan, int subjectPlanId)
         {
+            Console.WriteLine("Do we get here");
             var subjectPlanModel = await _context.SubjectPlan.FirstOrDefaultAsync(c => c.Id == subjectPlanId);
             if(subjectPlanModel == null) return null;
 
             subjectPlanModel.Name = subjectPlan.Name;
             subjectPlanModel.SubjectId = subjectPlan.SubjectId;
-            subjectPlanModel.Name = subjectPlan.Name;
             subjectPlanModel.GradeId = subjectPlan.GradeId;
-            subjectPlanModel.CreatedById = subjectPlan.CreatedById;
             subjectPlanModel.LastUpdatedOn = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();

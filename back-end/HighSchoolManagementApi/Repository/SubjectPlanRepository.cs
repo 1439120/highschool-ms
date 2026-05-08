@@ -45,15 +45,17 @@ namespace HighSchoolManagementApi.Repository
             subjectPlanModel.Name = subjectPlan.Name;
             subjectPlanModel.SubjectId = subjectPlan.SubjectId;
             subjectPlanModel.GradeId = subjectPlan.GradeId;
-            // subjectPlanModel.Term = subjectPlan.Term;
+            subjectPlanModel.Year = subjectPlan.Year;
             subjectPlanModel.LastUpdatedOn = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
             return subjectPlanModel;
         }
-        public async Task<SubjectPlan> Add(AddSubjectPlanDto subjectPlanDto)
+        public async Task<SubjectPlan> Add(AddSubjectPlanDto subjectPlanDto, AuthUser authUser)
         {
+
             var subjectPlanModel = subjectPlanDto.FromAddDtoToSubjectPlan();
+            subjectPlanModel.CreatedById = authUser.Id;
             await _context.SubjectPlan.AddAsync(subjectPlanModel);
             await _context.SaveChangesAsync();
             return subjectPlanModel;

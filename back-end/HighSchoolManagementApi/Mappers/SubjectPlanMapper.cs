@@ -15,7 +15,7 @@ namespace HighSchoolManagementApi.Mappers
             {
                 Name = createDto.Name,
                 SubjectId = createDto.SubjectId,
-                CreatedById = createDto.CreatedById,
+                Year = createDto.Year,
                 GradeId = createDto.GradeId,
             };
         }

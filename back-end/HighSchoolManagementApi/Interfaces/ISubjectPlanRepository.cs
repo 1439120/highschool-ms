@@ -12,6 +12,6 @@ namespace HighSchoolManagementApi.Interfaces
         Task<List<SubjectPlan>> GetAll();
         Task<SubjectPlan> GetByIdAsync(int id);
         Task<SubjectPlan?> Update(UpdateSubjectPlanDto subjectPlan, int subjectPlanId);
-        Task<SubjectPlan> Add(AddSubjectPlanDto subjectPlanDto);
+        Task<SubjectPlan> Add(AddSubjectPlanDto subjectPlanDto, AuthUser authUser);
     }
 }

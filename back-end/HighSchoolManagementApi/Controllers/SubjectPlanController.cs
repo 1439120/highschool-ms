@@ -8,6 +8,8 @@ using HighSchoolManagementApi.Dtos.SubjectPlan;
 using HighSchoolManagementApi.Models;
 using HighSchoolManagementApi.Interfaces;
 using HighSchoolManagementApi.Mappers;
+using Microsoft.AspNetCore.Identity;
+using HighSchoolManagementApi.Extensions;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -16,15 +18,19 @@ namespace HighSchoolManagementApi.Controllers
     public class SubjectPlanController: ControllerBase
     {
         private readonly ISubjectPlanRepository _subjectPlanRepo;
-        public SubjectPlanController(ISubjectPlanRepository subjectPlanRepo)
+        private readonly UserManager<AuthUser> _userManager;
+        public SubjectPlanController(UserManager<AuthUser> userManager, ISubjectPlanRepository subjectPlanRepo)
         {
             _subjectPlanRepo = subjectPlanRepo;
+            _userManager = userManager;
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var subjectPlans = await _subjectPlanRepo.GetAll();
+            
             var subjectPlanDto = subjectPlans.Select(a => a.ToSubjectPlanDto());
             return Ok(subjectPlanDto);
         }
@@ -39,7 +45,9 @@ namespace HighSchoolManagementApi.Controllers
         [Authorize]
         public async Task<IActionResult> Add([FromBody] AddSubjectPlanDto subjectPlanDto)
         {
-            var subjectPlan = await _subjectPlanRepo.Add(subjectPlanDto);
+            var username = User.GetUsername();
+            var authUser = await _userManager.FindByNameAsync(username);
+            var subjectPlan = await _subjectPlanRepo.Add(subjectPlanDto, authUser);
             
             return Ok(subjectPlan);
         }

@@ -32,11 +32,25 @@ export class SubjectPlanService {
 
   updateSubjectPlan(Id: number, subjectPlan: EditSubjectPlanModel){
     this.http
-        .put<SubjectPlanModel[]>(`${this.apiUrl}/${Id}`, subjectPlan)
+        .put<SubjectPlanModel>(`${this.apiUrl}/${Id}`, subjectPlan)
         .subscribe({
           next: (data) => {
             console.log('Subject plans loaded:', data);
-            this.subjectPlans.set(data);
+            this.loadSubjectPlans();
+          },
+          error: (err) => {
+            console.error('Failed to load Subject plans', err);
+          }
+        });
+  }
+
+  addNewSubjectPlan(subjectPlan: EditSubjectPlanModel){
+    this.http
+        .post<SubjectPlanModel>(`${this.apiUrl}`, subjectPlan)
+        .subscribe({
+          next: (data) => {
+            console.log('New subject plan added:', data);
+            this.loadSubjectPlans()
           },
           error: (err) => {
             console.error('Failed to load Subject plans', err);

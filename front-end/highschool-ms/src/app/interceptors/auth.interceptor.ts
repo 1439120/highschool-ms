@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor{
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const  token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGV4YW1wbGUuY29tIiwiZ2l2ZW5fbmFtZSI6IlVzZXIxIiwibmJmIjoxNzc3NjM2OTE4LCJleHAiOjE3NzgyNDE3MTgsImlhdCI6MTc3NzYzNjkxOCwiaXNzIjoiaHR0dHA6Ly9sb2NhbGhvc3Q6NTI0NiIsImF1ZCI6Imh0dHRwOi8vbG9jYWxob3N0OjUyNDYifQ.ZHTyhMaQWMgh_rqZz3Mjsw4y9JTWmG4A5KMeRZdw8tPLhxbn6IrXA7ErlqRQlq-_ffkmfwWKDlFfnWDJOb0xMQ";
+        const  token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIyMDgzMTU1YS1lYzY1LTQ2NTgtOTMwNS1hZDFkN2U2NjdiMmQiLCJlbWFpbCI6InVzZXIxQGV4YW1wbGUuY29tIiwiZ2l2ZW5fbmFtZSI6IlVzZXIxIiwibmJmIjoxNzc4NTAyNTMwLCJleHAiOjE3NzkxMDczMzAsImlhdCI6MTc3ODUwMjUzMCwiaXNzIjoiaHR0dHA6Ly9sb2NhbGhvc3Q6NTI0NiIsImF1ZCI6Imh0dHRwOi8vbG9jYWxob3N0OjUyNDYifQ.LAeEScxUblwsZG1dwGIXhghid2eIDhKRB4-cMhSTikFuKne05I5haQ-aN4sxd2ehV5grKptaA6AlWrDU_g7zhw";
         // skip login
         if (req.url.includes('/auth/login')) {
             return next.handle(req);

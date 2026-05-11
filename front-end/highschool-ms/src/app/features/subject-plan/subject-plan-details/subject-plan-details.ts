@@ -14,7 +14,6 @@ import { SubjectTopicService } from '../../../services/subject-topic-service';
 import Grades from '../../../models/Grades';
 import { SubjectsService } from '../../../services/subjects-service';
 import {  SearchItem } from '../../../components/search-field-component/search-field-component';
-import { firstValueFrom } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { EditSubjectplanModal } from '../../../components/edit-subjectplan-modal/edit-subjectplan-modal';
 

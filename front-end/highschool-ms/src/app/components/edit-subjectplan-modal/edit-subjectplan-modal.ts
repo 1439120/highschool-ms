@@ -28,6 +28,7 @@ export class EditSubjectplanModal {
     { id: 4, name: '11', gradeNumber: 11 },
     { id: 5, name: '12', gradeNumber: 12 }
   ]);
+  action_type: string = ''
   
   years = signal<number[]>([
     2023, 2024, 2025, 2026, 2027
@@ -54,7 +55,8 @@ export class EditSubjectplanModal {
       @Inject(MAT_DIALOG_DATA) public data: any // This is the Subject Plan passed in
     ){
       console.log(`This is the data ${typeof(data)}`)
-      console.log(data)
+      // console.log(data)
+      this.action_type = 'Edit'
       this.editSubjectPlan.subjectId = data?.subject?.id
       this.editForm = this.fb.group({
         name: [data?.name || '', [Validators.required, Validators.minLength(3)]],
@@ -68,6 +70,8 @@ export class EditSubjectplanModal {
         gradeControl.valueChanges.pipe(startWith(gradeControl.value)),
         { initialValue: gradeControl.value }
       );
+
+      if(!data?.id) this.action_type = 'Add'
   }
 
   saveEdit() {

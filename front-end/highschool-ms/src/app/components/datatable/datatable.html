@@ -1,7 +1,7 @@
 <div class="datatable-container">
   <!-- Header with title and actions -->
    @if(showHeader()){
-    <app-breadcrumb [titleBreadcrumbs]="breadcrumbTitle()" [addButton]="addButton()"/>
+    <app-breadcrumb [titleBreadcrumbs]="breadcrumbTitle()" [addButton]="addButton()" [customAddAction]="customAddAction()"/>
    }
 
   <!-- Search and Filter Controls -->

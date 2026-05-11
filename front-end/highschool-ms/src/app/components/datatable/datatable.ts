@@ -26,6 +26,7 @@ export class Datatable<T> implements OnInit {
   addButton = input(false)
   showHeader = input(true)
   showFilterBar = input(true)
+  customAddAction = input<(() => void) | null>(null);
 
 
   // Filter and search properties

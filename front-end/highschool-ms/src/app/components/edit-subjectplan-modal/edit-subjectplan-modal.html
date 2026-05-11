@@ -4,7 +4,7 @@
         <div class="edit-mode-header">
         <h3>
             <span class="edit-icon">✏️</span>
-            Edit Subject Plan Details
+            {{action_type}} Subject Plan
         </h3>
         </div>
         
@@ -126,6 +126,11 @@
 <mat-dialog-actions align="end">
   <button type="button" class="btn-secondary" (click)="close()">Cancel</button>
   <button type="submit" class="btn-primary" (click)="saveEdit()" [disabled]="editForm.invalid">
-    Save Changes
+    @if(action_type == 'Edit'){
+        Save Changes
+    }
+    @else {
+        Add New
+    }
   </button>
 </mat-dialog-actions>

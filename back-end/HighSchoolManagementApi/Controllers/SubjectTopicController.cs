@@ -7,6 +7,7 @@ using HighSchoolManagementApi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using HighSchoolManagementApi.Dtos.SubjectTopic;
 using HighSchoolManagementApi.Mappers;
+using HighSchoolManagementApi.Helpers;
 
 namespace HighSchoolManagementApi.Controllers
 {
@@ -21,9 +22,9 @@ namespace HighSchoolManagementApi.Controllers
         }
         
         [HttpGet("{subjectPlanId:int}")]
-        public async Task<IActionResult> GetSubjectTopics([FromRoute] int subjectPlanId)
+        public async Task<IActionResult> GetSubjectTopics([FromRoute] int subjectPlanId, [FromQuery] QueryObject query)
         {
-            var topics = await _topicRepo.GetTopicsBySubjectPlan(subjectPlanId);
+            var topics = await _topicRepo.GetTopicsBySubjectPlan(subjectPlanId, query);
             return Ok(topics.Select(t => t.FromSubjectTopicsToDto()).ToList());
         }
         [HttpPost]

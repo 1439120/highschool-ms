@@ -9,7 +9,7 @@ namespace HighSchoolManagementApi.Models
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public int Term { get; set; }
+        public int Term { get; set; } = 1;
         public int StartWeek { get; set; }
         public int EndWeek { get; set; }
         public int Progress { get; set; }

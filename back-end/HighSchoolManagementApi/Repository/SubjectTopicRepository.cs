@@ -7,6 +7,7 @@ using HighSchoolManagementApi.Models;
 using HighSchoolManagementApi.Data;
 using Microsoft.EntityFrameworkCore;
 using HighSchoolManagementApi.Dtos.SubjectTopic;
+using HighSchoolManagementApi.Helpers;
 
 namespace HighSchoolManagementApi.Repository
 {
@@ -17,10 +18,11 @@ namespace HighSchoolManagementApi.Repository
         {
             _context = context;
         }
-        public async Task<List<SubjectTopics>> GetTopicsBySubjectPlan(int subjectId)
+        public async Task<List<SubjectTopics>> GetTopicsBySubjectPlan(int subjectId, QueryObject query)
         {
-            return await _context
-                .SubjectTopics
+            var topics = _context.SubjectTopics.AsQueryable();
+            if(query.Term != 0) topics = topics.Where(s => s.Term == query.Term);
+            return await topics
                 .Include(s => s.Objectives)
                 .Include(s => s.Lessons)
                 .Where(s => s.SubjectPlanId == subjectId)

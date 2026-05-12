@@ -10,8 +10,12 @@ export class SubjectTopicService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:5068/api/subject-topics';
 
-  getSubjectTopics(subjectId: string): Observable<Topic[]> {
-    return this.http.get<Topic[]>(`${this.apiUrl}/${subjectId}`);
+  getSubjectTopics(subjectId: string, term:number = 0): Observable<Topic[]> {
+    return this.http.get<Topic[]>(`${this.apiUrl}/${subjectId}`, {
+      params: {
+        term: term,
+      }
+    });
   }
 
   addNewTopic(subjectId: string, topic: Topic): Observable<Topic>{

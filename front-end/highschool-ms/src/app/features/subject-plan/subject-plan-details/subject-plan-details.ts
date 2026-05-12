@@ -217,7 +217,7 @@ export class SubjectPlanDetails {
     effect(()=>{
       // get subject topics
       subjectTopicsService
-        .getSubjectTopics(this.recordId())
+        .getSubjectTopics(this.recordId(), this.activeTerm())
         .subscribe({
           next: data => {
               console.log("The data has bee loaded successfully: ", data)

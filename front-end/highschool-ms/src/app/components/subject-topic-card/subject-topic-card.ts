@@ -27,19 +27,7 @@ export class SubjectTopicCard {
    @Output() topicAdded = new EventEmitter<Topic>();
    @Output() topicDeleted = new EventEmitter<string>();
    @Output() topicViewed = new EventEmitter<Topic>();
-   // New topic form
-  newTopic: Topic = {
-    name: '',
-    startWeek: 1,
-    endWeek: 2,
-    progress: 0,
-    objectives: [],
-    lessons: [],
-    resources: 0,
-    assessments: 0,
-    term: 0,
-    description: 'no description'
-  };
+
   newObjective: string = '';
 
   filteredTopics = computed(() => {
@@ -47,94 +35,14 @@ export class SubjectTopicCard {
       topic.name.toLowerCase().includes(this.searchTerm().toLowerCase())
     );
   });
-  // getTopicIcon(topicName: string): string {
-  //   const icons: {[key: string]: string} = {
-  //     'algebra': '🔢',
-  //     'geometry': '📐',
-  //     'equations': '⚖️',
-  //     'graphs': '📈',
-  //     'fractions': '🥧',
-  //     'statistics': '📊',
-  //     'probability': '🎲',
-  //     'trigonometry': '📐',
-  //     'calculus': '∫'
-  //   };
-    
-  //   const lowercaseName = topicName.toLowerCase();
-  //   for (const [key, icon] of Object.entries(icons)) {
-  //     if (lowercaseName.includes(key)) {
-  //       return icon;
-  //     }
-  //   }
-  //   return '📋';
-  // }
 
-  // addObjective() {
-  //   if (this.newObjective.trim()) {
-  //     this.newTopic.objectives.push(this.newObjective.trim());
-  //     this.newObjective = '';
-  //   }
-  // }
-
-  // addEditObjective() {
-  //   if (this.editObjective.trim() && this.editingTopic()) {
-  //     this.editingTopic()!.objectives.push(this.editObjective.trim());
-  //     this.editObjective = '';
-  //   }
-  // }
 
   // Add methods
   openAddForm() {
-    this.resetForm();
+    // this.resetForm();
     this.showAddForm.set(true);
     this.editingTopic.set(null);
   }
-
-  resetForm() {
-    this.newTopic = {
-      name: '',
-      startWeek: 1,
-      endWeek: 2,
-      progress: 0,
-      objectives: [],
-      lessons: [],
-      resources: 0,
-      assessments: 0,
-      term: 0,
-      description: 'no description',
-    };
-    this.newObjective = '';
-  }
-
-  // removeObjective(index: number) {
-  //   this.newTopic.objectives.splice(index, 1);
-  // }
-
-  // addLesson() {
-  //   this.newTopic.lessons.push({
-  //     name: 'New Lesson',
-  //     duration: 45,
-  //     status: 'pending'
-  //   });
-  // }
-
-  // saveTopic() {
-  //   if (!this.newTopic.name.trim()) return;
-    
-  //   const topicToSave = {
-  //     ...this.newTopic,
-  //     id: this.editingTopic()?.id || Date.now().toString(),
-  //     progress: this.calculateProgress(this.newTopic.lessons)
-  //   };
-    
-  //   if (this.editingTopic()) {
-  //     this.topicUpdated.emit(topicToSave);
-  //   } else {
-  //     this.topicAdded.emit(topicToSave);
-  //   }
-    
-  //   this.closeAddForm();
-  // }
 
   calculateProgress(lessons: any[]): number {
     if (lessons.length === 0) return 0;
@@ -142,23 +50,9 @@ export class SubjectTopicCard {
     return Math.round((completed / lessons.length) * 100);
   }
 
-  // removeLesson(index: number) {
-  //   this.newTopic.lessons.splice(index, 1);
-  // }
-
-  // cancelDelete() {
-  //   this.showDeleteConfirm.set(null);
-  // }
-  
-  // deleteTopic(topicId: string, event?: Event) {
-  //   event?.stopPropagation();
-  //   this.topicDeleted.emit(topicId);
-  //   this.showDeleteConfirm.set(null);
-  // }
-
   closeAddForm() {
     this.showAddForm.set(false);
-    this.resetForm();
+    // this.resetForm();
   }
 
   // Search
@@ -168,53 +62,5 @@ export class SubjectTopicCard {
 
   clearSearch() {
     this.searchTerm.set('');
-  }
-
-  //  // View method
-  // viewTopic(topic: Topic) {
-  //   this.topicViewed.emit(topic);
-  // }
-
-  // // Edit methods
-  // editTopic(topic: Topic, event?: Event) {
-  //   event?.stopPropagation();
-  //   this.editingTopic.set(topic);
-  //   this.newTopic = { ...topic };
-  //   this.showAddForm.set(true);
-  // }
-
-  // cancelEdit() {
-  //   this.editingTopic.set(null);
-  //   this.editObjective = '';
-  // }
-
-  // // Delete methods
-  // confirmDelete(topicId: string, event?: Event) {
-  //   event?.stopPropagation();
-  //   this.showDeleteConfirm.set(topicId);
-  // }
-
-  // removeEditObjective(index: number) {
-  //   if (this.editingTopic()) {
-  //     this.editingTopic()!.objectives.splice(index, 1);
-  //   }
-  // }
-
-  // saveEdit() {
-  //   if (this.editingTopic() && this.editingTopic()!.name.trim()) {
-  //     // Recalculate progress based on lessons
-  //     const topic = this.editingTopic()!;
-  //     topic.progress = this.calculateProgress(topic.lessons);
-  //     this.topicUpdated.emit(topic);
-  //     this.editingTopic.set(null);
-  //     this.editObjective = '';
-  //   }
-  // }
-  
-
-  // Filter methods
-  getTopicsByTerm(): any[] {
-    return this.topics().filter(topic => topic.termId === this.termNumber());
-    // return [];
   }
 }

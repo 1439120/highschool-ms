@@ -36,7 +36,7 @@
 <div class="topics-grid">
   <!-- Add Form Card -->
   @if(showAddForm()){
-    <app-subject-topic-information (closeFormOnCancel)="closeAddForm()"/>
+    <app-subject-topic-information (closeFormOnCancel)="closeAddForm()" [termNumber]="termNumber()"/>
   }
   
   <!-- Topic Cards -->

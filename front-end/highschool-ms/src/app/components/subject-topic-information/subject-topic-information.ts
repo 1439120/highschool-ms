@@ -16,6 +16,7 @@ export class SubjectTopicInformation {
   showDeleteConfirm = signal<boolean>(false);
   recordId = signal<string>("");
   topic = input<Topic>();
+  termNumber = input<number>()
   editMode = linkedSignal({
     source: this.topic,
     computation: (newTopic, previous) => {
@@ -33,7 +34,7 @@ export class SubjectTopicInformation {
     lessons: [],
     resources: 0,
     assessments: 0,
-    term: 0,
+    term: 1,
     description: 'no description'
   };
   newObjective: string = '';
@@ -125,6 +126,7 @@ export class SubjectTopicInformation {
   }
   saveTopic() {
     // Determine which service method to call
+    this.newTopic.term = this.termNumber() ?? 1
     const request$ = this.editingTopic() 
       ? this.topicService.editExistingTopic(this.recordId(), this.newTopic)
       : this.topicService.addNewTopic(this.recordId(), this.newTopic);

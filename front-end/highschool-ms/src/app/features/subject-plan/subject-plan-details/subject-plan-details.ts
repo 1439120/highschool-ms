@@ -16,12 +16,14 @@ import { SubjectsService } from '../../../services/subjects-service';
 import {  SearchItem } from '../../../components/search-field-component/search-field-component';
 import { MatDialog } from '@angular/material/dialog';
 import { EditSubjectplanModal } from '../../../components/edit-subjectplan-modal/edit-subjectplan-modal';
+import { Assessment } from '../../../models/Assessment';
+import { AssessmentViewCard } from '../../../components/assessment-view-card/assessment-view-card';
 
 @Component({
   selector: 'app-subject-plan-details',
   imports: [
     CommonModule, FormsModule, Breadcrumb, RouterLink, DatePipe,
-    SubjectTopicCard, TermOverviewCard, ReactiveFormsModule
+    SubjectTopicCard, TermOverviewCard, ReactiveFormsModule, AssessmentViewCard
   ],
   templateUrl: './subject-plan-details.html',
   styleUrl: './subject-plan-details.scss',
@@ -129,44 +131,44 @@ export class SubjectPlanDetails {
 
 
   // Assessments data
-  assessments = [
+  assessments:Assessment[] = [
     {
       id: 1,
-      termId: 1,
+      term: 1,
       name: 'Algebra Quiz 1',
       type: 'quiz',
-      date: new Date(2024, 1, 15),
-      topic: 'Algebraic Expressions',
+      due_date: new Date(2024, 1, 15),
+      topics: [],
       duration: 30,
       weight: 15
     },
     {
       id: 2,
-      termId: 1,
+      term: 1,
       name: 'Equations Test',
       type: 'test',
-      date: new Date(2024, 2, 5),
-      topic: 'Linear Equations',
+      due_date: new Date(2024, 2, 5),
+      topics: [],
       duration: 45,
       weight: 25
     },
     {
       id: 3,
-      termId: 2,
+      term: 2,
       name: 'Geometry Assignment',
       type: 'assignment',
-      date: new Date(2024, 4, 10),
-      topic: 'Angles and Parallel Lines',
+      due_date: new Date(2024, 4, 10),
+      topics: [],
       duration: 60,
       weight: 20
     },
     {
       id: 4,
-      termId: 3,
+      term: 3,
       name: 'Mid-Year Exam',
       type: 'exam',
-      date: new Date(2024, 6, 15),
-      topic: 'All Term 1-2 Topics',
+      due_date: new Date(2024, 6, 15),
+      topics: [],
       duration: 120,
       weight: 40
     }
@@ -304,7 +306,7 @@ export class SubjectPlanDetails {
   }
 
   getActiveTermAssessments(): number {
-    return this.assessments.filter(a => a.termId === this.activeTerm()).length;
+    return this.assessments.filter(a => a.term === this.activeTerm()).length;
   }
 
   getWeeksByTerm(termId: number): any[] {
@@ -340,7 +342,7 @@ export class SubjectPlanDetails {
   }
 
   getAssessmentsByTerm(termId: number): any[] {
-    return this.assessments.filter(a => a.termId === termId);
+    return this.assessments.filter(a => a.term === termId);
   }
 
   // Helper methods for dates

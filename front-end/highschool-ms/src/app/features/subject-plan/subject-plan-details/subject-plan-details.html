@@ -289,33 +289,9 @@
 
             <!-- Assessments View -->
             <div *ngIf="viewType === 'assessments'" class="assessment-timeline">
-              <div *ngFor="let assessment of getAssessmentsByTerm(activeTerm())" class="assessment-item">
-                <div class="assessment-date">
-                  <span class="date-day">{{assessment.date | date:'d'}}</span>
-                  <span class="date-month">{{assessment.date | date:'MMM'}}</span>
-                </div>
-                <div class="assessment-icon">{{getAssessmentIcon(assessment.type)}}</div>
-                <div class="assessment-info">
-                  <div class="assessment-name">{{assessment.name}}</div>
-                  <div class="assessment-meta">
-                    <span>
-                      <span class="meta-icon">📋</span>
-                      {{assessment.topic}}
-                    </span>
-                    <span>
-                      <span class="meta-icon">⏱️</span>
-                      {{assessment.duration}} min
-                    </span>
-                  </div>
-                </div>
-                <span class="assessment-weight">{{assessment.weight}}%</span>
-                <div class="assessment-actions">
-                  <button class="btn btn-outline btn-sm" [routerLink]="['/assessments', assessment.id]">
-                    <span class="btn-icon">👁️</span>
-                  </button>
-                </div>
-              </div>
-              
+                @for(assessment of getAssessmentsByTerm(activeTerm()); track assessment.id){
+                  <app-assessment-view-card [assessment]="assessment"/>
+                }
               <div *ngIf="getAssessmentsByTerm(activeTerm()).length === 0" class="no-items">
                 <span class="no-items-icon">📝</span>
                 <h3>No assessments scheduled</h3>

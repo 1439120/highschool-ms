@@ -3,10 +3,11 @@ import { Component, computed, EventEmitter, Input, input, Output, signal } from 
 import { FormsModule } from '@angular/forms';
 import { Topic } from '../../models/Topic';
 import { SubjectTopicInformation } from '../subject-topic-information/subject-topic-information';
+import { ActionsHeader } from '../actions-header/actions-header';
 
 @Component({
   selector: 'app-subject-topic-card',
-  imports: [CommonModule, FormsModule, SubjectTopicInformation],
+  imports: [CommonModule, FormsModule, SubjectTopicInformation, ActionsHeader],
   templateUrl: './subject-topic-card.html',
   styleUrl: './subject-topic-card.scss',
 })

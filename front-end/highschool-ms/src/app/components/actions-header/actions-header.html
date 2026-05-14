@@ -1,0 +1,28 @@
+<!-- Header with actions -->
+<div class="topics-header">
+  <div class="header-left">
+    
+    <!-- Search Bar -->
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Search topics..."
+        [ngModel]="searchTerm()"
+        (ngModelChange)="updateSearch($event)"
+      >
+      @if(searchTerm()){
+        <button class="clear-search" (click)="clearSearch()">✕</button>
+      }
+    </div>
+  </div>
+  
+  <!-- Add Topic Button -->
+  @if(editMode()){
+    <button class="btn-add-topic" (click)="openAddForm()">
+      <span class="btn-icon">➕</span>
+      Add New Topic
+    </button>
+  }
+</div>

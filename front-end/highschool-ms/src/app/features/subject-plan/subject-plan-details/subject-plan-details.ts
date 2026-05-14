@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Breadcrumb } from '../../../components/breadcrumb/breadcrumb';
 import BreadcrumbModel from '../../../models/BreadcrumbModel';
@@ -448,18 +448,6 @@ export class SubjectPlanDetails {
       .join('')
       .substring(0, 2)
       .toUpperCase();
-  }
-
-  getAssessmentIcon(type: string): string {
-    const icons: {[key: string]: string} = {
-      'quiz': '❓',
-      'test': '📝',
-      'exam': '📋',
-      'assignment': '📚',
-      'project': '🎨',
-      'presentation': '🎤'
-    };
-    return icons[type] || '📊';
   }
 
   // Helper methods for the edit form

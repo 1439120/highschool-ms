@@ -1,0 +1,114 @@
+$dark-color: #2d3748;
+$light-color: #f8f9fa;
+$border-color: #e2e8f0;
+$primary-color: #4361ee;
+$secondary-color: #3a0ca3;
+
+// Topics Header
+.topics-header {
+  padding: 0 24px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: $dark-color;
+      
+      .section-icon {
+        font-size: 20px;
+      }
+      
+      .topic-count {
+        font-size: 13px;
+        font-weight: 500;
+        color: #718096;
+        background: $light-color;
+        padding: 4px 10px;
+        border-radius: 16px;
+      }
+    }
+    
+    .search-box {
+      position: relative;
+      min-width: 250px;
+      
+      .search-icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 14px;
+      }
+      
+      .search-input {
+        width: 100%;
+        padding: 8px 30px 8px 32px;
+        border: 1px solid $border-color;
+        border-radius: 20px;
+        font-size: 13px;
+        
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+        }
+      }
+      
+      .clear-search {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #94a3b8;
+        cursor: pointer;
+        padding: 4px;
+        
+        &:hover {
+          color: $dark-color;
+        }
+      }
+    }
+  }
+  
+  .btn-add-topic {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, $primary-color, $secondary-color);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba($primary-color, 0.3);
+    }
+    
+    .btn-icon {
+      font-size: 16px;
+    }
+  }
+}

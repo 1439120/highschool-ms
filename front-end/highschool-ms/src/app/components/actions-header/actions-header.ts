@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ActionsHeader {
   searchTerm = signal<string>('');
-  editMode = input<boolean>(false)
+  editable = input<boolean>(false)
   @Output() addNew = new EventEmitter();
   @Output() updateSearchValue = new EventEmitter();
 

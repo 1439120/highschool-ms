@@ -17,13 +17,13 @@ import {  SearchItem } from '../../../components/search-field-component/search-f
 import { MatDialog } from '@angular/material/dialog';
 import { EditSubjectplanModal } from '../../../components/edit-subjectplan-modal/edit-subjectplan-modal';
 import { Assessment } from '../../../models/Assessment';
-import { AssessmentViewCard } from '../../../components/assessment-view-card/assessment-view-card';
+import { AssessmentContainerCard } from '../../../components/assessment-container-card/assessment-container-card';
 
 @Component({
   selector: 'app-subject-plan-details',
   imports: [
     CommonModule, FormsModule, Breadcrumb, RouterLink, DatePipe,
-    SubjectTopicCard, TermOverviewCard, ReactiveFormsModule, AssessmentViewCard
+    SubjectTopicCard, TermOverviewCard, ReactiveFormsModule, AssessmentContainerCard
   ],
   templateUrl: './subject-plan-details.html',
   styleUrl: './subject-plan-details.scss',

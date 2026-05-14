@@ -1,0 +1,13 @@
+<app-actions-header [editable]="true"/>
+<div class="assessment-timeline">
+    @for(assessment of getAssessmentsByTerm(activeTerm()); track assessment.id){
+        <app-assessment-view-card [assessment]="assessment"/>
+    }
+    @if(getAssessmentsByTerm(activeTerm()).length === 0){
+        <div class="no-items">
+            <span class="no-items-icon">📝</span>
+            <h3>No assessments scheduled</h3>
+            <p>Add assessments to track student progress.</p>
+        </div>
+    }
+</div>

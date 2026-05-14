@@ -1,0 +1,31 @@
+$dark-color: #2d3748;
+
+// Assessment Timeline
+.assessment-timeline {
+  padding: 24px;
+}
+
+// Empty States
+.no-items {
+  padding: 60px 20px;
+  text-align: center;
+  color: #718096;
+  
+  .no-items-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 20px;
+    opacity: 0.5;
+  }
+  
+  h3 {
+    margin: 0 0 10px 0;
+    color: $dark-color;
+    font-size: 20px;
+  }
+  
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+}

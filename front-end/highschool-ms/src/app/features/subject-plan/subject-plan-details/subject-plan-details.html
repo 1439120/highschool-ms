@@ -286,18 +286,10 @@
                 </div>
               </div>
             </div>
-
             <!-- Assessments View -->
-            <div *ngIf="viewType === 'assessments'" class="assessment-timeline">
-                @for(assessment of getAssessmentsByTerm(activeTerm()); track assessment.id){
-                  <app-assessment-view-card [assessment]="assessment"/>
-                }
-              <div *ngIf="getAssessmentsByTerm(activeTerm()).length === 0" class="no-items">
-                <span class="no-items-icon">📝</span>
-                <h3>No assessments scheduled</h3>
-                <p>Add assessments to track student progress.</p>
-              </div>
-            </div>
+            @if(viewType === 'assessments'){
+              <app-assessment-container-card/>
+            }
           </div>
         </div>
     </div>

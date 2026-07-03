@@ -18,11 +18,11 @@ export class Configurations {
   // Current configuration
   config: any = {
     school: {
-      name: 'Mambane Secondary School',
+      name: 'Fundzanatsi Secondary School',
       phone: '011 734 8899',
-      email: 'mambane@gmail.com',
-      website: 'www.mambane.co.za',
-      address: '123 Education Street, Mambane, South Africa',
+      email: 'fundzanatsi@gmail.com',
+      website: 'www.fundzanatsi.co.za',
+      address: '123 Education Street, Fundzanatsi, South Africa',
       motto: 'Excellence Through Education',
       establishedYear: 1995,
       logoUrl: ''
@@ -66,9 +66,9 @@ export class Configurations {
     },
     additional: {
       contacts: [
-        { role: 'Principal', name: 'Dr. Thabo Molefe', email: 'principal@mambane.co.za', phone: '011 734 8801' },
-        { role: 'Deputy Principal', name: 'Mrs. Nomsa Dlamini', email: 'deputy@mambane.co.za', phone: '011 734 8802' },
-        { role: 'Administrator', name: 'Mr. Sipho Nkosi', email: 'admin@mambane.co.za', phone: '011 734 8803' }
+        { role: 'Principal', name: 'Dr. Thabo Molefe', email: 'principal@fundzanatsi.co.za', phone: '011 734 8801' },
+        { role: 'Deputy Principal', name: 'Mrs. Nomsa Dlamini', email: 'deputy@fundzanatsi.co.za', phone: '011 734 8802' },
+        { role: 'Administrator', name: 'Mr. Sipho Nkosi', email: 'admin@fundzanatsi.co.za', phone: '011 734 8803' }
       ],
       facilities: {
         library: true,
@@ -82,7 +82,7 @@ export class Configurations {
         security: true,
         medical: true
       },
-      description: 'Mambane Secondary School is a leading educational institution committed to providing quality education in a nurturing environment. We focus on academic excellence, character development, and preparing students for future success.'
+      description: 'Fundzanatsi Secondary School is a leading educational institution committed to providing quality education in a nurturing environment. We focus on academic excellence, character development, and preparing students for future success.'
     }
   };
   
@@ -262,7 +262,7 @@ export class Configurations {
     const dataStr = JSON.stringify(this.config, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = `mambane-school-config-${new Date().toISOString().split('T')[0]}.json`;
+    const exportFileDefaultName = `fundzanatsi-school-config-${new Date().toISOString().split('T')[0]}.json`;
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
